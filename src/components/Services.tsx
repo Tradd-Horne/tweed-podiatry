@@ -1,3 +1,13 @@
+import Image from "next/image";
+const SERVICE_IMAGES: Record<string, { src: string; alt: string }> = {
+  'General Foot Care': { src: "/img/services/general-foot-care.jpg", alt: 'Podiatry nippers, file and dish laid out on a towel on a Queenslander verandah' },
+  'Ingrown Toenails': { src: "/img/services/ingrown-toenails.jpg", alt: 'Sterile podiatry instruments in an opened sterilisation pouch on a clinical tray' },
+  'Diabetic Foot Care': { src: "/img/services/diabetic-foot-care.jpg", alt: 'A monofilament sensation tester and handheld doppler on a clinical cloth' },
+  'Sports Podiatry': { src: "/img/services/sports-podiatry.jpg", alt: 'Worn running shoes on a timber boardwalk above a Gold Coast beach at sunrise' },
+  'Custom Orthotics': { src: "/img/services/custom-orthotics.jpg", alt: 'Custom moulded orthotic insoles on a workbench beside a foam impression box' },
+  'Paediatric Podiatry': { src: "/img/services/paediatric-podiatry.jpg", alt: "Children's school shoes and sandals on the front step of a coastal home" },
+};
+
 const services = [
   {
     title: "General Foot Care",
@@ -141,6 +151,17 @@ export function Services() {
               key={service.title}
               className="p-6 border border-gray-100 hover:border-gray-200 transition-colors"
             >
+              {SERVICE_IMAGES[service.title] && (
+                <div className="relative mb-5 aspect-[16/9] overflow-hidden rounded-lg">
+                  <Image
+                    src={SERVICE_IMAGES[service.title].src}
+                    alt={SERVICE_IMAGES[service.title].alt}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    className="object-cover"
+                  />
+                </div>
+              )}
               <div className="w-12 h-12 flex items-center justify-center bg-gray-50 text-[#1e3a5f] mb-4">
                 {service.icon}
               </div>
