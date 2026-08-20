@@ -4,13 +4,14 @@
 # Let's Encrypt and routes by Host rule; this service joins the external `proxy` network and
 # exposes no host ports.
 #
-# The site is a STATIC EXPORT. There is no Node process in production — nginx serves the
-# HTML that `npm run build` produced. Nothing to keep alive, nothing to patch.
+# The site is a STATIC EXPORT, built on a development machine and committed to the repo.
+# There is no Node in production and nothing is compiled on this droplet — it has 1 vCPU and
+# runs two dozen containers already. Rebuild with `npm run build`, commit `out/`, redeploy.
 #
 # Deploy:
 #   cd /app-tweed-podiatry
 #   git pull
-#   docker compose up -d --build
+#   docker compose up -d
 
 services:
   tweedpodiatry-web:
