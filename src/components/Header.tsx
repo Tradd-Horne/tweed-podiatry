@@ -7,10 +7,13 @@ export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navItems = [
-    { href: "#services", label: "Services" },
-    { href: "#about", label: "About" },
-    { href: "#areas", label: "Service Areas" },
-    { href: "#contact", label: "Contact" },
+    // Real pages, not anchors. Anchor-only navigation left every page on this site
+    // with nothing linking to it but the sitemap.
+    { href: "/home-visit-podiatrist-tweed-heads", label: "Home visits" },
+    { href: "/aged-care-podiatry", label: "Aged care" },
+    { href: "/home-care-package-podiatry", label: "Funding" },
+    { href: "/areas", label: "Areas visited" },
+    { href: "/#contact", label: "Contact" },
   ];
 
   return (
