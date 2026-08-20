@@ -1,7 +1,7 @@
-import Image from "next/image";
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
 import { Services } from "@/components/Services";
+import { FundingOptions } from "@/components/FundingOptions";
 import { About } from "@/components/About";
 import { ServiceAreas } from "@/components/ServiceAreas";
 import { Contact } from "@/components/Contact";
@@ -14,6 +14,7 @@ export default function Home() {
       <main>
         <Hero />
         <Services />
+        <FundingOptions />
         <About />
         <ServiceAreas />
         <Contact />
