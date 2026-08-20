@@ -51,8 +51,9 @@ export function Hero() {
               <div className="space-y-4">
                 <div className="aspect-[4/3] relative overflow-hidden rounded-lg">
                   <Image
-                    src="/website-images/Principal_Podiatry_Footcare.c97a75054845.jpg"
-                    alt="Professional foot care treatment"
+                    src="/img/hero-tweed-coast.jpg"
+                    alt="The Tweed Heads coastline in northern New South Wales"
+                    priority
                     fill
                     className="object-cover"
                   />
@@ -61,8 +62,8 @@ export function Hero() {
               <div className="space-y-4 pt-8">
                 <div className="aspect-[4/3] relative overflow-hidden rounded-lg">
                   <Image
-                    src="/website-images/Podiatry_Diabetes.9a3be5775055.jpg"
-                    alt="Diabetic foot care assessment"
+                    src="/img/home-visit-setting.jpg"
+                    alt="A bright, tidy living room of the kind a home visit takes place in"
                     fill
                     className="object-cover"
                   />
