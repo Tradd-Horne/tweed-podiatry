@@ -1,0 +1,43 @@
+# Tweed Heads Podiatry — deploy stack
+#
+# Same shape as the Rising Damp Brisbane stack on this droplet: Traefik terminates TLS via
+# Let's Encrypt and routes by Host rule; this service joins the external `proxy` network and
+# exposes no host ports.
+#
+# The site is a STATIC EXPORT. There is no Node process in production — nginx serves the
+# HTML that `npm run build` produced. Nothing to keep alive, nothing to patch.
+#
+# Deploy:
+#   cd /app-tweed-podiatry
+#   git pull
+#   docker compose up -d --build
+
+services:
+  tweedpodiatry-web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: tweedpodiatry-web
+    container_name: tweedpodiatry-web
+    restart: unless-stopped
+    volumes:
+      - ./deploy/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.tweedpodiatry.rule=Host(`tweedheadspodiatry.com.au`) || Host(`www.tweedheadspodiatry.com.au`)"
+      - "traefik.http.routers.tweedpodiatry.entrypoints=websecure"
+      - "traefik.http.routers.tweedpodiatry.tls=true"
+      - "traefik.http.routers.tweedpodiatry.tls.certresolver=letsencrypt"
+      - "traefik.http.services.tweedpodiatry.loadbalancer.server.port=80"
+      # www -> apex, so one canonical host collects the ranking rather than two splitting it
+      - "traefik.http.middlewares.tweedpodiatry-www.redirectregex.regex=^https?://www\\.tweedheadspodiatry\\.com\\.au/(.*)"
+      - "traefik.http.middlewares.tweedpodiatry-www.redirectregex.replacement=https://tweedheadspodiatry.com.au/$${1}"
+      - "traefik.http.middlewares.tweedpodiatry-www.redirectregex.permanent=true"
+      - "traefik.http.routers.tweedpodiatry.middlewares=tweedpodiatry-www"
+
+networks:
+  proxy:
+    external: true
