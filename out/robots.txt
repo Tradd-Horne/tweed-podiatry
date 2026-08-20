@@ -1,0 +1,4 @@
+User-Agent: *
+Allow: /
+
+Sitemap: https://tweedheadspodiatry.com.au/sitemap.xml
