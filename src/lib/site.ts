@@ -48,10 +48,13 @@ export const SITE = {
 export const FEES = {
   initial: { label: "First home visit", price: 170 },
   followUp: { label: "Follow-up home visit", price: 150 },
-  nailSurgery: {
-    label: "Nail surgery at home (includes two follow-up visits)",
-    price: 500,
-  },
+  /**
+   * The procedure only. It is deliberately NOT described as a home service and no longer
+   * bundles the follow-ups: nail surgery is not something to advertise as a doorstep
+   * service, and it is never done on a first visit — the assessment decides whether it is
+   * appropriate at all.
+   */
+  nailSurgery: { label: "Nail surgery", price: 500 },
   orthotics: { label: "Custom orthotics (pair)", price: 560 },
 } as const;
 
@@ -438,7 +441,7 @@ export const FUNDING_PAGES: PageDef[] = [
         { service: "First home visit (starts a treatment cycle)", item: "F024", fee: "$106.65", funder: "$106.65", youPay: "$0" },
         { service: "Follow-up home visit", item: "F033", fee: "$94.60", funder: "$94.60", youPay: "$0" },
         { service: "Short home visit, up to 15 minutes", item: "F031", fee: "$94.60", funder: "$94.60", youPay: "$0" },
-        { service: "Nail surgery with matrix sterilisation, one edge or the whole nail — includes two follow-ups", item: "F546 / F547", fee: "$477.05", funder: "$477.05", youPay: "$0" },
+        { service: "Nail surgery with matrix sterilisation, one edge or the whole nail — DVA's fee includes two follow-ups", item: "F546 / F547", fee: "$477.05", funder: "$477.05", youPay: "$0" },
         { service: "Each additional nail edge", item: "F548", fee: "$129.15", funder: "$129.15", youPay: "$0" },
         { service: "Nail plate avulsion — includes two follow-ups", item: "F470", fee: "$180.35", funder: "$180.35", youPay: "$0" },
         { service: "Custom moulded orthoses, pair", item: "F222", fee: "$422.65", funder: "$422.65", youPay: "$0" },
@@ -580,6 +583,7 @@ export const FUNDING_PAGES: PageDef[] = [
         "The visit must run at least 20 minutes and must be recommended in your plan.",
         "Home visits are not bulk billed. You pay the full fee and the rebate comes back to you.",
         "Nail surgery and orthotics are not covered by this item. They are private fees, and your health fund extras may cover part of them.",
+        "Nail surgery is quoted after an assessment and is never done at the same visit. The assessment decides whether surgery is the right answer for your toe, and whether it should be done here or in a clinic. Follow-up visits are charged separately.",
       ],
       sources: [
         { label: "MBS — item 10962", href: "https://www9.health.gov.au/mbs/fullDisplay.cfm?type=item&q=10962" },
@@ -641,12 +645,13 @@ export const FUNDING_PAGES: PageDef[] = [
       rows: [
         { service: FEES.initial.label, item: "023 or 024", fee: `$${FEES.initial.price}`, funder: "Ask your fund", youPay: `$${FEES.initial.price} less your rebate` },
         { service: FEES.followUp.label, item: "033 or 034", fee: `$${FEES.followUp.price}`, funder: "Ask your fund", youPay: `$${FEES.followUp.price} less your rebate` },
-        { service: "Nail surgery at home — includes two follow-ups", item: "546 / 547", fee: `$${FEES.nailSurgery.price}`, funder: "Ask your fund", youPay: `$${FEES.nailSurgery.price} less your rebate` },
+        { service: FEES.nailSurgery.label, item: "546 / 547", fee: `$${FEES.nailSurgery.price}`, funder: "Ask your fund", youPay: `$${FEES.nailSurgery.price} less your rebate` },
         { service: "Custom orthotics, pair", item: "221", fee: `$${FEES.orthotics.price}`, funder: "Ask your fund", youPay: `$${FEES.orthotics.price} less your rebate` },
         { service: "Travel outside the standard area, per 15 minutes", item: "550", fee: "Quoted before you book", funder: "Not all funds pay this", youPay: "The balance" },
       ],
       notes: [
         "Item numbers come from the podiatry schedule agreed between Private Healthcare Australia and the Australian Podiatry Association, in force since 1 September 2024.",
+        "Nail surgery is quoted after an assessment and is never done at the same visit. The assessment decides whether surgery is the right answer for your toe, and whether it should be done here or in a clinic. Follow-up visits are charged separately.",
         "Rebates and annual limits vary by fund and by level of cover. We will not guess yours — ring your fund with the item number.",
         "One rebate per visit. Medicare or your fund, not both.",
       ],
@@ -662,7 +667,7 @@ export const FUNDING_PAGES: PageDef[] = [
     target: "podiatry home visit price tweed heads",
     title: "Podiatry Home Visit Prices | Tweed Heads & Northern NSW",
     description:
-      "Home visit podiatry prices in Tweed Heads: $170 first visit, $150 follow-up, $500 nail surgery, $560 custom orthotics. No referral needed, no waiting list.",
+      "Home visit podiatry prices in Tweed Heads: $170 first visit, $150 follow-up, $560 custom orthotics, $500 nail surgery. No referral needed, no waiting list.",
     h1: "Paying privately — the whole price list",
     intro:
       "No referral, no plan, no waiting list. Ring or fill in the form and we come to you. Here is what it costs, in full, before you book.",
@@ -694,8 +699,8 @@ export const FUNDING_PAGES: PageDef[] = [
         a: "The fee is the same for everyone. What changes is what comes back to you — a chronic condition management plan is usually the biggest single saving, so it is worth asking your GP.",
       },
       {
-        q: "What does nail surgery cost at home?",
-        a: "$500, and that includes the two follow-up visits to check the toe and change the dressing. It covers a single edge or the whole nail, with the matrix treated so it does not grow back.",
+        q: "What does nail surgery cost?",
+        a: "$500 for the procedure. It covers a single edge or the whole nail, with the matrix treated so it does not grow back. It is always preceded by an assessment, and it is never done at the same visit — the assessment is what decides whether surgery is the right answer for your toe at all. Follow-up visits after the procedure are charged separately.",
       },
       {
         q: "How much are orthotics?",
@@ -709,12 +714,13 @@ export const FUNDING_PAGES: PageDef[] = [
       rows: [
         { service: FEES.initial.label, fee: `$${FEES.initial.price}`, youPay: `$${FEES.initial.price}` },
         { service: FEES.followUp.label, fee: `$${FEES.followUp.price}`, youPay: `$${FEES.followUp.price}` },
-        { service: "Nail surgery at home — includes two follow-up visits", fee: `$${FEES.nailSurgery.price}`, youPay: `$${FEES.nailSurgery.price}` },
+        { service: FEES.nailSurgery.label, fee: `$${FEES.nailSurgery.price}`, youPay: `$${FEES.nailSurgery.price}` },
         { service: "Custom orthotics, pair", fee: `$${FEES.orthotics.price}`, youPay: `$${FEES.orthotics.price}` },
         { service: "Travel outside the standard visiting area", fee: "Per kilometre", youPay: "Quoted before you book" },
       ],
       notes: [
         "Prices apply from 21 August 2026 and include GST where GST applies.",
+        "Nail surgery is quoted after an assessment and is never done at the same visit. The assessment decides whether surgery is the right answer for your toe, and whether it should be done here or in a clinic. Follow-up visits are charged separately.",
         "A Medicare rebate of $63.40 a visit, a DVA card or private health extras all reduce what you actually pay. The pages linked below set out each one.",
         "For an out-of-area quote, send your address through the enquiry form and we will come back with the figure before you book.",
       ],
