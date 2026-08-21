@@ -879,6 +879,25 @@ export interface SuburbDef {
   postcode: string;
   /** One true, checkable local detail. Never invented — a wrong local claim reads as fake. */
   note: string;
+  /**
+   * A real photograph taken in this suburb. Chosen by matching the file's own title to the
+   * suburb, not by proximity: ranking on distance alone put Surfers Paradise on the
+   * Hastings Point page and Currumbin on Tugun's. Four suburbs carry no photo, because no
+   * freely licensed one of them exists and a picture of somewhere else is worse than none.
+   */
+  photo?: SuburbPhoto;
+}
+
+export interface SuburbPhoto {
+  /** Under /img/areas/, cropped to 16:9 and converted to WebP. */
+  src: string;
+  alt: string;
+  /** Photographer. Rendered in the corner of the image, as the licence requires. */
+  credit: string;
+  license: string;
+  licenseUrl: string;
+  /** The file's page on Wikimedia Commons. */
+  sourceUrl: string;
 }
 
 /**
@@ -894,49 +913,193 @@ export interface SuburbDef {
  */
 export const SUBURBS: SuburbDef[] = [
   { slug: "tweed-heads", name: "Tweed Heads", postcode: "2485",
-    note: "The base for this practice, so appointments here are the easiest to fit in — often within the same week." },
+    note: "The base for this practice, so appointments here are the easiest to fit in — often within the same week.",
+    photo: {
+      src: "/img/areas/tweed-heads.webp",
+      alt: "Point Danger and the headland, looking north from Tweed Heads",
+      credit: "Jack Bain",
+      license: "CC BY 4.0",
+      licenseUrl: "https://creativecommons.org/licenses/by/4.0",
+      sourceUrl: "https://commons.wikimedia.org/wiki/File%3APoint_Danger%2C_Queensland_from_Tweed_Heads%2C_New_South_Wales%2C_Australia.jpg",
+    } },
   { slug: "tweed-heads-south", name: "Tweed Heads South", postcode: "2486",
-    note: "Between the Tweed River and the Terranora Broadwater, and part of the same daily run as Tweed Heads itself." },
+    note: "Between the Tweed River and the Terranora Broadwater, and part of the same daily run as Tweed Heads itself.",
+    photo: {
+      src: "/img/areas/tweed-heads-south.webp",
+      alt: "The M1 bridge crossing Terranora Creek at Tweed Heads South",
+      credit: "Kgbo",
+      license: "CC BY-SA 4.0",
+      licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0",
+      sourceUrl: "https://commons.wikimedia.org/wiki/File%3APacific_Motorway_bridge_over_Terranora_Creek%2C_Tweed_Heads_South%2C_NSW.jpeg",
+    } },
   { slug: "tweed-heads-west", name: "Tweed Heads West", postcode: "2485",
     note: "On the western side of the Terranora Inlet, and covered on the Tweed Heads run." },
   { slug: "banora-point", name: "Banora Point", postcode: "2486",
-    note: "A short drive from Tweed Heads, with a large retired population and several villages I visit regularly." },
+    note: "A short drive from Tweed Heads, with a large retired population and several villages I visit regularly.",
+    photo: {
+      src: "/img/areas/banora-point.webp",
+      alt: "Barneys Point bridge crossing the Tweed River at Banora Point",
+      credit: "Shiftchange",
+      license: "CC BY-SA 4.0",
+      licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0",
+      sourceUrl: "https://commons.wikimedia.org/wiki/File%3ABarneys_Point_bridge_at_Banora_Point.jpg",
+    } },
   { slug: "terranora", name: "Terranora", postcode: "2486",
     note: "Hilly and spread out, which is exactly where getting to a clinic is hardest and a home visit earns its keep." },
   { slug: "bilambil-heights", name: "Bilambil Heights", postcode: "2486",
     note: "Up in the hills behind Tweed Heads, where steep driveways and internal stairs make a clinic trip the hardest part of the day." },
   { slug: "chinderah", name: "Chinderah", postcode: "2487",
-    note: "On the river between the highway and the coast, and covered on the way south to Kingscliff." },
+    note: "On the river between the highway and the coast, and covered on the way south to Kingscliff.",
+    photo: {
+      src: "/img/areas/chinderah.webp",
+      alt: "The southern bank of the Tweed River at Chinderah",
+      credit: "Shiftchange",
+      license: "CC BY-SA 4.0",
+      licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0",
+      sourceUrl: "https://commons.wikimedia.org/wiki/File%3ASouthern_bank_Tweed_River_at_Chinderah%2C_New_South_Wales.jpg",
+    } },
   { slug: "fingal-head", name: "Fingal Head", postcode: "2487",
-    note: "Out on the headland past Chinderah, grouped with the Kingscliff run." },
+    note: "Out on the headland past Chinderah, grouped with the Kingscliff run.",
+    photo: {
+      src: "/img/areas/fingal-head.webp",
+      alt: "The white lighthouse on the headland at Fingal Head, framed by pandanus",
+      credit: "Kgbo",
+      license: "CC BY-SA 4.0",
+      licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0",
+      sourceUrl: "https://commons.wikimedia.org/wiki/File%3AFingal_Head_Lighthouse%2C_Fingal_Head%2C_New_South_Wales_02.jpg",
+    } },
   { slug: "cudgen", name: "Cudgen", postcode: "2487",
-    note: "On the red soil ridge behind Kingscliff, and covered on the same coastal run." },
+    note: "On the red soil ridge behind Kingscliff, and covered on the same coastal run.",
+    photo: {
+      src: "/img/areas/cudgen.webp",
+      alt: "The road bridge over Cudgen Creek at Cudgen",
+      credit: "Kgbo",
+      license: "CC BY-SA 4.0",
+      licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0",
+      sourceUrl: "https://commons.wikimedia.org/wiki/File%3ACudgen_Creek_Bridge%2C_Cudgen%2C_New_South_Wales_02.jpg",
+    } },
   { slug: "kingscliff", name: "Kingscliff", postcode: "2487",
-    note: "Visited on a set run down the coast road, so Kingscliff appointments usually sit together on the same day." },
+    note: "Visited on a set run down the coast road, so Kingscliff appointments usually sit together on the same day.",
+    photo: {
+      src: "/img/areas/kingscliff.webp",
+      alt: "The timber boardwalk along Cudgen Creek at Kingscliff",
+      credit: "Kgbo",
+      license: "CC BY-SA 4.0",
+      licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0",
+      sourceUrl: "https://commons.wikimedia.org/wiki/File%3ACudgen_Creek_Boardwalk%2C_Kingscliff%2C_New_South_Wales_01.jpg",
+    } },
   { slug: "casuarina", name: "Casuarina", postcode: "2487",
-    note: "Between Kingscliff and Cabarita on the coast road, so it sits in the middle of the same run." },
+    note: "Between Kingscliff and Cabarita on the coast road, so it sits in the middle of the same run.",
+    photo: {
+      src: "/img/areas/casuarina.webp",
+      alt: "The wide open beach at Casuarina under a cloudy sky",
+      credit: "Kgbo",
+      license: "CC BY-SA 4.0",
+      licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0",
+      sourceUrl: "https://commons.wikimedia.org/wiki/File%3ABeach_in_Casuarina%2C_New_South_Wales_03.jpg",
+    } },
   { slug: "cabarita-beach", name: "Cabarita Beach", postcode: "2488",
-    note: "Grouped with the Kingscliff and Pottsville coastal run. Bogangar is the same locality and is covered with it." },
+    note: "Grouped with the Kingscliff and Pottsville coastal run. Bogangar is the same locality and is covered with it.",
+    photo: {
+      src: "/img/areas/cabarita-beach.webp",
+      alt: "Cabarita Beach seen from the grass on Norries Head, looking south",
+      credit: "Steven Lawler",
+      license: "CC BY-SA 3.0",
+      licenseUrl: "https://creativecommons.org/licenses/by-sa/3.0",
+      sourceUrl: "https://commons.wikimedia.org/wiki/File%3ACabarita_Beach_-_panoramio.jpg",
+    } },
   { slug: "hastings-point", name: "Hastings Point", postcode: "2489",
-    note: "Between Cabarita Beach and Pottsville on the coast road, and grouped with both." },
+    note: "Between Cabarita Beach and Pottsville on the coast road, and grouped with both.",
+    photo: {
+      src: "/img/areas/hastings-point.webp",
+      alt: "The rock shelf and headland at Hastings Point",
+      credit: "SteepSixx",
+      license: "CC BY-SA 4.0",
+      licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0",
+      sourceUrl: "https://commons.wikimedia.org/wiki/File%3AHastings_Headland.jpg",
+    } },
   { slug: "pottsville", name: "Pottsville", postcode: "2489",
     note: "At the southern end of the coastal run, so Pottsville visits are grouped onto particular days." },
   { slug: "murwillumbah", name: "Murwillumbah", postcode: "2484",
-    note: "Inland from the coast, and covered on the same day as the surrounding valley." },
+    note: "Inland from the coast, and covered on the same day as the surrounding valley.",
+    photo: {
+      src: "/img/areas/murwillumbah.webp",
+      alt: "Horses being ridden down the main street of Murwillumbah",
+      credit: "Aliceinthealice",
+      license: "CC0",
+      licenseUrl: "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      sourceUrl: "https://commons.wikimedia.org/wiki/File%3AHorses_on_the_streets_of_Murwillumbah.jpg",
+    } },
   { slug: "uki", name: "Uki", postcode: "2484",
-    note: "In the valley under Wollumbin, and covered on the same day as Murwillumbah." },
+    note: "In the valley under Wollumbin, and covered on the same day as Murwillumbah.",
+    photo: {
+      src: "/img/areas/uki.webp",
+      alt: "The shopfronts of Uki village with Wollumbin behind them",
+      credit: "Tony 1212",
+      license: "CC BY 4.0",
+      licenseUrl: "https://creativecommons.org/licenses/by/4.0",
+      sourceUrl: "https://commons.wikimedia.org/wiki/File%3AUki-Nov_2025-8.jpg",
+    } },
   { slug: "burringbar", name: "Burringbar", postcode: "2483",
-    note: "On the Tweed Valley Way between Mooball and Stokers Siding, and close to the centre of the area I cover." },
+    note: "On the Tweed Valley Way between Mooball and Stokers Siding, and close to the centre of the area I cover.",
+    photo: {
+      src: "/img/areas/burringbar.webp",
+      alt: "The Broadway shops in Burringbar village",
+      credit: "Tony 1212",
+      license: "CC BY 4.0",
+      licenseUrl: "https://creativecommons.org/licenses/by/4.0",
+      sourceUrl: "https://commons.wikimedia.org/wiki/File%3ABurringbar_Broadway_Aug_2024.jpg",
+    } },
   { slug: "ocean-shores", name: "Ocean Shores", postcode: "2483",
-    note: "At the southern end of the area, above Brunswick Heads, and grouped with it." },
+    note: "At the southern end of the area, above Brunswick Heads, and grouped with it.",
+    photo: {
+      src: "/img/areas/ocean-shores.webp",
+      alt: "The beach at Ocean Shores looking along the sand",
+      credit: "Gatoclass",
+      license: "CC BY-SA 3.0",
+      licenseUrl: "https://creativecommons.org/licenses/by-sa/3.0",
+      sourceUrl: "https://commons.wikimedia.org/wiki/File%3ABeach%2C_Ocean_Shores%2C_NSW_2014.jpg",
+    } },
   { slug: "brunswick-heads", name: "Brunswick Heads", postcode: "2483",
-    note: "The southern edge of the run, visited on the same day as Ocean Shores and Mullumbimby." },
+    note: "The southern edge of the run, visited on the same day as Ocean Shores and Mullumbimby.",
+    photo: {
+      src: "/img/areas/brunswick-heads.webp",
+      alt: "The Brunswick River at Brunswick Heads",
+      credit: "Gatoclass",
+      license: "CC BY 4.0",
+      licenseUrl: "https://creativecommons.org/licenses/by/4.0",
+      sourceUrl: "https://commons.wikimedia.org/wiki/File%3ABrunswick_River%2C_Brunswick_Heads%2C_NSW.jpg",
+    } },
   { slug: "mullumbimby", name: "Mullumbimby", postcode: "2482",
-    note: "Inland from Brunswick Heads, and covered on the same southern run." },
+    note: "Inland from Brunswick Heads, and covered on the same southern run.",
+    photo: {
+      src: "/img/areas/mullumbimby.webp",
+      alt: "Burringbar Street, the main street of Mullumbimby",
+      credit: "Gatoclass",
+      license: "CC BY-SA 3.0",
+      licenseUrl: "https://creativecommons.org/licenses/by-sa/3.0",
+      sourceUrl: "https://commons.wikimedia.org/wiki/File%3ABurringbar_Street%2C_Mullumbimby%2C_NSW_2014.jpg",
+    } },
   { slug: "coolangatta", name: "Coolangatta", postcode: "4225",
-    note: "Just over the border, and close enough to Tweed Heads that it is part of the standard run." },
+    note: "Just over the border, and close enough to Tweed Heads that it is part of the standard run.",
+    photo: {
+      src: "/img/areas/coolangatta.webp",
+      alt: "Surfers on Coolangatta Beach with the Gold Coast towers in the distance",
+      credit: "King Eliot",
+      license: "CC0",
+      licenseUrl: "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      sourceUrl: "https://commons.wikimedia.org/wiki/File%3ACoolangatta_Beach_with_Goldcoast_skyline.jpg",
+    } },
   { slug: "tugun", name: "Tugun", postcode: "4224",
-    note: "The northern edge of the area, a short run up the coast from Coolangatta." },
+    note: "The northern edge of the area, a short run up the coast from Coolangatta.",
+    photo: {
+      src: "/img/areas/tugun.webp",
+      alt: "Wet sand and shallow surf at sunrise on Tugun Beach",
+      credit: "Sheba_Also 43,000 photos",
+      license: "CC BY-SA 2.0",
+      licenseUrl: "https://creativecommons.org/licenses/by-sa/2.0",
+      sourceUrl: "https://commons.wikimedia.org/wiki/File%3ATugun_Beach_Sunrise_Reflections-1and_%284587430211%29.jpg",
+    } },
 ];
 
 /**
