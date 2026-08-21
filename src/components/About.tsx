@@ -48,9 +48,10 @@ export function About() {
           <div className="relative">
             <div className="aspect-[4/5] bg-gray-200 relative overflow-hidden">
               <Image
-                src="/website-images/Tradd_Podiatry.f3d84e3fa275.jpeg"
-                alt="Tradd - Podiatrist"
+                src="/img/about/tradd-horne.webp"
+                alt="Tradd Horne, podiatrist, at Tweed Heads"
                 fill
+                sizes="(max-width: 1024px) 100vw, 560px"
                 className="object-cover"
               />
             </div>
