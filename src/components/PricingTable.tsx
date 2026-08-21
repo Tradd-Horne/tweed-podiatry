@@ -26,25 +26,37 @@ export function PricingTable({
    * plan pays" stop saying which plan — so that page titles each table by its funder.
    */
   heading,
+  /**
+   * Drops the block's own <h2>. The Fees page puts the heading in the accordion's
+   * <summary> instead, and two headings for one table is one heading too many.
+   */
+  hideHeading = false,
 }: {
   pricing: PricingBlock;
   id?: string;
   compact?: boolean;
   heading?: string;
+  hideHeading?: boolean;
 }) {
   const showItem = pricing.rows.some((r) => r.item);
   const showFunder = Boolean(pricing.funderLabel);
   const cell = compact ? "py-2" : "py-3";
 
   return (
-    <section className={compact ? "mt-8" : "mt-10"} aria-labelledby={`${id}-heading`}>
-      <h2
-        id={`${id}-heading`}
-        className="text-xl font-semibold text-slate-900"
+    <section
+      className={hideHeading ? "" : compact ? "mt-8" : "mt-10"}
+      aria-labelledby={hideHeading ? undefined : `${id}-heading`}
+    >
+      {!hideHeading && (
+        <h2 id={`${id}-heading`} className="text-xl font-semibold text-slate-900">
+          {heading ?? pricing.heading}
+        </h2>
+      )}
+      <p
+        className={`leading-relaxed text-slate-700 ${compact ? "text-sm" : ""} ${
+          hideHeading ? "" : "mt-2"
+        }`}
       >
-        {heading ?? pricing.heading}
-      </h2>
-      <p className={`mt-2 leading-relaxed text-slate-700 ${compact ? "text-sm" : ""}`}>
         {pricing.intro}
       </p>
 
