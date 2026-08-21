@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FEE_COMPARISON } from "@/lib/site";
+import { ELIGIBILITY_NOTICE, FEE_COMPARISON } from "@/lib/site";
 
 /**
  * Every funding route in one table, so someone can see at a glance which one is worth
@@ -62,18 +62,32 @@ export function FeesComparison() {
                   {row.service}
                 </th>
                 {FEE_COMPARISON.columns.map((c) => {
-                  const value = row[c.key as keyof typeof row] as string;
-                  const free = value === "$0";
+                  const cell = row[c.key as keyof typeof row] as {
+                    v: string;
+                    working?: string;
+                  };
+                  const free = cell.v === "$0";
                   return (
                     <td
                       key={c.key}
-                      className={`py-2.5 pr-4 align-top tabular-nums whitespace-nowrap ${
-                        free
-                          ? "font-semibold text-emerald-700"
-                          : "font-medium text-slate-900"
-                      }`}
+                      className="py-2.5 pr-4 align-top tabular-nums whitespace-nowrap"
                     >
-                      {value}
+                      <span
+                        className={
+                          free
+                            ? "font-semibold text-emerald-700"
+                            : "font-medium text-slate-900"
+                        }
+                      >
+                        {cell.v}
+                      </span>
+                      {/* The working, so a reader can see where the figure came from
+                          rather than being asked to trust it. */}
+                      {cell.working && (
+                        <span className="block text-[11px] font-normal text-slate-500">
+                          {cell.working}
+                        </span>
+                      )}
                     </td>
                   );
                 })}
@@ -94,5 +108,26 @@ export function FeesComparison() {
         ))}
       </ul>
     </section>
+  );
+}
+
+/**
+ * The condition on every figure above. Amber rather than grey, because a reader who skims
+ * the table and skips this one will be surprised at the door, and that is exactly the
+ * surprise this page exists to prevent.
+ */
+export function EligibilityNotice() {
+  return (
+    <div className="mt-5 rounded-lg border-l-4 border-amber-500 bg-amber-50 p-4">
+      <p className="text-sm font-semibold text-slate-900">
+        {ELIGIBILITY_NOTICE.heading}
+      </p>
+      <p className="mt-1.5 text-sm leading-relaxed text-slate-700">
+        {ELIGIBILITY_NOTICE.body}
+      </p>
+      <p className="mt-2 text-sm leading-relaxed text-slate-600">
+        {ELIGIBILITY_NOTICE.detail}
+      </p>
+    </div>
   );
 }
