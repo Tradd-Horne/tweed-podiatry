@@ -1,0 +1,12 @@
+{
+  "tweedheadspodiatry": {
+    "display_name": "Tweed Heads Podiatry",
+    "domain": "tweedheadspodiatry.com.au",
+    "tracking_number": "+61495090752",
+    "twilio_from": "+61495090752",
+    "forward_to": "+61403643158",
+    "lead_to": "+61403643158",
+    "record": false,
+    "whisper": "Tweed Heads Podiatry enquiry."
+  }
+}

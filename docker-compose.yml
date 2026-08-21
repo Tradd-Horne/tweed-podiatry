@@ -30,6 +30,7 @@ services:
       - "traefik.enable=true"
       - "traefik.docker.network=proxy"
       - "traefik.http.routers.tweedpodiatry.rule=Host(`tweedheadspodiatry.com.au`) || Host(`www.tweedheadspodiatry.com.au`)"
+      - "traefik.http.routers.tweedpodiatry.priority=10"
       - "traefik.http.routers.tweedpodiatry.entrypoints=websecure"
       - "traefik.http.routers.tweedpodiatry.tls=true"
       - "traefik.http.routers.tweedpodiatry.tls.certresolver=letsencrypt"
@@ -39,6 +40,48 @@ services:
       - "traefik.http.middlewares.tweedpodiatry-www.redirectregex.replacement=https://tweedheadspodiatry.com.au/$${1}"
       - "traefik.http.middlewares.tweedpodiatry-www.redirectregex.permanent=true"
       - "traefik.http.routers.tweedpodiatry.middlewares=tweedpodiatry-www"
+
+  # The lead relay: the web form and the tracking number both land here.
+  #
+  # This is the fleet relay's code, running as its own container on this droplet rather
+  # than the podiatry site posting across to the rank-and-rent machine. Two reasons: the
+  # form stays same-origin so there is no CORS to get wrong, and a health business and a
+  # rental fleet do not share one service.
+  #
+  # Recording is OFF for this site (relay/sites.json). A recorded call in which somebody
+  # describes a foot problem is a health record, with the obligations that follow, and
+  # there is no lead-quality reason to keep one.
+  tweedpodiatry-relay:
+    build: ./relay
+    image: tweedpodiatry-relay:latest
+    container_name: tweedpodiatry-relay
+    restart: unless-stopped
+    # TWILIO_ACCOUNT_SID and TWILIO_AUTH_TOKEN. Never committed — see relay/README.md.
+    env_file: ./relay/.env
+    environment:
+      # Twilio resolves a relative callback against the request URL, which works but
+      # leaves the call flow depending on how Twilio happened to reach us. Absolute
+      # URLs remove the guess.
+      PUBLIC_BASE: https://tweedheadspodiatry.com.au
+    volumes:
+      # Bind-mounted so renting, re-pointing or turning recording on is a file edit and
+      # a restart, with no rebuild.
+      - ./relay/sites.json:/app/sites.json:ro
+      # Every enquiry ever received. A bind mount, NOT a named volume, so
+      # `docker compose down -v` cannot take the leads with it.
+      - ./relay/data:/app/data
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      # Priority 100 so /api wins over the catch-all site router below it.
+      - "traefik.http.routers.tweedpodiatry-api.rule=Host(`tweedheadspodiatry.com.au`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.tweedpodiatry-api.priority=100"
+      - "traefik.http.routers.tweedpodiatry-api.entrypoints=websecure"
+      - "traefik.http.routers.tweedpodiatry-api.tls=true"
+      - "traefik.http.routers.tweedpodiatry-api.tls.certresolver=letsencrypt"
+      - "traefik.http.services.tweedpodiatry-api.loadbalancer.server.port=8000"
 
 networks:
   proxy:

@@ -12,7 +12,7 @@ export const SITE = {
   url: "https://tweedheadspodiatry.com.au",
   phone: "0403 643 158",
   phoneHref: "tel:+61403643158",
-  email: "hello@tweedheadspodiatry.com.au",
+  email: "contact@tweedheadspodiatry.com.au",
   // Real credentials only. Nothing on this site claims anything Tradd does not hold.
   practitioner: "Tradd Horne",
   qualification: "B.HSc (Pod)",
