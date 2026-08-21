@@ -39,3 +39,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Twilio credentials for the lead relay. Created on the droplet, never committed.
+relay/.env
+# Lead history lives on the droplet, not in git.
+relay/data/*
+!relay/data/.gitkeep
+# Byte-code from running the relay locally.
+relay/__pycache__/

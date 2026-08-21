@@ -1,3 +1,5 @@
+import { SITE } from "@/lib/site";
+
 export function Contact() {
   return (
     <section id="contact" className="py-16 sm:py-24 bg-[#1e3a5f]">
@@ -44,10 +46,10 @@ export function Contact() {
             <div className="bg-white/10 p-6">
               <h3 className="text-white font-semibold mb-2">Email</h3>
               <a
-                href="mailto:tradd@tweedheadspodiatry.com.au"
+                href={`mailto:${SITE.email}`}
                 className="text-blue-100 hover:text-white transition-colors text-sm break-all"
               >
-                tradd@tweedheadspodiatry.com.au
+                {SITE.email}
               </a>
             </div>
             <div className="bg-white/10 p-6">
