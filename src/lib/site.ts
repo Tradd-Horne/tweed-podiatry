@@ -720,9 +720,9 @@ export const FUNDING_PAGES: PageDef[] = [
 /* ── Problems: what people actually type at 11pm ─────────────────────────────────── */
 export const PROBLEM_PAGES: PageDef[] = [
   {
-    slug: "cant-cut-our-toenails",
+    slug: "cant-cut-my-toenails",
     kind: "problem",
-    target: "cannot cut our own toenails",
+    target: "cannot cut my own toenails",
     title: "Can't Cut Your Own Toenails? | Home Visit Nail Care Tweed Heads",
     description:
       "If you cannot reach or safely cut your toenails, a podiatrist can do it at home in Tweed Heads. Thick nails, poor eyesight, arthritis, diabetes.",
