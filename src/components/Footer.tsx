@@ -36,6 +36,11 @@ export function Footer() {
               Funding
             </h2>
             <ul className="mt-3 space-y-2 text-sm">
+              <li>
+                <Link href="/fees" className="font-medium text-slate-900 hover:underline">
+                  Fees — every price in one place
+                </Link>
+              </li>
               {FUNDING_PAGES.map((p) => (
                 <li key={p.slug}>
                   <Link href={`/${p.slug}`} className="text-slate-700 hover:underline">
