@@ -10,8 +10,14 @@ export const SITE = {
   name: "Tweed Heads Podiatry",
   legalName: "Tweed Heads Podiatry",
   url: "https://tweedheadspodiatry.com.au",
-  phone: "0403 643 158",
-  phoneHref: "tel:+61403643158",
+  /**
+   * The tracking number, not the mobile. Calls ring +61403643158 through the relay, which
+   * whispers the business name before connecting so it is obvious which line it came in
+   * on. Keeping it here means the number lives in one place; it was hard-coded in five
+   * components, which is how a site ends up advertising two different numbers.
+   */
+  phone: "0495 090 752",
+  phoneHref: "tel:+61495090752",
   email: "contact@tweedheadspodiatry.com.au",
   // Real credentials only. Nothing on this site claims anything Tradd does not hold.
   practitioner: "Tradd Horne",

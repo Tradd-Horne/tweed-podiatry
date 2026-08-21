@@ -1,3 +1,4 @@
+import { SITE } from "@/lib/site";
 const areas = [
   {
     region: "Tweed Heads & Surrounds",
@@ -98,7 +99,7 @@ export function ServiceAreas() {
           <p className="text-gray-600 text-center">
             Don't see your area listed?{" "}
             <a
-              href="tel:0403643158"
+              href={SITE.phoneHref}
               className="text-[#1e3a5f] font-medium hover:underline"
             >
               Give us a call
