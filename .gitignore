@@ -45,3 +45,5 @@ relay/.env
 # Lead history lives on the droplet, not in git.
 relay/data/*
 !relay/data/.gitkeep
+# Byte-code from running the relay locally.
+relay/__pycache__/
