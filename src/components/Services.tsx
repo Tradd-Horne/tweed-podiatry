@@ -32,7 +32,7 @@ const services = [
   {
     title: "Ingrown Toenails",
     description:
-      "Professional treatment and management of ingrown toenails, including nail surgery when required.",
+      "Assessment and treatment of ingrown toenails. If the nail needs surgery, that is assessed first and arranged separately.",
     icon: (
       <svg
         className="w-6 h-6"
