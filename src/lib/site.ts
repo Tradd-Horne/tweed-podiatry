@@ -23,6 +23,10 @@ export const SITE = {
   postcode: "2485",
   latitude: -28.1794,
   longitude: 153.5426,
+  /** The relay matches an enquiry to this site on `source`, so it must equal the domain. */
+  domain: "tweedheadspodiatry.com.au",
+  /** Same-origin path; Traefik routes it to the shared fleet lead-relay. */
+  leadEndpoint: "/api/lead",
 } as const;
 
 export type PageKind = "service" | "funding" | "problem" | "suburb";
