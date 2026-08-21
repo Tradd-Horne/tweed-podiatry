@@ -89,58 +89,80 @@ export const FEE_COMPARISON = {
   ],
   rows: [
     {
-      service: "First home visit (up to 45 minutes)",
-      privately: `$${FEES.initial.price}`,
-      medicare: `$${(FEES.initial.price - MEDICARE.rebate).toFixed(2)}`,
-      dva: "$0",
-      ndis: "$0",
-      health: "Less your rebate",
-      hcp: "$0",
+      service: FEES.initial.label,
+      privately: { v: `$${FEES.initial.price}` },
+      medicare: {
+        v: `$${(FEES.initial.price - MEDICARE.rebate).toFixed(2)}`,
+        working: `$${FEES.initial.price} − $${MEDICARE.rebate.toFixed(2)}`,
+      },
+      dva: { v: "$0", working: `DVA pays $${106.65}` },
+      ndis: { v: "$0", working: `plan pays $${NDIS.threeQuarterHour.toFixed(2)}` },
+      health: { v: "Less your rebate", working: `$${FEES.initial.price} − your rebate` },
+      hcp: { v: "$0", working: "funded in full" },
     },
     {
-      service: "Follow-up home visit (up to 30 minutes)",
-      privately: `$${FEES.followUp.price}`,
-      medicare: `$${(FEES.followUp.price - MEDICARE.rebate).toFixed(2)}`,
-      dva: "$0",
-      ndis: "$0",
-      health: "Less your rebate",
-      hcp: "$0",
+      service: FEES.followUp.label,
+      privately: { v: `$${FEES.followUp.price}` },
+      medicare: {
+        v: `$${(FEES.followUp.price - MEDICARE.rebate).toFixed(2)}`,
+        working: `$${FEES.followUp.price} − $${MEDICARE.rebate.toFixed(2)}`,
+      },
+      dva: { v: "$0", working: `DVA pays $${94.6.toFixed(2)}` },
+      ndis: { v: "$0", working: `plan pays $${NDIS.halfHour.toFixed(2)}` },
+      health: { v: "Less your rebate", working: `$${FEES.followUp.price} − your rebate` },
+      hcp: { v: "$0", working: "funded in full" },
     },
     {
-      service: "Nail surgery at home (includes two follow-ups)",
-      privately: `$${FEES.nailSurgery.price}`,
-      medicare: "Not covered",
-      dva: "$0",
-      ndis: "$0",
-      health: "Less your rebate",
-      hcp: "Provider approval",
+      service: FEES.nailSurgery.label,
+      privately: { v: `$${FEES.nailSurgery.price}` },
+      medicare: { v: "Not covered", working: "no MBS item" },
+      dva: { v: "$0", working: "DVA pays $477.05" },
+      ndis: { v: "$0", working: "billed by time" },
+      health: { v: "Less your rebate", working: `$${FEES.nailSurgery.price} − your rebate` },
+      hcp: { v: "Provider approval", working: "then $0" },
     },
     {
-      service: "Custom orthotics (pair)",
-      privately: `$${FEES.orthotics.price}`,
-      medicare: "Not covered",
-      dva: "$0",
-      ndis: "Ask your plan",
-      health: "Less your rebate",
-      hcp: "Provider approval",
+      service: FEES.orthotics.label,
+      privately: { v: `$${FEES.orthotics.price}` },
+      medicare: { v: "Not covered", working: "no MBS item" },
+      dva: { v: "$0", working: "DVA pays $422.65" },
+      ndis: { v: "Ask your plan", working: "assistive technology" },
+      health: { v: "Less your rebate", working: `$${FEES.orthotics.price} − your rebate` },
+      hcp: { v: "Provider approval", working: "then $0" },
     },
     {
       service: "Travel outside the standard visiting area",
-      privately: "Per kilometre",
-      medicare: "Per kilometre",
-      dva: "$0",
-      ndis: "$0",
-      health: "Item 550",
-      hcp: "$0",
+      privately: { v: "Per kilometre" },
+      medicare: { v: "Per kilometre", working: "no rebate" },
+      dva: { v: "$0", working: "inside DVA's fee" },
+      ndis: { v: "$0", working: `plan pays $${NDIS.travelHourly.toFixed(2)}/hr` },
+      health: { v: "Item 550", working: "not all funds pay it" },
+      hcp: { v: "$0", working: "funded in full" },
     },
   ],
   notes: [
-    "Every figure is what YOU pay. $0 means the funder pays in full and nothing reaches you.",
+    "Every figure is what YOU pay. $0 means the funder pays in full and nothing reaches you — but only while your eligibility holds.",
     "Medicare covers five visits a calendar year, shared across all your allied health providers. After the fifth you pay the private fee.",
     "Health fund rebates vary by fund and level of cover, so the amount left to pay does too. Ring your fund with the item number on the private health page.",
     "NDIS visits are billed by time against the $188.99 hourly limit, not at the flat private fee. Orthotics usually come from an assistive technology budget, not from therapy supports.",
     "Nail surgery and orthotics under a Home Care Package need your provider's approval first. Once approved, you pay nothing.",
   ],
+} as const;
+
+/**
+ * The one paragraph every price on this site is conditional on.
+ *
+ * Rendered under every price table, not once at the top. A rebate is a promise made by
+ * somebody else, and the page cannot know whether a plan has lapsed, a referral has run
+ * out, an annual limit is spent or a provider has refused approval. Saying so in one
+ * place and hoping the reader scrolls past it is how a fee page ends up misleading.
+ */
+export const ELIGIBILITY_NOTICE = {
+  heading: "The fee is payable either way",
+  body:
+    "Every rebate on this page depends on your eligibility being valid and current on the day of the visit. In most cases I bill the full fee and you are responsible for claiming back whatever rebate you are entitled to.",
+  detail:
+    "If the plan has lapsed, the referral has run out, the annual limit is used up, the funding is not approved or the card is not current, there is no rebate and the full fee is payable on the day. I will tell you what I can see, but I cannot confirm your entitlement — only your fund, your plan manager, your provider or Medicare can do that. Check before you book if you are not sure.",
 } as const;
 
 export type PageKind = "service" | "funding" | "problem" | "suburb";
@@ -171,6 +193,8 @@ export interface PricingRow {
   funder?: string;
   /** What actually lands on the patient. */
   youPay: string;
+  /** How that figure was reached, shown under it. "$170 − $63.40" beats "$106.60" alone. */
+  youPayWorking?: string;
 }
 
 export interface PricingBlock {
@@ -538,11 +562,11 @@ export const FUNDING_PAGES: PageDef[] = [
     pricing: {
       heading: "What Medicare pays, and what you pay",
       intro:
-        `Medicare item ${MEDICARE.item} has a schedule fee of $${MEDICARE.scheduleFee} and pays a benefit of $${MEDICARE.rebate.toFixed(2)}. That benefit comes off my fee.`,
+        `Medicare item ${MEDICARE.item} has a schedule fee of $${MEDICARE.scheduleFee} and pays a benefit of $${MEDICARE.rebate.toFixed(2)}. You pay me the full fee, and Medicare pays the benefit back to you: $${FEES.initial.price} − $${MEDICARE.rebate.toFixed(2)} = $${(FEES.initial.price - MEDICARE.rebate).toFixed(2)} out of pocket on a first visit.`,
       funderLabel: "Medicare pays",
       rows: [
-        { service: FEES.initial.label, item: MEDICARE.item, fee: `$${FEES.initial.price}`, funder: `$${MEDICARE.rebate.toFixed(2)}`, youPay: `$${(FEES.initial.price - MEDICARE.rebate).toFixed(2)}` },
-        { service: FEES.followUp.label, item: MEDICARE.item, fee: `$${FEES.followUp.price}`, funder: `$${MEDICARE.rebate.toFixed(2)}`, youPay: `$${(FEES.followUp.price - MEDICARE.rebate).toFixed(2)}` },
+        { service: FEES.initial.label, item: MEDICARE.item, fee: `$${FEES.initial.price}`, funder: `$${MEDICARE.rebate.toFixed(2)}`, youPay: `$${(FEES.initial.price - MEDICARE.rebate).toFixed(2)}`, youPayWorking: `$${FEES.initial.price} − $${MEDICARE.rebate.toFixed(2)}` },
+        { service: FEES.followUp.label, item: MEDICARE.item, fee: `$${FEES.followUp.price}`, funder: `$${MEDICARE.rebate.toFixed(2)}`, youPay: `$${(FEES.followUp.price - MEDICARE.rebate).toFixed(2)}`, youPayWorking: `$${FEES.followUp.price} − $${MEDICARE.rebate.toFixed(2)}` },
         { service: "Sixth and later visits in the same calendar year", item: "—", fee: `$${FEES.followUp.price}`, funder: "$0", youPay: `$${FEES.followUp.price}` },
       ],
       notes: [

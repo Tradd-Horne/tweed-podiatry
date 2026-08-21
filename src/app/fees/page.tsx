@@ -5,7 +5,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { FeesComparison } from "@/components/FeesComparison";
 import { PricingTable } from "@/components/PricingTable";
-import { FEES, SITE, pageBySlug } from "@/lib/site";
+import { ELIGIBILITY_NOTICE, FEES, SITE, pageBySlug } from "@/lib/site";
 
 /**
  * Every price on the site, on one page.
@@ -80,6 +80,15 @@ export default function FeesPage() {
             what Medicare, DVA, the NDIS, your health fund and Support at Home each pay,
             and what that leaves you.
           </p>
+
+          <div className="mt-6 rounded-lg border-l-4 border-amber-500 bg-amber-50 p-4">
+            <p className="text-sm font-semibold text-slate-900">
+              {ELIGIBILITY_NOTICE.heading}
+            </p>
+            <p className="mt-1.5 text-sm leading-relaxed text-slate-700">
+              {ELIGIBILITY_NOTICE.body} {ELIGIBILITY_NOTICE.detail}
+            </p>
+          </div>
 
           <FeesComparison />
 

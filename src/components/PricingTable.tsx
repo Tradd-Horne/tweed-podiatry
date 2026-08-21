@@ -1,4 +1,5 @@
 import type { PricingBlock } from "@/lib/site";
+import { EligibilityNotice } from "@/components/FeesComparison";
 
 /**
  * The price table on a funding page.
@@ -119,14 +120,21 @@ export function PricingTable({
                     {row.funder ?? "—"}
                   </td>
                 )}
-                <td className={`${cell} align-top tabular-nums font-semibold text-slate-900 whitespace-nowrap`}>
-                  {row.youPay}
+                <td className={`${cell} align-top tabular-nums whitespace-nowrap`}>
+                  <span className="font-semibold text-slate-900">{row.youPay}</span>
+                  {row.youPayWorking && (
+                    <span className="block text-[11px] font-normal text-slate-500">
+                      {row.youPayWorking}
+                    </span>
+                  )}
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+
+      <EligibilityNotice />
 
       {pricing.notes.length > 0 && (
         <ul className={`space-y-2 text-sm leading-relaxed text-slate-600 ${compact ? "mt-3" : "mt-5"}`}>
