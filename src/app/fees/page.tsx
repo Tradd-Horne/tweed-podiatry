@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { FeesComparison } from "@/components/FeesComparison";
 import { PricingTable } from "@/components/PricingTable";
 import { FEES, SITE, pageBySlug } from "@/lib/site";
 
@@ -75,22 +76,25 @@ export default function FeesPage() {
           </h1>
           <p className="mt-5 text-lg leading-relaxed text-slate-700">
             Every price, in one place. Open the one that applies to you. “Paying
-            privately” is what a visit costs when nothing else applies; the rest show
+            privately” is what a visit costs when nothing else applies. The rest show
             what Medicare, DVA, the NDIS, your health fund and Support at Home each pay,
             and what that leaves you.
           </p>
 
+          <FeesComparison />
+
+          <h2 className="mt-12 text-xl font-semibold text-slate-900">
+            The detail, one route at a time
+          </h2>
+
           {/* <details> rather than a scripted accordion: it opens with no JavaScript, it
               is keyboard-operable for free, and the content stays in the DOM so search
               engines and Ctrl+F still find the prices inside a closed panel. */}
-          <div className="mt-8 divide-y divide-slate-200 border-y border-slate-200">
-            {blocks.map((b, i) => (
-              <details
-                key={b.slug}
-                id={b.slug}
-                open={i === 0}
-                className="group scroll-mt-24 py-4"
-              >
+          <div className="mt-4 divide-y divide-slate-200 border-y border-slate-200">
+            {blocks.map((b) => (
+              /* All shut on load, so the page opens as a six-line index rather than one
+                 long table with five headings under it. */
+              <details key={b.slug} id={b.slug} className="group scroll-mt-24 py-4">
                 <summary className="flex cursor-pointer list-none items-center gap-4">
                   <Image
                     src={b.logo}
