@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 56" role="img" aria-label="Home Care Package and Support at Home">
+  <!-- A house. Support at Home has no consumer logo, and the old placeholder here was a
+       coloured rectangle with the words typed on it. -->
+  <g fill="none" stroke="#1e3a5f" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M28 28 57 8l29 20"/>
+    <path d="M35 27v19a2 2 0 0 0 2 2h40a2 2 0 0 0 2-2V27"/>
+    <path d="M50 48V34h14v14"/>
+  </g>
+</svg>

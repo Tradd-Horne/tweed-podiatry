@@ -29,6 +29,46 @@ export const SITE = {
   leadEndpoint: "/api/lead",
 } as const;
 
+/**
+ * Tradd's own fees. Every price on the site reads from here — a fee quoted in two places
+ * and changed in one is the classic way a health site ends up advertising a price it does
+ * not charge, which is both a consumer-law problem and an AHPRA one.
+ *
+ * Set 21 August 2026 against published local fees: Hip to Toe Arundel $110 initial,
+ * Gentle Podiatry $90 initial / $80 follow-up, ModPod $135 initial. Australian home-visit
+ * podiatry runs $150–$250. A home visit carries the travel and the set-up, so it sits
+ * above clinic rates and below the top of the home-visit range.
+ */
+export const FEES = {
+  initial: { label: "First home visit (up to 45 minutes)", price: 170 },
+  followUp: { label: "Follow-up home visit (up to 30 minutes)", price: 150 },
+  nailSurgery: {
+    label: "Nail surgery at home (includes two follow-up visits)",
+    price: 500,
+  },
+  orthotics: { label: "Custom orthotics (pair)", price: 560 },
+} as const;
+
+/** Medicare, from 1 July 2026. MBS item 10962: schedule fee $74.55, benefit 85%. */
+export const MEDICARE = {
+  item: "10962",
+  scheduleFee: 74.55,
+  rebate: 63.4,
+  servicesPerYear: 5,
+  minimumMinutes: 20,
+} as const;
+
+/** NDIS Pricing Arrangements 2026–27. Provider travel is half the support rate. */
+export const NDIS = {
+  item: "15_619_0128_1_3",
+  hourly: 188.99,
+  /** 45 minutes and 30 minutes at the hourly limit, rounded to the cent I invoice. */
+  threeQuarterHour: 141.74,
+  halfHour: 94.5,
+  /** Provider travel for therapy supports is half the support rate. */
+  travelHourly: 94.5,
+} as const;
+
 export type PageKind = "service" | "funding" | "problem" | "suburb";
 
 export interface PageDef {
@@ -43,6 +83,32 @@ export interface PageDef {
   /** Sub-headings become the page body and the FAQ; each answers a real question. */
   sections: { heading: string; body: string }[];
   faqs: { q: string; a: string }[];
+  /** Funding pages carry a price table; service and problem pages do not. */
+  pricing?: PricingBlock;
+}
+
+export interface PricingRow {
+  service: string;
+  /** The funder's item number, where the funder has one. */
+  item?: string;
+  /** What the service costs before any rebate. */
+  fee: string;
+  /** What the funder pays. Omitted on the private-fee page, which has no funder. */
+  funder?: string;
+  /** What actually lands on the patient. */
+  youPay: string;
+}
+
+export interface PricingBlock {
+  heading: string;
+  intro: string;
+  /** Column head for the funder column — "Medicare pays", "DVA pays". */
+  funderLabel?: string;
+  rows: PricingRow[];
+  /** The conditions. Prices without their conditions are misleading, not helpful. */
+  notes: string[];
+  /** Where each figure came from, so anyone can check it. */
+  sources: { label: string; href: string }[];
 }
 
 /* ── Services: what people call the thing they want ─────────────────────────────── */
@@ -193,7 +259,37 @@ export const FUNDING_PAGES: PageDef[] = [
         q: "Can I use my package if I am not in Tweed Heads?",
         a: "Funding is not tied to a suburb, but my travel is. See the areas I visit and ring if you are close to the edge of them.",
       },
+      {
+        q: "Do I pay a contribution towards podiatry?",
+        a: "No. Podiatry is a clinical support under Support at Home, and the government funds clinical supports in full. Contributions apply to independence and everyday living services — cleaning, gardening, personal care — not to allied health.",
+      },
+      {
+        q: "Is your fee the same as the private price list?",
+        a: "No. Your provider is invoiced under Support at Home, not you, and the rate is agreed with them. It comes out of your quarterly budget rather than your pocket.",
+      },
     ],
+    pricing: {
+      heading: "What it costs you",
+      intro:
+        "Podiatry is a clinical support. Under Support at Home the government funds clinical supports in full, so there is no contribution from you for the visit itself.",
+      funderLabel: "Your budget pays",
+      rows: [
+        { service: "First home visit (up to 45 minutes)", fee: "Invoiced to your provider", funder: "In full", youPay: "$0" },
+        { service: "Follow-up home visit (up to 30 minutes)", fee: "Invoiced to your provider", funder: "In full", youPay: "$0" },
+        { service: "Travel inside the standard visiting area", fee: "Included", funder: "Included", youPay: "$0" },
+      ],
+      notes: [
+        "Support at Home replaced Home Care Packages on 1 November 2025. Podiatry sits in the clinical supports category.",
+        "The government funds clinical supports in full. Participant contributions apply to independence and everyday living services, not to allied health or nursing.",
+        "The visit is drawn from your quarterly Support at Home budget, so it is not unlimited. A visit every six to eight weeks is a small part of most budgets.",
+        "If you self-manage, you can book me directly and put the invoice through your provider. If your provider manages your package, give them my details and they will arrange it.",
+        "Custom orthotics and nail surgery are quoted separately and may need your provider's approval first.",
+      ],
+      sources: [
+        { label: "Department of Health — Support at Home participant contributions", href: "https://www.health.gov.au/our-work/support-at-home/charging-for-support-at-home-services/support-at-home-participant-contributions" },
+        { label: "My Aged Care — Support at Home costs and contributions", href: "https://www.myagedcare.gov.au/support-at-home-costs-and-contributions" },
+      ],
+    },
   },
   {
     slug: "dva-podiatry",
@@ -229,6 +325,32 @@ export const FUNDING_PAGES: PageDef[] = [
         a: "Twelve months from the date it is written. I will tell you when it is getting close so you can get another.",
       },
     ],
+    pricing: {
+      heading: "What DVA pays, and what you pay",
+      intro:
+        "These are DVA's own fees for podiatry, effective 1 January 2026. DVA pays them in full. My private fees do not apply to you.",
+      funderLabel: "DVA pays",
+      rows: [
+        { service: "First home visit (starts a treatment cycle)", item: "F024", fee: "$106.65", funder: "$106.65", youPay: "$0" },
+        { service: "Follow-up home visit", item: "F033", fee: "$94.60", funder: "$94.60", youPay: "$0" },
+        { service: "Short home visit, up to 15 minutes", item: "F031", fee: "$94.60", funder: "$94.60", youPay: "$0" },
+        { service: "Nail surgery with matrix sterilisation, one edge or the whole nail — includes two follow-ups", item: "F546 / F547", fee: "$477.05", funder: "$477.05", youPay: "$0" },
+        { service: "Each additional nail edge", item: "F548", fee: "$129.15", funder: "$129.15", youPay: "$0" },
+        { service: "Nail plate avulsion — includes two follow-ups", item: "F470", fee: "$180.35", funder: "$180.35", youPay: "$0" },
+        { service: "Custom moulded orthoses, pair", item: "F222", fee: "$422.65", funder: "$422.65", youPay: "$0" },
+        { service: "Travel to your home", item: "—", fee: "Included", funder: "Included in the fee", youPay: "$0" },
+      ],
+      notes: [
+        "You pay nothing. There is no gap, no call-out fee and no travel charge. DVA builds the kilometre allowance into the fee, so I am not permitted to charge you for it.",
+        "A treatment cycle is twelve sessions and starts with an initial consultation. When the cycle ends I send a report to your usual GP and, if you still need care, your GP refers you again.",
+        "A Gold Card covers any condition. A White Card covers only the condition DVA has accepted — if that condition affects your feet, podiatry is covered.",
+        "Orthoses and some other items need DVA's approval before I supply them. I arrange that; you do not have to.",
+      ],
+      sources: [
+        { label: "DVA — Podiatrists schedule of fees, effective 1 January 2026", href: "https://www.dva.gov.au/providers/fees-claims/dental-and-allied-health-fee-schedules" },
+        { label: "DVA — information for podiatrists", href: "https://www.dva.gov.au/providers/information-for-dental-psychology-allied-health-providers/podiatrists" },
+      ],
+    },
   },
   {
     slug: "ndis-podiatry",
@@ -236,14 +358,14 @@ export const FUNDING_PAGES: PageDef[] = [
     target: "ndis podiatry tweed heads",
     title: "NDIS Podiatry Tweed Heads | Mobile Home Visits",
     description:
-      "NDIS podiatry at home in Tweed Heads. Self-managed and plan-managed participants welcome. Improved Daily Living and Improved Health & Wellbeing.",
+      "NDIS podiatry at home in Tweed Heads. Registered NDIS provider — agency-managed, plan-managed and self-managed participants welcome. $188.99 per hour price limit.",
     h1: "NDIS podiatry at home",
     intro:
       "Podiatry sits under Improved Daily Living or Improved Health and Wellbeing in most plans. If getting to appointments is part of what makes things hard, a home visit removes that problem entirely.",
     sections: [
       {
         heading: "Who I can see",
-        body: "Self-managed and plan-managed participants. I am not currently NDIS-registered, which means agency-managed plans cannot use me — I would rather say that plainly than waste your time.",
+        body: "All three, because I am a registered NDIS provider. Agency-managed, plan-managed and self-managed participants can all book. Agency-managed plans need a registered provider, which rules most mobile podiatrists out.",
       },
       {
         heading: "What a visit covers",
@@ -257,13 +379,243 @@ export const FUNDING_PAGES: PageDef[] = [
     faqs: [
       {
         q: "Can agency-managed participants book?",
-        a: "Not at the moment. I am not NDIS-registered, so agency-managed plans cannot claim my invoices.",
+        a: "Yes. I am a registered NDIS provider, so the NDIA can pay my invoices directly for agency-managed plans.",
       },
       {
         q: "Do you write reports for plan reviews?",
         a: "Yes, on request. Tell me before the visit so I can gather what the report needs.",
       },
+      {
+        q: "Why is my invoice a different shape to the private price list?",
+        a: "The NDIS sets a maximum hourly price and I am not allowed to charge a participant more than it. So your visit is billed by the time it takes, not at my flat private fee. For a half-hour visit that works out cheaper than the private price.",
+      },
     ],
+    pricing: {
+      heading: "What your plan pays",
+      intro:
+        "The NDIS price limit for podiatry is $188.99 an hour in 2026–27. I bill your plan by the time the visit takes, at or under that limit. You pay nothing out of pocket.",
+      funderLabel: "Your plan pays",
+      rows: [
+        { service: "First home visit, 45 minutes", item: NDIS.item, fee: `$${NDIS.threeQuarterHour.toFixed(2)}`, funder: `$${NDIS.threeQuarterHour.toFixed(2)}`, youPay: "$0" },
+        { service: "Follow-up home visit, 30 minutes", item: NDIS.item, fee: `$${NDIS.halfHour.toFixed(2)}`, funder: `$${NDIS.halfHour.toFixed(2)}`, youPay: "$0" },
+        { service: "Travel to and from you, per hour", item: NDIS.item, fee: `$${NDIS.travelHourly.toFixed(2)}`, funder: `$${NDIS.travelHourly.toFixed(2)}`, youPay: "$0" },
+      ],
+      notes: [
+        "$188.99 an hour is the national price limit for podiatry under Therapeutic Supports. I do not charge above it.",
+        "Provider travel for therapy supports is billed at half the support rate, so $94.50 an hour. I only claim travel where your plan allows it, and I tell you before the first visit what it will be.",
+        "Podiatry usually sits under Capacity Building — Improved Daily Living, or Improved Health and Wellbeing. Your plan manager can confirm which line yours comes from.",
+        "Registered NDIS provider, so agency-managed, plan-managed and self-managed participants can all book.",
+      ],
+      sources: [
+        { label: "NDIS — pricing arrangements and price limits", href: "https://www.ndis.gov.au/providers/pricing-arrangements" },
+      ],
+    },
+  },
+  {
+    slug: "medicare-podiatry",
+    kind: "funding",
+    target: "medicare podiatry rebate home visit",
+    title: "Medicare Rebate for Podiatry | Tweed Heads Home Visits",
+    description:
+      "Up to five Medicare-rebated podiatry visits a year with a GP chronic condition management plan. MBS item 10962 pays $63.40 a visit. Home visits across Tweed Heads and Northern NSW.",
+    h1: "Using Medicare for podiatry at home",
+    intro:
+      "If your GP has you on a chronic condition management plan, Medicare pays part of up to five allied health visits a year. Podiatry is one of them. Here is exactly what that leaves you paying.",
+    sections: [
+      {
+        heading: "How you become eligible",
+        body: "Your GP decides. If you have a chronic condition — diabetes, arthritis, peripheral vascular disease, anything that has lasted or will last six months or more — your GP can prepare a GP chronic condition management plan and refer you for allied health. Ask at your next appointment. I cannot arrange it for you, and neither can any podiatrist.",
+      },
+      {
+        heading: "Five visits, not five podiatry visits",
+        body: "The five services are shared across every allied health provider on your plan. Four podiatry visits and one dietitian visit uses all five. The count resets on 1 January, not on the anniversary of your plan.",
+      },
+      {
+        heading: "Why home visits are not bulk billed",
+        body: "The Medicare rebate of $63.40 does not cover a visit that includes driving to you, carrying the equipment in and setting up at your table. So I charge the full fee and Medicare pays you back part of it. You are never surprised: the gap is on this page before you book.",
+      },
+      {
+        heading: "How you get the money back",
+        body: "I can lodge the claim on the spot from my phone through Tyro Health, and the rebate goes to your bank account, usually the next business day. If you would rather, I give you an itemised receipt and you claim it yourself through the Medicare app.",
+      },
+    ],
+    faqs: [
+      {
+        q: "How much do I get back?",
+        a: "$63.40 a visit. That is the Medicare benefit for item 10962 from 1 July 2026. It is the same amount whether the visit is your first or your fifth.",
+      },
+      {
+        q: "Do I need a new plan every year?",
+        a: "Your plan needs to have been prepared or reviewed in the last 18 months. Your GP will usually review it yearly as part of your normal care.",
+      },
+      {
+        q: "I have an older GP Management Plan and Team Care Arrangements. Do they still work?",
+        a: "Yes, until 30 June 2027, if they were prepared before 1 July 2025. After that your GP moves you to the newer chronic condition management plan.",
+      },
+      {
+        q: "Can I use Medicare and my private health fund for the same visit?",
+        a: "No. One visit, one rebate. Work out which gives you more back and use that one. I can tell you which is likely to be better once I know your fund.",
+      },
+      {
+        q: "What happens after the fifth visit?",
+        a: "You pay the full fee, or your private health extras cover part of it. Most people on routine nail and skin care come every six to eight weeks, so five rebated visits covers most of the year.",
+      },
+    ],
+    pricing: {
+      heading: "What Medicare pays, and what you pay",
+      intro:
+        `Medicare item ${MEDICARE.item} has a schedule fee of $${MEDICARE.scheduleFee} and pays a benefit of $${MEDICARE.rebate.toFixed(2)}. That benefit comes off my fee.`,
+      funderLabel: "Medicare pays",
+      rows: [
+        { service: FEES.initial.label, item: MEDICARE.item, fee: `$${FEES.initial.price}`, funder: `$${MEDICARE.rebate.toFixed(2)}`, youPay: `$${(FEES.initial.price - MEDICARE.rebate).toFixed(2)}` },
+        { service: FEES.followUp.label, item: MEDICARE.item, fee: `$${FEES.followUp.price}`, funder: `$${MEDICARE.rebate.toFixed(2)}`, youPay: `$${(FEES.followUp.price - MEDICARE.rebate).toFixed(2)}` },
+        { service: "Sixth and later visits in the same calendar year", item: "—", fee: `$${FEES.followUp.price}`, funder: "$0", youPay: `$${FEES.followUp.price}` },
+      ],
+      notes: [
+        "Five rebated services per calendar year, shared across every allied health provider on your plan — not five each.",
+        "The visit must run at least 20 minutes and must be recommended in your plan.",
+        "Home visits are not bulk billed. You pay the full fee and the rebate comes back to you.",
+        "Nail surgery and orthotics are not covered by this item. They are private fees, and your health fund extras may cover part of them.",
+      ],
+      sources: [
+        { label: "MBS — item 10962", href: "https://www9.health.gov.au/mbs/fullDisplay.cfm?type=item&q=10962" },
+        { label: "Services Australia — chronic condition allied health billing rules", href: "https://www.servicesaustralia.gov.au/mbs-billing-rules-for-chronic-condition-allied-health-and-other-primary-health-care-items" },
+      ],
+    },
+  },
+  {
+    slug: "private-health-podiatry",
+    kind: "funding",
+    target: "private health rebate podiatry home visit",
+    title: "Private Health Rebates for Podiatry | Tweed Heads Home Visits",
+    description:
+      "Claim your extras cover for a podiatry home visit on the spot — no terminal needed. Item numbers, what your fund pays, and what is left to pay. Tweed Heads and Northern NSW.",
+    h1: "Claiming your health fund for a home visit",
+    intro:
+      "If you hold extras cover with podiatry on it, your fund pays part of every visit. I claim it on the spot and you pay only the balance.",
+    sections: [
+      {
+        heading: "You do not need me to have a HICAPS terminal",
+        body: "HICAPS is a countertop terminal, which is no use in your lounge room. I claim through Tyro Health instead, from my phone. It reaches the same funds — Medibank, ahm, nib, Bupa, GMHBA and more — and it settles while I am still with you. You pay the gap by card, not the whole fee.",
+      },
+      {
+        heading: "Home visits have their own item numbers",
+        body: "Funds pay a different amount for a visit in your home than for one in a clinic. The domiciliary item numbers are 023 and 024 for a new patient and 033 and 034 for someone I already see. Item 550 covers travel time in fifteen-minute blocks. Not every fund pays on 550 — I check yours before the first visit.",
+      },
+      {
+        heading: "How much you get back",
+        body: "That depends on your fund and your level of extras, and I cannot quote it for you. What I can do is give you the item number before you book so you can ring your fund and ask exactly what they pay on it. Most extras policies also have an annual limit for podiatry.",
+      },
+      {
+        heading: "One rebate per visit",
+        body: "You cannot claim Medicare and your health fund for the same visit. If you are on a GP chronic condition management plan, compare the $63.40 Medicare rebate against what your fund pays and use whichever is higher.",
+      },
+    ],
+    faqs: [
+      {
+        q: "Can you claim on the spot without a terminal?",
+        a: "Yes. Tyro Health runs on my phone and claims to your fund while I am there. You pay the gap by card.",
+      },
+      {
+        q: "What item number will you use?",
+        a: "For a first home visit, 023 or 024 depending on how long it takes. For later visits, 033 or 034. Ring your fund with that number and they will tell you the exact rebate.",
+      },
+      {
+        q: "Does my fund cover nail surgery?",
+        a: "Many do, under items 546 and 547. Ask your fund, because the rebate on a surgical item is often on a separate limit to ordinary consultations.",
+      },
+      {
+        q: "Do you charge for travel?",
+        a: "Not inside the standard visiting area. Beyond it there is a per-kilometre charge, quoted before you book. Some funds pay part of it under item 550.",
+      },
+    ],
+    pricing: {
+      heading: "Fees and the item numbers to quote your fund",
+      intro:
+        "These are my fees. What your fund pays depends on your policy, so ring them with the item number and ask.",
+      funderLabel: "Your fund pays",
+      rows: [
+        { service: "First home visit (up to 45 minutes)", item: "023 or 024", fee: `$${FEES.initial.price}`, funder: "Ask your fund", youPay: `$${FEES.initial.price} less your rebate` },
+        { service: "Follow-up home visit (up to 30 minutes)", item: "033 or 034", fee: `$${FEES.followUp.price}`, funder: "Ask your fund", youPay: `$${FEES.followUp.price} less your rebate` },
+        { service: "Nail surgery at home — includes two follow-ups", item: "546 / 547", fee: `$${FEES.nailSurgery.price}`, funder: "Ask your fund", youPay: `$${FEES.nailSurgery.price} less your rebate` },
+        { service: "Custom orthotics, pair", item: "221", fee: `$${FEES.orthotics.price}`, funder: "Ask your fund", youPay: `$${FEES.orthotics.price} less your rebate` },
+        { service: "Travel outside the standard area, per 15 minutes", item: "550", fee: "Quoted before you book", funder: "Not all funds pay this", youPay: "The balance" },
+      ],
+      notes: [
+        "Item numbers come from the podiatry schedule agreed between Private Healthcare Australia and the Australian Podiatry Association, in force since 1 September 2024.",
+        "Rebates and annual limits vary by fund and by level of cover. I will not guess yours — ring your fund with the item number.",
+        "One rebate per visit. Medicare or your fund, not both.",
+      ],
+      sources: [
+        { label: "HICAPS — podiatry item number guide", href: "https://www.hicaps.com.au/support/item-codes" },
+        { label: "Private Healthcare Australia — podiatry schedule", href: "https://privatehealthcareaustralia.org.au/podiatry-schedule-faq/" },
+      ],
+    },
+  },
+  {
+    slug: "paying-privately",
+    kind: "funding",
+    target: "podiatry home visit price tweed heads",
+    title: "Podiatry Home Visit Prices | Tweed Heads & Northern NSW",
+    description:
+      "Home visit podiatry prices in Tweed Heads: $170 first visit, $150 follow-up, $500 nail surgery, $560 custom orthotics. No referral needed, no waiting list.",
+    h1: "Paying privately — the whole price list",
+    intro:
+      "No referral, no plan, no waiting list. Ring or fill in the form and I come to you. Here is what it costs, in full, before you book.",
+    sections: [
+      {
+        heading: "What a first visit includes",
+        body: "About 45 minutes. I bring sterile instruments, a nail drill for thickened nails, dressings and a portable chair if there is nowhere suitable to sit. We go through your history, I check circulation and sensation, treat the nails, corns and callus, and leave you with a plan for next time.",
+      },
+      {
+        heading: "What a follow-up includes",
+        body: "About 30 minutes of the same treatment, without the full assessment. Most people on routine nail and skin care come back every six to eight weeks. I will tell you what suits your feet rather than sell you a schedule.",
+      },
+      {
+        heading: "Travel outside the standard area",
+        body: "Tweed Heads, Banora Point, Terranora, Kingscliff, Cabarita Beach, Pottsville, Murwillumbah and Coolangatta carry no travel charge. Past those, there is a per-kilometre charge based on the distance beyond the area. Send your address through the form and I will quote it before you commit to anything.",
+      },
+      {
+        heading: "Paying",
+        body: "Card on the day, from my phone. If you have extras cover I claim it on the spot and you pay only the gap. If you are on a GP chronic condition management plan I can lodge the Medicare claim at the same time.",
+      },
+    ],
+    faqs: [
+      {
+        q: "Do I need a referral?",
+        a: "No. Anyone can book a podiatrist directly. A referral only matters if you want a Medicare rebate or you are a DVA client.",
+      },
+      {
+        q: "Is the price different for a pensioner?",
+        a: "The fee is the same for everyone. What changes is what comes back to you — a chronic condition management plan is usually the biggest single saving, so it is worth asking your GP.",
+      },
+      {
+        q: "What does nail surgery cost at home?",
+        a: "$500, and that includes the two follow-up visits to check the toe and change the dressing. It covers a single edge or the whole nail, with the matrix treated so it does not grow back.",
+      },
+      {
+        q: "How much are orthotics?",
+        a: "$560 for a pair, custom made from a cast of your feet. That includes the assessment, the casting, the fitting and a review once you have worn them in.",
+      },
+    ],
+    pricing: {
+      heading: "Price list",
+      intro:
+        "Every price here is the whole price. There is no booking fee, no call-out fee inside the standard area, and no charge for the equipment I bring.",
+      rows: [
+        { service: "First home visit (up to 45 minutes)", fee: `$${FEES.initial.price}`, youPay: `$${FEES.initial.price}` },
+        { service: "Follow-up home visit (up to 30 minutes)", fee: `$${FEES.followUp.price}`, youPay: `$${FEES.followUp.price}` },
+        { service: "Nail surgery at home — includes two follow-up visits", fee: `$${FEES.nailSurgery.price}`, youPay: `$${FEES.nailSurgery.price}` },
+        { service: "Custom orthotics, pair", fee: `$${FEES.orthotics.price}`, youPay: `$${FEES.orthotics.price}` },
+        { service: "Travel outside the standard visiting area", fee: "Per kilometre", youPay: "Quoted before you book" },
+      ],
+      notes: [
+        "Prices apply from 21 August 2026 and include GST where GST applies.",
+        "A Medicare rebate of $63.40 a visit, a DVA card or private health extras all reduce what you actually pay. The pages linked below set out each one.",
+        "For an out-of-area quote, send your address through the enquiry form and I will come back with the figure before you book.",
+      ],
+      sources: [],
+    },
   },
 ];
 
