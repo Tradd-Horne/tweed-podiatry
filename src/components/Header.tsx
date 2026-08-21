@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { SITE } from "@/lib/site";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -38,7 +39,7 @@ export function Header() {
               </a>
             ))}
             <a
-              href="tel:0403643158"
+              href={SITE.phoneHref}
               className="bg-[#1e3a5f] text-white px-5 py-2.5 text-sm font-medium hover:bg-[#152a45] transition-colors"
             >
               Call Now
@@ -89,7 +90,7 @@ export function Header() {
                 </a>
               ))}
               <a
-                href="tel:0403643158"
+                href={SITE.phoneHref}
                 className="bg-[#1e3a5f] text-white px-5 py-2.5 text-sm font-medium hover:bg-[#152a45] transition-colors text-center"
               >
                 Call Now
