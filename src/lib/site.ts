@@ -69,6 +69,80 @@ export const NDIS = {
   travelHourly: 94.5,
 } as const;
 
+/**
+ * One table, every funding route side by side — what YOU pay, not what the funder pays.
+ *
+ * Built here rather than in the component so it reads from the same FEES and MEDICARE
+ * constants as the six individual tables. A comparison table that disagrees with the
+ * table one scroll below it is worse than no comparison table.
+ *
+ * "$0" means the funder pays in full and nothing reaches you.
+ */
+export const FEE_COMPARISON = {
+  columns: [
+    { key: "privately", label: "Privately", href: "/paying-privately" },
+    { key: "medicare", label: "Medicare", href: "/medicare-podiatry" },
+    { key: "dva", label: "DVA", href: "/dva-podiatry" },
+    { key: "ndis", label: "NDIS", href: "/ndis-podiatry" },
+    { key: "health", label: "Health fund", href: "/private-health-podiatry" },
+    { key: "hcp", label: "Home Care", href: "/home-care-package-podiatry" },
+  ],
+  rows: [
+    {
+      service: "First home visit (up to 45 minutes)",
+      privately: `$${FEES.initial.price}`,
+      medicare: `$${(FEES.initial.price - MEDICARE.rebate).toFixed(2)}`,
+      dva: "$0",
+      ndis: "$0",
+      health: "Less your rebate",
+      hcp: "$0",
+    },
+    {
+      service: "Follow-up home visit (up to 30 minutes)",
+      privately: `$${FEES.followUp.price}`,
+      medicare: `$${(FEES.followUp.price - MEDICARE.rebate).toFixed(2)}`,
+      dva: "$0",
+      ndis: "$0",
+      health: "Less your rebate",
+      hcp: "$0",
+    },
+    {
+      service: "Nail surgery at home (includes two follow-ups)",
+      privately: `$${FEES.nailSurgery.price}`,
+      medicare: "Not covered",
+      dva: "$0",
+      ndis: "$0",
+      health: "Less your rebate",
+      hcp: "Provider approval",
+    },
+    {
+      service: "Custom orthotics (pair)",
+      privately: `$${FEES.orthotics.price}`,
+      medicare: "Not covered",
+      dva: "$0",
+      ndis: "Ask your plan",
+      health: "Less your rebate",
+      hcp: "Provider approval",
+    },
+    {
+      service: "Travel outside the standard visiting area",
+      privately: "Per kilometre",
+      medicare: "Per kilometre",
+      dva: "$0",
+      ndis: "$0",
+      health: "Item 550",
+      hcp: "$0",
+    },
+  ],
+  notes: [
+    "Every figure is what YOU pay. $0 means the funder pays in full and nothing reaches you.",
+    "Medicare covers five visits a calendar year, shared across all your allied health providers. After the fifth you pay the private fee.",
+    "Health fund rebates vary by fund and level of cover, so the amount left to pay does too. Ring your fund with the item number on the private health page.",
+    "NDIS visits are billed by time against the $188.99 hourly limit, not at the flat private fee. Orthotics usually come from an assistive technology budget, not from therapy supports.",
+    "Nail surgery and orthotics under a Home Care Package need your provider's approval first. Once approved, you pay nothing.",
+  ],
+} as const;
+
 export type PageKind = "service" | "funding" | "problem" | "suburb";
 
 export interface PageDef {
