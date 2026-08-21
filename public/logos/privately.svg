@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 56" role="img" aria-label="Paying privately">
+  <!-- A wallet, not a brand mark. The other five cards carry a real logo; paying
+       privately is a service we offer, so it gets an icon drawn in the site navy.
+       Sized to sit at the same optical weight as the logos beside it. -->
+  <g fill="none" stroke="#1e3a5f" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M24 14h66a8 8 0 0 1 8 8v16a8 8 0 0 1-8 8H24a8 8 0 0 1-8-8V22a8 8 0 0 1 8-8Z"/>
+    <path d="M16 24v-6a6 6 0 0 1 6-6h56"/>
+    <path d="M98 26h-13a4 4 0 0 0 0 8h13"/>
+  </g>
+</svg>

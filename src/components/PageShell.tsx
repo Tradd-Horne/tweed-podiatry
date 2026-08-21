@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { SITE, type PageDef } from "@/lib/site";
 import { FaqSchema } from "@/components/Schema";
+import { PricingTable } from "@/components/PricingTable";
 
 /**
  * The body shared by every service, funding and problem page.
@@ -42,6 +43,8 @@ export function PageShell({
             <p className="mt-3 leading-relaxed text-slate-700">{s.body}</p>
           </section>
         ))}
+
+        {page.pricing && <PricingTable pricing={page.pricing} />}
 
         {page.faqs.length > 0 && (
           <section className="mt-12">

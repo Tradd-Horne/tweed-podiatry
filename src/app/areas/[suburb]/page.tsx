@@ -97,9 +97,10 @@ export default function SuburbPage({
             <p className="mt-3 leading-relaxed text-slate-700">
               Home Care Package and Support at Home funding both cover podiatry, and
               I invoice your provider directly. DVA Gold Card holders pay nothing
-              with a GP referral. Self-managed and plan-managed NDIS participants are
-              welcome. Everyone else pays a single visit fee with no separate
-              call-out charge.
+              with a GP referral. I am a registered NDIS provider, so agency-managed,
+              plan-managed and self-managed participants can all book. Everyone else
+              pays a single visit fee — $170 for a first visit, $150 after that — with
+              no separate call-out charge inside the areas I visit.
             </p>
             <ul className="mt-4 flex flex-wrap gap-x-5 gap-y-2">
               <li>
