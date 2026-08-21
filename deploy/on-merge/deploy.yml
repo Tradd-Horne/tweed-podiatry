@@ -1,0 +1,49 @@
+name: Deploy Tweed Heads Podiatry
+
+# Auto-deploys to the droplet on every merge to `prebuilt`.
+#
+# NOTE the branch: this repo deploys from `prebuilt`, not `main`. `main` stopped at
+# the initial static-export commit; every change since lands on `prebuilt`, and that is
+# the branch the droplet has checked out.
+# SECURITY MODEL: this never gets a shell on the box. It SSHes with a deploy
+# key that the droplet has locked to a single forced-command (see
+# /opt/deploy/tweed-podiatry.sh). The key can ONLY trigger that one deploy script —
+# it cannot run arbitrary commands, open a shell, or read other apps' secrets.
+# The deploy logic lives on the droplet (not in this repo), so a malicious PR
+# can change site code but cannot change what the deploy does.
+
+on:
+  push:
+    branches: [ prebuilt ]
+  workflow_dispatch:   # allow a manual re-deploy from the Actions tab
+
+concurrency:
+  group: deploy-tweed-podiatry
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger droplet deploy over SSH
+        env:
+          DEPLOY_KEY:  ${{ secrets.DROPLET_DEPLOY_KEY }}
+          DEPLOY_HOST: ${{ secrets.DROPLET_HOST }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+        run: |
+          set -euo pipefail
+          if [ -z "${DEPLOY_KEY:-}" ] || [ -z "${DEPLOY_HOST:-}" ] || [ -z "${DEPLOY_USER:-}" ]; then
+            echo "::error::Missing secrets. Set DROPLET_DEPLOY_KEY, DROPLET_HOST, DEPLOY_USER in repo settings."
+            exit 1
+          fi
+          mkdir -p ~/.ssh
+          printf '%s\n' "$DEPLOY_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H "$DEPLOY_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+          echo "→ triggering tweed-podiatry deploy on $DEPLOY_HOST"
+          # The command sent here is IGNORED by the droplet's forced-command,
+          # which runs the fixed deploy script regardless.
+          ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes \
+              -o BatchMode=yes -o ConnectTimeout=20 \
+              "$DEPLOY_USER@$DEPLOY_HOST" deploy
+          echo "✓ deploy triggered"
