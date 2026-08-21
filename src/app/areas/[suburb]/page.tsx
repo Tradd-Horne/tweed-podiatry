@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { BreadcrumbSchema } from "@/components/Schema";
+import { SuburbPhoto } from "@/components/SuburbPhoto";
 import { PROBLEM_PAGES, SITE, SUBURBS } from "@/lib/site";
 
 export function generateStaticParams() {
@@ -42,8 +43,8 @@ export default function SuburbPage({
   const suburb = find(params.suburb);
   if (!suburb) notFound();
 
-  // Every suburb links to every other one. Eight pages is few enough that a full mesh is
-  // sensible, and it means no suburb page is ever left without inbound links.
+  // Every suburb links to every other one. Twenty-two pages is still few enough for a full
+  // mesh, and it means no suburb page is ever left without inbound links.
   const others = SUBURBS.filter((s) => s.slug !== suburb.slug);
 
   return (
@@ -73,6 +74,8 @@ export default function SuburbPage({
           <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
             Home visit podiatrist in {suburb.name}
           </h1>
+
+          {suburb.photo && <SuburbPhoto photo={suburb.photo} />}
 
           <p className="mt-5 text-lg leading-relaxed text-slate-700">
             Podiatry at home in {suburb.name} {suburb.postcode}. {suburb.note}
