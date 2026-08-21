@@ -23,16 +23,21 @@ Traefik, so the blast radius is everything, and a shell is every secret on the b
 
 ## Part 1 — on the droplet, once
 
-Paste the whole block. Substitute the two Twilio values first: they are on the front page
-of console.twilio.com.
+**Step 1.** Put the two Twilio values into shell variables. They are on the front page of
+console.twilio.com. Editing two short lines beats editing inside a heredoc.
+
+```bash
+SID='AC_paste_your_account_sid'
+TOK='paste_your_auth_token'
+```
+
+**Step 2.** Paste the rest as one block.
 
 ```bash
 # --- Twilio credentials for the relay -------------------------------------
 install -d -m 700 /app-tweed-podiatry/relay
-cat > /app-tweed-podiatry/relay/.env <<'ENV'
-TWILIO_ACCOUNT_SID=PASTE_YOUR_SID_HERE
-TWILIO_AUTH_TOKEN=PASTE_YOUR_TOKEN_HERE
-ENV
+printf 'TWILIO_ACCOUNT_SID=%s\nTWILIO_AUTH_TOKEN=%s\n' "$SID" "$TOK" \
+  > /app-tweed-podiatry/relay/.env
 chmod 600 /app-tweed-podiatry/relay/.env
 
 # --- the one thing the deploy key is allowed to run ------------------------
@@ -43,7 +48,11 @@ set -euo pipefail
 export PATH=/usr/local/bin:/usr/bin:/bin
 cd /app-tweed-podiatry
 git fetch --quiet origin prebuilt
-git reset --hard origin/prebuilt
+# Make sure we are ON prebuilt, not just resetting whatever branch is checked out.
+# A `reset --hard origin/prebuilt` while sitting on main quietly rewrites main to
+# prebuilt's commit, which works today and is confusing forever after.
+git checkout --quiet prebuilt 2>/dev/null || git checkout --quiet -b prebuilt origin/prebuilt
+git reset --hard --quiet origin/prebuilt
 docker compose up -d --build
 echo "tweed-podiatry deployed @ $(git rev-parse --short HEAD)"
 EOF
