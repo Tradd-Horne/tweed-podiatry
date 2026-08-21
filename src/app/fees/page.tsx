@@ -11,7 +11,7 @@ import { ELIGIBILITY_NOTICE, FEES, SITE, pageBySlug } from "@/lib/site";
  * Every price on the site, on one page.
  *
  * The six funding pages each answer one question well; this page answers "what will this
- * cost me?" for someone who does not yet know which route applies to them. It reuses the
+ * cost us?" for someone who does not yet know which route applies to them. It reuses the
  * exact same pricing blocks, so there is no second copy of any figure to drift.
  *
  * Order is deliberate: the private price list first, because it is the number everything
@@ -156,7 +156,7 @@ export default function FeesPage() {
               Not sure which one applies to you?
             </h2>
             <p className="mt-2 text-slate-700">
-              Ring me and I will work it out with you before you book. If you are on a GP
+              Ring us and we will work it out with you before you book. If you are on a GP
               chronic condition management plan, or you hold a DVA card, you will usually
               pay less than the table above.
             </p>

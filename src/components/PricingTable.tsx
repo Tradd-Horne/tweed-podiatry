@@ -166,7 +166,7 @@ export function PricingTable({
             </span>
           ))}
           . Checked 21 August 2026. Government fees change — if you find a figure here that
-          is out of date, tell me and I will correct it.
+          is out of date, tell us and we will correct it.
         </p>
       )}
     </section>

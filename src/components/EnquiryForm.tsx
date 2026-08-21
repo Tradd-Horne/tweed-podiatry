@@ -44,8 +44,8 @@ export function EnquiryForm() {
       <div className="bg-white p-6 sm:p-8 shadow-xl rounded-lg">
         <h2 className="text-xl font-semibold text-[#1e3a5f] mb-2">Thank you</h2>
         <p className="text-gray-600 text-sm leading-relaxed">
-          I have your details and will call you back the same working day. If it is
-          urgent, ring me on{" "}
+          we have your details and will call you back the same working day. If it is
+          urgent, ring us on{" "}
           <a href={SITE.phoneHref} className="text-[#1e3a5f] font-medium underline">
             {SITE.phone}
           </a>
@@ -63,7 +63,7 @@ export function EnquiryForm() {
     >
       <h2 className="text-xl font-semibold text-[#1e3a5f]">Request a home visit</h2>
       <p className="text-sm text-gray-600 mt-1 mb-5">
-        Leave your details and I will call you back the same working day.
+        Leave your details and we will call you back the same working day.
       </p>
 
       <div className="space-y-3">
@@ -140,7 +140,7 @@ export function EnquiryForm() {
 
       {state === "error" && (
         <p className="mt-3 text-sm text-red-700">
-          That did not send. Please ring me on{" "}
+          That did not send. Please ring us on{" "}
           <a href={SITE.phoneHref} className="font-medium underline">
             {SITE.phone}
           </a>

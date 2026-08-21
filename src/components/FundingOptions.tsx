@@ -4,7 +4,7 @@ import { SITE } from "@/lib/site";
 
 /**
  * How people pay. Every card links to a page that sets out the real numbers — item
- * numbers, what the funder pays, what is left to pay — because "we accept Medicare" tells
+ * numbers, what the funder pays, what is left to pay — because "We accept Medicare" tells
  * a reader nothing they can act on.
  *
  * HICAPS and Medipass used to have a card each. Neither is a funder: HICAPS is a
@@ -109,7 +109,7 @@ export function FundingOptions() {
             >
               Ring {SITE.phone}
             </a>{" "}
-            and I will work it out with you.
+            and we will work it out with you.
           </p>
         </div>
       </div>

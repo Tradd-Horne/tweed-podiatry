@@ -105,7 +105,7 @@ export default function SuburbPage({
             <p className="mt-3 leading-relaxed text-slate-700">
               ${FEES.initial.price} for a first visit to {suburb.name} and $
               {FEES.followUp.price} after that, with no call-out charge on top —{" "}
-              {suburb.name} is inside the area I cover. A Home Care Package, a DVA
+              {suburb.name} is inside the area we cover. A Home Care Package, a DVA
               card, an NDIS plan or private health extras all change what you
               actually pay.{" "}
               <Link

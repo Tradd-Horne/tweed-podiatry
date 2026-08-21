@@ -11,7 +11,7 @@ import { SITE, SUBURBS, type SuburbDef } from "@/lib/site";
  * OpenStreetMap. Every page ends up with different numbers, different place names and a
  * different argument for why the visit is worth making.
  *
- * The far suburbs also get the honest ask: tell me if a neighbour needs a visit too. An
+ * The far suburbs also get the honest ask: tell us if a neighbour needs a visit too. An
  * hour and a half of driving only works if there is more than one person at the end of it.
  */
 export function SuburbDrive({ suburb }: { suburb: SuburbDef }) {
@@ -39,13 +39,13 @@ export function SuburbDrive({ suburb }: { suburb: SuburbDef }) {
 
         {!isBase && (
           <p className="mt-3 leading-relaxed text-slate-700">
-            {suburb.name} is {km} km from my base in {SITE.baseSuburb}, about{" "}
+            {suburb.name} is {km} km from our base in {SITE.baseSuburb}, about{" "}
             {minutes} minutes each way — roughly {roundTrip} minutes in the car
-            before I have seen anybody.{" "}
+            before we have seen anybody.{" "}
             {near &&
-              "That is close enough that I can usually fit a visit in at short notice, often in the same week."}
+              "That is close enough that we can usually fit a visit in at short notice, often in the same week."}
             {mid &&
-              "That is a manageable run, so I do it on set days rather than one visit at a time."}
+              "That is a manageable run, so we do it on set days rather than one visit at a time."}
             {far &&
               "That is most of an hour and a half of driving, so this is a planned trip rather than a same-week booking."}
           </p>
@@ -54,7 +54,7 @@ export function SuburbDrive({ suburb }: { suburb: SuburbDef }) {
         {suburb.landmarks.length > 0 && (
           <p className="mt-3 leading-relaxed text-slate-700">
             If you are near {joinNames(suburb.landmarks)}, you are inside the area
-            I visit.
+            we visit.
           </p>
         )}
       </section>
@@ -80,16 +80,16 @@ export function SuburbDrive({ suburb }: { suburb: SuburbDef }) {
             , so those visits sit on the same day.{" "}
             {far ? (
               <>
-                Tell me the days that suit you and I will tell you when I am next
+                Tell us the days that suit you and we will tell you when we are next
                 heading out that way. And if a neighbour, a partner or someone else
                 in your street also needs their feet done, say so when you ring —
                 two visits in the one trip is what makes the drive work, and it
-                usually means I can come sooner.
+                usually means we can come sooner.
               </>
             ) : (
               <>
                 If someone else near you needs a visit as well, mention it when you
-                ring and I will put you together on the one run.
+                ring and we will put you together on the one run.
               </>
             )}
           </p>
