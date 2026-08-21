@@ -62,7 +62,7 @@ export const MEDICARE = {
 export const NDIS = {
   item: "15_619_0128_1_3",
   hourly: 188.99,
-  /** 45 minutes and 30 minutes at the hourly limit, rounded to the cent I invoice. */
+  /** 45 minutes and 30 minutes at the hourly limit, rounded to the cent we invoice. */
   threeQuarterHour: 141.74,
   halfHour: 94.5,
   /** Provider travel for therapy supports is half the support rate. */
@@ -160,9 +160,9 @@ export const FEE_COMPARISON = {
 export const ELIGIBILITY_NOTICE = {
   heading: "The fee is payable either way",
   body:
-    "Every rebate on this page depends on your eligibility being valid and current on the day of the visit. In most cases I bill the full fee and you are responsible for claiming back whatever rebate you are entitled to.",
+    "Every rebate on this page depends on your eligibility being valid and current on the day of the visit. In most cases we bill the full fee and you are responsible for claiming back whatever rebate you are entitled to.",
   detail:
-    "If the plan has lapsed, the referral has run out, the annual limit is used up, the funding is not approved or the card is not current, there is no rebate and the full fee is payable on the day. I will tell you what I can see, but I cannot confirm your entitlement — only your fund, your plan manager, your provider or Medicare can do that. Check before you book if you are not sure.",
+    "If the plan has lapsed, the referral has run out, the annual limit is used up, the funding is not approved or the card is not current, there is no rebate and the full fee is payable on the day. We will tell you what we can see, but we cannot confirm your entitlement — only your fund, your plan manager, your provider or Medicare can do that. Check before you book if you are not sure.",
 } as const;
 
 export type PageKind = "service" | "funding" | "problem" | "suburb";
@@ -220,11 +220,11 @@ export const SERVICE_PAGES: PageDef[] = [
       "A registered podiatrist who comes to your home in Tweed Heads. Nail care, corns, callus, diabetic foot checks. Home Care Package, DVA and NDIS welcome.",
     h1: "Home visit podiatrist in Tweed Heads",
     intro:
-      "If getting to a clinic has become hard work, the podiatry can come to you. I treat people in their own homes across Tweed Heads and the surrounding suburbs — the same assessment and the same treatment you would get in a clinic, in the comfort of your own home, without the parking, the stairs or the wait.",
+      "If getting to a clinic has become hard work, the podiatry can come to you. We treat people in their own homes across Tweed Heads and the surrounding suburbs — the same assessment and the same treatment you would get in a clinic, in the comfort of your own home, without the parking, the stairs or the wait.",
     sections: [
       {
         heading: "What a home visit involves",
-        body: "We start with the assessment, not the nail clippers. I check pulses and circulation, test sensation, look at the skin and nails, and watch how the foot is loading. The treatment follows from what that shows — nails reduced, corns and callus cleared, pressure relieved — and I leave you with the feet comfortable and a plan for next time. I bring everything: sterile instruments, a nail drill for thickened nails, and a portable chair if there is nowhere suitable to sit.",
+        body: "We start with the assessment, not the nail clippers. We check pulses and circulation, test sensation, look at the skin and nails, and watch how the foot is loading. The treatment follows from what that shows — nails reduced, corns and callus cleared, pressure relieved — and we leave you with the feet comfortable and a plan for next time. We bring everything: sterile instruments, a nail drill for thickened nails, and a portable chair if there is nowhere suitable to sit.",
       },
       {
         heading: "Who this suits",
@@ -262,7 +262,7 @@ export const SERVICE_PAGES: PageDef[] = [
       "Mobile podiatry means the clinic travels. Everything needed for a proper treatment fits in the car, so the care does not change — only the address does.",
     sections: [
       {
-        heading: "Where I visit",
+        heading: "Where we visit",
         body: "Private homes, retirement villages, independent living units and residential aged care across the Tweed and the far Northern Rivers. Villages are welcome to book a block of residents on the same day, which usually suits everyone better than individual visits.",
       },
       {
@@ -306,17 +306,17 @@ export const FUNDING_PAGES: PageDef[] = [
       },
       {
         heading: "Working with families",
-        body: "Often it is a son or daughter who rings, not the person themselves. That is fine. I am happy to talk it through with you first, and to report back after a visit if your parent is happy for me to.",
+        body: "Often it is a son or daughter who rings, not the person themselves. That is fine. We are happy to talk it through with you first, and to report back after a visit if your parent is happy for us to.",
       },
       {
         heading: "Villages and residential care",
-        body: "I visit retirement villages and residential aged care across the Tweed. Facilities can book a regular day and I work through a list of residents.",
+        body: "We visit retirement villages and residential aged care across the Tweed. Facilities can book a regular day and we work through a list of residents.",
       },
     ],
     faqs: [
       {
         q: "Does a Home Care Package cover podiatry?",
-        a: "Yes. Podiatry is an allied health service and is fundable under a Home Care Package or Support at Home. Your provider or case manager arranges it, and I invoice them directly.",
+        a: "Yes. Podiatry is an allied health service and is fundable under a Home Care Package or Support at Home. Your provider or case manager arranges it, and we invoice them directly.",
       },
       {
         q: "My mother is nervous about someone new. Can I be there?",
@@ -337,15 +337,15 @@ export const FUNDING_PAGES: PageDef[] = [
     sections: [
       {
         heading: "How it works",
-        body: "Tell your case manager you would like podiatry at home and give them my details. They approve it against your package, I visit, and the invoice goes to the provider rather than to you. In most cases there is nothing to pay on the day.",
+        body: "Tell your case manager you would like podiatry at home and give them our details. They approve it against your package, we visit, and the invoice goes to the provider rather than to you. In most cases there is nothing to pay on the day.",
       },
       {
         heading: "If you self-manage your package",
-        body: "Self-managed package holders can book me directly and claim the invoice back through their provider. It is usually faster, and often cheaper per visit, because there is no coordination fee on top.",
+        body: "Self-managed package holders can book us directly and claim the invoice back through their provider. It is usually faster, and often cheaper per visit, because there is no coordination fee on top.",
       },
       {
         heading: "Support at Home",
-        body: "Support at Home replaced the old Home Care Package arrangements from 1 November 2025. Allied health, including podiatry, is still funded. If you are mid-transition and unsure what you can use, ring and I will tell you what I know — and tell you plainly when it is a question for your provider rather than for me.",
+        body: "Support at Home replaced the old Home Care Package arrangements from 1 November 2025. Allied health, including podiatry, is still funded. If you are mid-transition and unsure what you can use, ring and we will tell you what we know — and tell you plainly when it is a question for your provider rather than for us.",
       },
     ],
     faqs: [
@@ -355,7 +355,7 @@ export const FUNDING_PAGES: PageDef[] = [
       },
       {
         q: "Can I use my package if I am not in Tweed Heads?",
-        a: "Funding is not tied to a suburb, but my travel is. See the areas I visit and ring if you are close to the edge of them.",
+        a: "Funding is not tied to a suburb, but our travel is. See the areas we visit and ring if you are close to the edge of them.",
       },
       {
         q: "Do I pay a contribution towards podiatry?",
@@ -380,7 +380,7 @@ export const FUNDING_PAGES: PageDef[] = [
         "Support at Home replaced Home Care Packages on 1 November 2025. Podiatry sits in the clinical supports category.",
         "The government funds clinical supports in full. Participant contributions apply to independence and everyday living services, not to allied health or nursing.",
         "The visit is drawn from your quarterly Support at Home budget, so it is not unlimited. A visit every six to eight weeks is a small part of most budgets.",
-        "If you self-manage, you can book me directly and put the invoice through your provider. If your provider manages your package, give them my details and they will arrange it.",
+        "If you self-manage, you can book us directly and put the invoice through your provider. If your provider manages your package, give them our details and they will arrange it.",
         "Custom orthotics and nail surgery are quoted separately and may need your provider's approval first.",
       ],
       sources: [
@@ -402,7 +402,7 @@ export const FUNDING_PAGES: PageDef[] = [
     sections: [
       {
         heading: "What you need",
-        body: "A referral from your GP, valid for twelve months. Your GP writes it to a podiatrist — it does not need to name me. Bring it out on the first visit and I will take it from there.",
+        body: "A referral from your GP, valid for twelve months. Your GP writes it to a podiatrist — it does not need to name us. Bring it out on the first visit and we will take it from there.",
       },
       {
         heading: "What is covered",
@@ -420,13 +420,13 @@ export const FUNDING_PAGES: PageDef[] = [
       },
       {
         q: "How long does a referral last?",
-        a: "Twelve months from the date it is written. I will tell you when it is getting close so you can get another.",
+        a: "Twelve months from the date it is written. We will tell you when it is getting close so you can get another.",
       },
     ],
     pricing: {
       heading: "What DVA pays, and what you pay",
       intro:
-        "These are DVA's own fees for podiatry, effective 1 January 2026. DVA pays them in full. My private fees do not apply to you.",
+        "These are DVA's own fees for podiatry, effective 1 January 2026. DVA pays them in full. Our private fees do not apply to you.",
       funderLabel: "DVA pays",
       rows: [
         { service: "First home visit (starts a treatment cycle)", item: "F024", fee: "$106.65", funder: "$106.65", youPay: "$0" },
@@ -439,10 +439,10 @@ export const FUNDING_PAGES: PageDef[] = [
         { service: "Travel to your home", item: "—", fee: "Included", funder: "Included in the fee", youPay: "$0" },
       ],
       notes: [
-        "You pay nothing. There is no gap, no call-out fee and no travel charge. DVA builds the kilometre allowance into the fee, so I am not permitted to charge you for it.",
-        "A treatment cycle is twelve sessions and starts with an initial consultation. When the cycle ends I send a report to your usual GP and, if you still need care, your GP refers you again.",
+        "You pay nothing. There is no gap, no call-out fee and no travel charge. DVA builds the kilometre allowance into the fee, so we are not permitted to charge you for it.",
+        "A treatment cycle is twelve sessions and starts with an initial consultation. When the cycle ends we send a report to your usual GP and, if you still need care, your GP refers you again.",
         "A Gold Card covers any condition. A White Card covers only the condition DVA has accepted — if that condition affects your feet, podiatry is covered.",
-        "Orthoses and some other items need DVA's approval before I supply them. I arrange that; you do not have to.",
+        "Orthoses and some other items need DVA's approval before we supply them. We arrange that; you do not have to.",
       ],
       sources: [
         { label: "DVA — Podiatrists schedule of fees, effective 1 January 2026", href: "https://www.dva.gov.au/providers/fees-claims/dental-and-allied-health-fee-schedules" },
@@ -462,8 +462,8 @@ export const FUNDING_PAGES: PageDef[] = [
       "Podiatry sits under Improved Daily Living or Improved Health and Wellbeing in most plans. If getting to appointments is part of what makes things hard, a home visit removes that problem entirely.",
     sections: [
       {
-        heading: "Who I can see",
-        body: "All three, because I am a registered NDIS provider. Agency-managed, plan-managed and self-managed participants can all book. Agency-managed plans need a registered provider, which rules most mobile podiatrists out.",
+        heading: "Who we can see",
+        body: "All three, because we are a registered NDIS provider. Agency-managed, plan-managed and self-managed participants can all book. Agency-managed plans need a registered provider, which rules most mobile podiatrists out.",
       },
       {
         heading: "What a visit covers",
@@ -477,21 +477,21 @@ export const FUNDING_PAGES: PageDef[] = [
     faqs: [
       {
         q: "Can agency-managed participants book?",
-        a: "Yes. I am a registered NDIS provider, so the NDIA can pay my invoices directly for agency-managed plans.",
+        a: "Yes. We are a registered NDIS provider, so the NDIA can pay our invoices directly for agency-managed plans.",
       },
       {
         q: "Do you write reports for plan reviews?",
-        a: "Yes, on request. Tell me before the visit so I can gather what the report needs.",
+        a: "Yes, on request. Tell us before the visit so we can gather what the report needs.",
       },
       {
         q: "Why is my invoice a different shape to the private price list?",
-        a: "The NDIS sets a maximum hourly price and I am not allowed to charge a participant more than it. So your visit is billed by the time it takes, not at my flat private fee. For a half-hour visit that works out cheaper than the private price.",
+        a: "The NDIS sets a maximum hourly price and we are not allowed to charge a participant more than it. So your visit is billed by the time it takes, not at our flat private fee. For a half-hour visit that works out cheaper than the private price.",
       },
     ],
     pricing: {
       heading: "What your plan pays",
       intro:
-        "The NDIS price limit for podiatry is $188.99 an hour in 2026–27. I bill your plan by the time the visit takes, at or under that limit. You pay nothing out of pocket.",
+        "The NDIS price limit for podiatry is $188.99 an hour in 2026–27. We bill your plan by the time the visit takes, at or under that limit. You pay nothing out of pocket.",
       funderLabel: "Your plan pays",
       rows: [
         { service: "First home visit, 45 minutes", item: NDIS.item, fee: `$${NDIS.threeQuarterHour.toFixed(2)}`, funder: `$${NDIS.threeQuarterHour.toFixed(2)}`, youPay: "$0" },
@@ -499,8 +499,8 @@ export const FUNDING_PAGES: PageDef[] = [
         { service: "Travel to and from you, per hour", item: NDIS.item, fee: `$${NDIS.travelHourly.toFixed(2)}`, funder: `$${NDIS.travelHourly.toFixed(2)}`, youPay: "$0" },
       ],
       notes: [
-        "$188.99 an hour is the national price limit for podiatry under Therapeutic Supports. I do not charge above it.",
-        "Provider travel for therapy supports is billed at half the support rate, so $94.50 an hour. I only claim travel where your plan allows it, and I tell you before the first visit what it will be.",
+        "$188.99 an hour is the national price limit for podiatry under Therapeutic Supports. We do not charge above it.",
+        "Provider travel for therapy supports is billed at half the support rate, so $94.50 an hour. We only claim travel where your plan allows it, and we tell you before the first visit what it will be.",
         "Podiatry usually sits under Capacity Building — Improved Daily Living, or Improved Health and Wellbeing. Your plan manager can confirm which line yours comes from.",
         "Registered NDIS provider, so agency-managed, plan-managed and self-managed participants can all book.",
       ],
@@ -522,7 +522,7 @@ export const FUNDING_PAGES: PageDef[] = [
     sections: [
       {
         heading: "How you become eligible",
-        body: "Your GP decides. If you have a chronic condition — diabetes, arthritis, peripheral vascular disease, anything that has lasted or will last six months or more — your GP can prepare a GP chronic condition management plan and refer you for allied health. Ask at your next appointment. I cannot arrange it for you, and neither can any podiatrist.",
+        body: "Your GP decides. If you have a chronic condition — diabetes, arthritis, peripheral vascular disease, anything that has lasted or will last six months or more — your GP can prepare a GP chronic condition management plan and refer you for allied health. Ask at your next appointment. We cannot arrange it for you, and neither can any podiatrist.",
       },
       {
         heading: "Five visits, not five podiatry visits",
@@ -530,11 +530,11 @@ export const FUNDING_PAGES: PageDef[] = [
       },
       {
         heading: "Why home visits are not bulk billed",
-        body: "The Medicare rebate of $63.40 does not cover a visit that includes driving to you, carrying the equipment in and setting up at your table. So I charge the full fee and Medicare pays you back part of it. You are never surprised: the gap is on this page before you book.",
+        body: "The Medicare rebate of $63.40 does not cover a visit that includes driving to you, carrying the equipment in and setting up at your table. So we charge the full fee and Medicare pays you back part of it. You are never surprised: the gap is on this page before you book.",
       },
       {
         heading: "How you get the money back",
-        body: "I can lodge the claim on the spot from my phone through Tyro Health, and the rebate goes to your bank account, usually the next business day. If you would rather, I give you an itemised receipt and you claim it yourself through the Medicare app.",
+        body: "We can lodge the claim on the spot through Tyro Health, from a phone rather than a countertop terminal, and the rebate goes to your bank account, usually the next business day. If you would rather, we give you an itemised receipt and you claim it yourself through the Medicare app.",
       },
     ],
     faqs: [
@@ -552,7 +552,7 @@ export const FUNDING_PAGES: PageDef[] = [
       },
       {
         q: "Can I use Medicare and my private health fund for the same visit?",
-        a: "No. One visit, one rebate. Work out which gives you more back and use that one. I can tell you which is likely to be better once I know your fund.",
+        a: "No. One visit, one rebate. Work out which gives you more back and use that one. We can tell you which is likely to be better once we know your fund.",
       },
       {
         q: "What happens after the fifth visit?",
@@ -562,7 +562,7 @@ export const FUNDING_PAGES: PageDef[] = [
     pricing: {
       heading: "What Medicare pays, and what you pay",
       intro:
-        `Medicare item ${MEDICARE.item} has a schedule fee of $${MEDICARE.scheduleFee} and pays a benefit of $${MEDICARE.rebate.toFixed(2)}. You pay me the full fee, and Medicare pays the benefit back to you: $${FEES.initial.price} − $${MEDICARE.rebate.toFixed(2)} = $${(FEES.initial.price - MEDICARE.rebate).toFixed(2)} out of pocket on a first visit.`,
+        `Medicare item ${MEDICARE.item} has a schedule fee of $${MEDICARE.scheduleFee} and pays a benefit of $${MEDICARE.rebate.toFixed(2)}. You pay us the full fee, and Medicare pays the benefit back to you: $${FEES.initial.price} − $${MEDICARE.rebate.toFixed(2)} = $${(FEES.initial.price - MEDICARE.rebate).toFixed(2)} out of pocket on a first visit.`,
       funderLabel: "Medicare pays",
       rows: [
         { service: FEES.initial.label, item: MEDICARE.item, fee: `$${FEES.initial.price}`, funder: `$${MEDICARE.rebate.toFixed(2)}`, youPay: `$${(FEES.initial.price - MEDICARE.rebate).toFixed(2)}`, youPayWorking: `$${FEES.initial.price} − $${MEDICARE.rebate.toFixed(2)}` },
@@ -590,19 +590,19 @@ export const FUNDING_PAGES: PageDef[] = [
       "Claim your extras cover for a podiatry home visit on the spot — no terminal needed. Item numbers, what your fund pays, and what is left to pay. Tweed Heads and Northern NSW.",
     h1: "Claiming your health fund for a home visit",
     intro:
-      "If you hold extras cover with podiatry on it, your fund pays part of every visit. I claim it on the spot and you pay only the balance.",
+      "If you hold extras cover with podiatry on it, your fund pays part of every visit. We claim it on the spot and you pay only the balance.",
     sections: [
       {
-        heading: "You do not need me to have a HICAPS terminal",
-        body: "HICAPS is a countertop terminal, which is no use in your lounge room. I claim through Tyro Health instead, from my phone. It reaches the same funds — Medibank, ahm, nib, Bupa, GMHBA and more — and it settles while I am still with you. You pay the gap by card, not the whole fee.",
+        heading: "You do not need us to have a HICAPS terminal",
+        body: "HICAPS is a countertop terminal, which is no use in your lounge room. We claim through Tyro Health instead, from a phone. It reaches the same funds — Medibank, ahm, nib, Bupa, GMHBA and more — and it settles while we are still with you. You pay the gap by card, not the whole fee.",
       },
       {
         heading: "Home visits have their own item numbers",
-        body: "Funds pay a different amount for a visit in your home than for one in a clinic. The domiciliary item numbers are 023 and 024 for a new patient and 033 and 034 for someone I already see. Item 550 covers travel time in fifteen-minute blocks. Not every fund pays on 550 — I check yours before the first visit.",
+        body: "Funds pay a different amount for a visit in your home than for one in a clinic. The domiciliary item numbers are 023 and 024 for a new patient and 033 and 034 for someone we already see. Item 550 covers travel time in fifteen-minute blocks. Not every fund pays on 550 — we check yours before the first visit.",
       },
       {
         heading: "How much you get back",
-        body: "That depends on your fund and your level of extras, and I cannot quote it for you. What I can do is give you the item number before you book so you can ring your fund and ask exactly what they pay on it. Most extras policies also have an annual limit for podiatry.",
+        body: "That depends on your fund and your level of extras, and we cannot quote it for you. What we can do is give you the item number before you book so you can ring your fund and ask exactly what they pay on it. Most extras policies also have an annual limit for podiatry.",
       },
       {
         heading: "One rebate per visit",
@@ -612,7 +612,7 @@ export const FUNDING_PAGES: PageDef[] = [
     faqs: [
       {
         q: "Can you claim on the spot without a terminal?",
-        a: "Yes. Tyro Health runs on my phone and claims to your fund while I am there. You pay the gap by card.",
+        a: "Yes. Tyro Health runs on a phone and claims to your fund while we are with you. You pay the gap by card.",
       },
       {
         q: "What item number will you use?",
@@ -630,7 +630,7 @@ export const FUNDING_PAGES: PageDef[] = [
     pricing: {
       heading: "Fees and the item numbers to quote your fund",
       intro:
-        "These are my fees. What your fund pays depends on your policy, so ring them with the item number and ask.",
+        "These are our fees. What your fund pays depends on your policy, so ring them with the item number and ask.",
       funderLabel: "Your fund pays",
       rows: [
         { service: FEES.initial.label, item: "023 or 024", fee: `$${FEES.initial.price}`, funder: "Ask your fund", youPay: `$${FEES.initial.price} less your rebate` },
@@ -641,7 +641,7 @@ export const FUNDING_PAGES: PageDef[] = [
       ],
       notes: [
         "Item numbers come from the podiatry schedule agreed between Private Healthcare Australia and the Australian Podiatry Association, in force since 1 September 2024.",
-        "Rebates and annual limits vary by fund and by level of cover. I will not guess yours — ring your fund with the item number.",
+        "Rebates and annual limits vary by fund and by level of cover. We will not guess yours — ring your fund with the item number.",
         "One rebate per visit. Medicare or your fund, not both.",
       ],
       sources: [
@@ -659,23 +659,23 @@ export const FUNDING_PAGES: PageDef[] = [
       "Home visit podiatry prices in Tweed Heads: $170 first visit, $150 follow-up, $500 nail surgery, $560 custom orthotics. No referral needed, no waiting list.",
     h1: "Paying privately — the whole price list",
     intro:
-      "No referral, no plan, no waiting list. Ring or fill in the form and I come to you. Here is what it costs, in full, before you book.",
+      "No referral, no plan, no waiting list. Ring or fill in the form and we come to you. Here is what it costs, in full, before you book.",
     sections: [
       {
         heading: "What a first visit includes",
-        body: "A full foot assessment: your history, pulses and circulation, sensation and nerve function, the condition of the skin and nails, and how you are walking. The treatment follows from that — nails reduced, corns and callus cleared, pressure points relieved — and you finish with a plan for next time. I bring sterile instruments, a nail drill for thickened nails, dressings and a portable chair if there is nowhere suitable to sit.",
+        body: "A full foot assessment: your history, pulses and circulation, sensation and nerve function, the condition of the skin and nails, and how you are walking. The treatment follows from that — nails reduced, corns and callus cleared, pressure points relieved — and you finish with a plan for next time. We bring sterile instruments, a nail drill for thickened nails, dressings and a portable chair if there is nowhere suitable to sit.",
       },
       {
         heading: "What a follow-up includes",
-        body: "The same treatment, with a shorter check rather than the full assessment — unless something has changed, in which case we do the assessment again. Most people on routine nail and skin care come back every six to eight weeks. I will tell you what suits your feet rather than sell you a schedule.",
+        body: "The same treatment, with a shorter check rather than the full assessment — unless something has changed, in which case we do the assessment again. Most people on routine nail and skin care come back every six to eight weeks. We will tell you what suits your feet rather than sell you a schedule.",
       },
       {
         heading: "Travel outside the standard area",
-        body: "Tweed Heads, Banora Point, Terranora, Kingscliff, Cabarita Beach, Pottsville, Murwillumbah and Coolangatta carry no travel charge. Past those, there is a per-kilometre charge based on the distance beyond the area. Send your address through the form and I will quote it before you commit to anything.",
+        body: "Tweed Heads, Banora Point, Terranora, Kingscliff, Cabarita Beach, Pottsville, Murwillumbah and Coolangatta carry no travel charge. Past those, there is a per-kilometre charge based on the distance beyond the area. Send your address through the form and we will quote it before you commit to anything.",
       },
       {
         heading: "Paying",
-        body: "Card on the day, from my phone. If you have extras cover I claim it on the spot and you pay only the gap. If you are on a GP chronic condition management plan I can lodge the Medicare claim at the same time.",
+        body: "Card on the day, taken on a phone. If you have extras cover we claim it on the spot and you pay only the gap. If you are on a GP chronic condition management plan we can lodge the Medicare claim at the same time.",
       },
     ],
     faqs: [
@@ -699,7 +699,7 @@ export const FUNDING_PAGES: PageDef[] = [
     pricing: {
       heading: "Price list",
       intro:
-        "Every price here is the whole price. There is no booking fee, no call-out fee inside the standard area, and no charge for the equipment I bring.",
+        "Every price here is the whole price. There is no booking fee, no call-out fee inside the standard area, and no charge for the equipment we bring.",
       rows: [
         { service: FEES.initial.label, fee: `$${FEES.initial.price}`, youPay: `$${FEES.initial.price}` },
         { service: FEES.followUp.label, fee: `$${FEES.followUp.price}`, youPay: `$${FEES.followUp.price}` },
@@ -710,7 +710,7 @@ export const FUNDING_PAGES: PageDef[] = [
       notes: [
         "Prices apply from 21 August 2026 and include GST where GST applies.",
         "A Medicare rebate of $63.40 a visit, a DVA card or private health extras all reduce what you actually pay. The pages linked below set out each one.",
-        "For an out-of-area quote, send your address through the enquiry form and I will come back with the figure before you book.",
+        "For an out-of-area quote, send your address through the enquiry form and we will come back with the figure before you book.",
       ],
       sources: [],
     },
@@ -720,9 +720,9 @@ export const FUNDING_PAGES: PageDef[] = [
 /* ── Problems: what people actually type at 11pm ─────────────────────────────────── */
 export const PROBLEM_PAGES: PageDef[] = [
   {
-    slug: "cant-cut-my-toenails",
+    slug: "cant-cut-our-toenails",
     kind: "problem",
-    target: "cannot cut my own toenails",
+    target: "cannot cut our own toenails",
     title: "Can't Cut Your Own Toenails? | Home Visit Nail Care Tweed Heads",
     description:
       "If you cannot reach or safely cut your toenails, a podiatrist can do it at home in Tweed Heads. Thick nails, poor eyesight, arthritis, diabetes.",
@@ -735,7 +735,7 @@ export const PROBLEM_PAGES: PageDef[] = [
         body: "Arthritic hands cannot grip clippers well. Thickened nails need a drill, not scissors. If you cannot see your foot clearly, it is very easy to cut the skin — and if you have diabetes or poor circulation, a small cut is not a small problem.",
       },
       {
-        heading: "What I do about it",
+        heading: "What we do about it",
         body: "Nails cut and filed back to a comfortable length and shape, thick nails reduced with a drill so they stop pressing, and any corn or callus taken down at the same visit. It does not hurt.",
       },
       {
@@ -771,7 +771,7 @@ export const PROBLEM_PAGES: PageDef[] = [
       },
       {
         heading: "What treatment actually achieves",
-        body: "Reducing the nail with a drill takes the pressure off and makes the toe comfortable straight away. That part works every time. Clearing a fungal infection is slower, takes months, and does not always succeed — I will tell you honestly what the odds look like for your nail rather than sell you a course of something.",
+        body: "Reducing the nail with a drill takes the pressure off and makes the toe comfortable straight away. That part works every time. Clearing a fungal infection is slower, takes months, and does not always succeed — we will tell you honestly what the odds look like for your nail rather than sell you a course of something.",
       },
       {
         heading: "Keeping it under control",
@@ -810,7 +810,7 @@ export const PROBLEM_PAGES: PageDef[] = [
       },
       {
         heading: "The permanent fix",
-        body: "A minor procedure under local anaesthetic removes the offending edge for good. It takes about an hour, you walk out afterwards, and it does not recur in the great majority of cases. It is a clinic procedure rather than a home one, and I will tell you if that is what you actually need.",
+        body: "A minor procedure under local anaesthetic removes the offending edge for good. It takes about an hour, you walk out afterwards, and it does not recur in the great majority of cases. It is a clinic procedure rather than a home one, and we will tell you if that is what you actually need.",
       },
     ],
     faqs: [
@@ -845,7 +845,7 @@ export const PROBLEM_PAGES: PageDef[] = [
       },
       {
         heading: "How often",
-        body: "Annually if your risk is low, every three to six months if there is nerve damage, poor circulation or a history of ulceration. I will tell you which applies and why.",
+        body: "Annually if your risk is low, every three to six months if there is nerve damage, poor circulation or a history of ulceration. We will tell you which applies and why.",
       },
     ],
     faqs: [
@@ -872,7 +872,7 @@ export const PROBLEM_PAGES: PageDef[] = [
     sections: [
       {
         heading: "The relief part",
-        body: "Corns and callus are pared away with a sterile blade. It does not hurt — the tissue has no nerve supply — and walking usually feels better before I have left.",
+        body: "Corns and callus are pared away with a sterile blade. It does not hurt — the tissue has no nerve supply — and walking usually feels better before we have left.",
       },
       {
         heading: "The part that stops it returning",
@@ -938,7 +938,7 @@ export interface SuburbPhoto {
  * Deliberately about twenty and not the 175 named localities inside the radius. Dozens of
  * near-identical suburb pages is the doorway-page pattern, and Google demotes the whole
  * site for it. The rest are named in EXTRA_LOCALITIES on the areas page instead, which
- * answers "do you come to my street?" without manufacturing thin pages.
+ * answers "do you come to our street?" without manufacturing thin pages.
  *
  * Coordinates and postcodes were geocoded against OpenStreetMap on 21 August 2026, not
  * typed from memory.
@@ -997,12 +997,12 @@ export const SUBURBS: SuburbDef[] = [
     slug: "banora-point",
     name: "Banora Point",
     postcode: "2486",
-    note: "A short drive from Tweed Heads, with a large retired population and several villages I visit regularly.",
+    note: "A short drive from Tweed Heads, with a large retired population and several villages we visit regularly.",
     drive: { km: 6.9, minutes: 11 },
     run: ["chinderah", "tweed-heads-south", "fingal-head"],
     landmarks: ["Chambers Lookout", "Oxley Park", "Jenner's Corner Park"],
     local:
-      "Banora Point spreads back from the Tweed River behind Barneys Point bridge, with Chambers Lookout above it. It has one of the largest retired populations in the shire, and several of the villages here I visit on a regular round.",
+      "Banora Point spreads back from the Tweed River behind Barneys Point bridge, with Chambers Lookout above it. It has one of the largest retired populations in the shire, and several of the villages here we visit on a regular round.",
     photo: {
       src: "/img/areas/banora-point.webp",
       alt: "Barneys Point bridge crossing the Tweed River at Banora Point",
@@ -1032,7 +1032,7 @@ export const SUBURBS: SuburbDef[] = [
     run: ["tweed-heads-west", "terranora", "tweed-heads-south"],
     landmarks: ["Bilambil Creek", "Duroby Creek", "Prindable Park"],
     local:
-      "Bilambil Heights is up in the hills behind Tweed Heads, above Bilambil Creek and Duroby Creek. Steep driveways and a flight of internal stairs are common here, and both are far easier for me to walk up than for you to walk down.",
+      "Bilambil Heights is up in the hills behind Tweed Heads, above Bilambil Creek and Duroby Creek. Steep driveways and a flight of internal stairs are common here, and both are far easier for us to walk up than for you to walk down.",
   },
   {
     slug: "chinderah",
@@ -1220,12 +1220,12 @@ export const SUBURBS: SuburbDef[] = [
     slug: "burringbar",
     name: "Burringbar",
     postcode: "2483",
-    note: "On the Tweed Valley Way between Mooball and Stokers Siding, and close to the centre of the area I cover.",
+    note: "On the Tweed Valley Way between Mooball and Stokers Siding, and close to the centre of the area we cover.",
     drive: { km: 41.8, minutes: 37 },
     run: ["pottsville", "ocean-shores", "hastings-point"],
     landmarks: ["Masterson Park", "Mooball Lagoon", "Quinn Family Park"],
     local:
-      "Burringbar is a short strip of shops on the Tweed Valley Way, between Mooball and Stokers Siding, with the Burringbar Range behind it. It sits almost exactly in the middle of the area I cover, which makes it a useful place to break a long day.",
+      "Burringbar is a short strip of shops on the Tweed Valley Way, between Mooball and Stokers Siding, with the Burringbar Range behind it. It sits almost exactly in the middle of the area we cover, which makes it a useful place to break a long day.",
     photo: {
       src: "/img/areas/burringbar.webp",
       alt: "The Broadway shops in Burringbar village",
@@ -1282,7 +1282,7 @@ export const SUBURBS: SuburbDef[] = [
     run: ["brunswick-heads", "ocean-shores", "burringbar"],
     landmarks: ["Brunswick River", "Brunswick Valley Heritage Park"],
     local:
-      "Mullumbimby sits inland from Brunswick Heads on the Brunswick River, with the shops along Burringbar Street. It is the furthest point south I visit regularly, and it is always booked on the same day as the other Brunswick Valley stops.",
+      "Mullumbimby sits inland from Brunswick Heads on the Brunswick River, with the shops along Burringbar Street. It is the furthest point south we visit regularly, and it is always booked on the same day as the other Brunswick Valley stops.",
     photo: {
       src: "/img/areas/mullumbimby.webp",
       alt: "Burringbar Street, the main street of Mullumbimby",
@@ -1301,7 +1301,7 @@ export const SUBURBS: SuburbDef[] = [
     run: ["tweed-heads", "tweed-heads-south", "tweed-heads-west"],
     landmarks: ["Razorback Hill", "Tom Beatson Lookout", "Coolangatta Beach"],
     local:
-      "Coolangatta is over the border but closer to my door than most of the New South Wales suburbs I visit. Greenmount, Kirra and Rainbow Bay are all within a couple of minutes of each other, which makes a morning here easy to fill.",
+      "Coolangatta is over the border but closer to our base than most of the New South Wales suburbs we visit. Greenmount, Kirra and Rainbow Bay are all within a couple of minutes of each other, which makes a morning here easy to fill.",
     photo: {
       src: "/img/areas/coolangatta.webp",
       alt: "Surfers on Coolangatta Beach with the Gold Coast towers in the distance",
@@ -1320,7 +1320,7 @@ export const SUBURBS: SuburbDef[] = [
     run: ["tweed-heads-west", "coolangatta", "tweed-heads"],
     landmarks: ["Alf and Kathleen Neumann lookout", "Tugun Hill", "Woodgee Hill"],
     local:
-      "Tugun is the northern edge of the area, tucked between the airport and Currumbin with Tugun Hill behind it. Being at the edge, it is best booked on a day I am already heading north.",
+      "Tugun is the northern edge of the area, tucked between the airport and Currumbin with Tugun Hill behind it. Being at the edge, it is best booked on a day we are already heading north.",
     photo: {
       src: "/img/areas/tugun.webp",
       alt: "Wet sand and shallow surf at sunrise on Tugun Beach",
