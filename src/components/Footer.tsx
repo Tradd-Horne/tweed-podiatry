@@ -100,6 +100,39 @@ export function Footer() {
             an assessment of your own feet. If you have diabetes, poor circulation or
             a wound that is not healing, seek care promptly.
           </p>
+          {/* The hero clip is built from three Creative Commons photographs of this coast.
+              BY-SA obliges us to name the photographers and to pass the same licence on,
+              so the credit is part of the page, not a nicety. */}
+          <p className="mt-3 text-xs leading-relaxed text-slate-500">
+            Hero footage built from photographs of this coast by{" "}
+            <a
+              href="https://commons.wikimedia.org/wiki/File:Headland_High_Rise_(9564031658).jpg"
+              rel="noopener noreferrer nofollow"
+              target="_blank"
+              className="hover:underline"
+            >
+              Michael Coghlan
+            </a>{" "}
+            and{" "}
+            <a
+              href="https://commons.wikimedia.org/wiki/File:Cabarita_Beach_-_panoramio.jpg"
+              rel="noopener noreferrer nofollow"
+              target="_blank"
+              className="hover:underline"
+            >
+              Steven Lawler
+            </a>
+            , used under{" "}
+            <a
+              href="https://creativecommons.org/licenses/by-sa/3.0"
+              rel="noopener noreferrer nofollow"
+              target="_blank"
+              className="hover:underline"
+            >
+              CC BY-SA
+            </a>
+            . The clip is shared under the same licence.
+          </p>
           <p className="mt-3 text-xs text-slate-500">
             © {year} {SITE.name}
           </p>
