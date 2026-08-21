@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -16,12 +17,20 @@ import { FEES, SITE, pageBySlug } from "@/lib/site";
  * else is measured against, then the routes that reduce it.
  */
 const ORDER = [
-  { slug: "paying-privately", label: "Paying privately" },
-  { slug: "medicare-podiatry", label: "Medicare" },
-  { slug: "dva-podiatry", label: "DVA" },
-  { slug: "ndis-podiatry", label: "NDIS" },
-  { slug: "private-health-podiatry", label: "Private health" },
-  { slug: "home-care-package-podiatry", label: "Home Care Package" },
+  { slug: "paying-privately", label: "Paying privately", logo: "/logos/privately.svg" },
+  { slug: "medicare-podiatry", label: "Medicare", logo: "/logos/medicare.webp" },
+  { slug: "dva-podiatry", label: "DVA", logo: "/logos/dva.webp" },
+  { slug: "ndis-podiatry", label: "NDIS", logo: "/logos/ndis.png" },
+  {
+    slug: "private-health-podiatry",
+    label: "Private health",
+    logo: "/logos/private-health.svg",
+  },
+  {
+    slug: "home-care-package-podiatry",
+    label: "Home Care Package",
+    logo: "/logos/home-care.svg",
+  },
 ];
 
 const TITLE = "Fees | Tweed Heads Podiatry Home Visits";
@@ -65,59 +74,69 @@ export default function FeesPage() {
             Fees
           </h1>
           <p className="mt-5 text-lg leading-relaxed text-slate-700">
-            Every price, in one place. The first table is what a visit costs if nothing
-            else applies. The tables after it show what Medicare, DVA, the NDIS, your
-            health fund and Support at Home each pay, and what that leaves you.
+            Every price, in one place. Open the one that applies to you. “Paying
+            privately” is what a visit costs when nothing else applies; the rest show
+            what Medicare, DVA, the NDIS, your health fund and Support at Home each pay,
+            and what that leaves you.
           </p>
 
-          {/* At-a-glance, before any of the funding detail. Most people want these four
-              numbers and nothing else. */}
-          <dl className="mt-8 grid grid-cols-2 gap-x-6 gap-y-4 rounded-xl bg-slate-50 p-6 ring-1 ring-slate-200 sm:grid-cols-4">
-            {[FEES.initial, FEES.followUp, FEES.nailSurgery, FEES.orthotics].map(
-              (f) => (
-                <div key={f.label}>
-                  <dt className="text-xs leading-snug text-slate-600">{f.label}</dt>
-                  <dd className="mt-1 text-2xl font-semibold tabular-nums text-slate-900">
-                    ${f.price}
-                  </dd>
-                </div>
-              ),
-            )}
-          </dl>
-
-          <nav aria-label="Fees by funding type" className="mt-8">
-            <ul className="flex flex-wrap gap-x-4 gap-y-2 text-sm">
-              {blocks.map((b) => (
-                <li key={b.slug}>
-                  <a
-                    href={`#${b.slug}`}
-                    className="text-slate-700 underline underline-offset-4 hover:text-slate-900"
-                  >
-                    {b.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
-
-          {blocks.map((b) => (
-            <div key={b.slug} id={b.slug} className="scroll-mt-24">
-              <PricingTable
-                pricing={b.page!.pricing!}
+          {/* <details> rather than a scripted accordion: it opens with no JavaScript, it
+              is keyboard-operable for free, and the content stays in the DOM so search
+              engines and Ctrl+F still find the prices inside a closed panel. */}
+          <div className="mt-8 divide-y divide-slate-200 border-y border-slate-200">
+            {blocks.map((b, i) => (
+              <details
+                key={b.slug}
                 id={b.slug}
-                heading={b.label}
-                compact
-              />
-              <p className="mt-3 text-sm">
-                <Link
-                  href={`/${b.slug}`}
-                  className="text-slate-700 underline underline-offset-4 hover:text-slate-900"
-                >
-                  {b.page!.h1} — the full explanation
-                </Link>
-              </p>
-            </div>
-          ))}
+                open={i === 0}
+                className="group scroll-mt-24 py-4"
+              >
+                <summary className="flex cursor-pointer list-none items-center gap-4">
+                  <Image
+                    src={b.logo}
+                    alt=""
+                    width={72}
+                    height={34}
+                    className="h-8 w-[4.5rem] shrink-0 object-contain"
+                  />
+                  <h2 className="flex-1 text-lg font-semibold text-slate-900">
+                    {b.label}
+                  </h2>
+                  <svg
+                    className="h-5 w-5 shrink-0 text-slate-400 transition-transform group-open:rotate-180"
+                    viewBox="0 0 20 20"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                    aria-hidden="true"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M5 8l5 5 5-5"
+                    />
+                  </svg>
+                </summary>
+
+                <div className="mt-4">
+                  <PricingTable
+                    pricing={b.page!.pricing!}
+                    id={b.slug}
+                    compact
+                    hideHeading
+                  />
+                  <p className="mt-3 text-sm">
+                    <Link
+                      href={`/${b.slug}`}
+                      className="text-slate-700 underline underline-offset-4 hover:text-slate-900"
+                    >
+                      {b.page!.h1} — the full explanation
+                    </Link>
+                  </p>
+                </div>
+              </details>
+            ))}
+          </div>
 
           <aside className="mt-12 rounded-xl bg-slate-50 p-6 ring-1 ring-slate-200">
             <h2 className="text-lg font-semibold text-slate-900">
