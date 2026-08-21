@@ -11,6 +11,7 @@ export function Header() {
     // with nothing linking to it but the sitemap.
     { href: "/home-visit-podiatrist-tweed-heads", label: "Home visits" },
     { href: "/aged-care-podiatry", label: "Aged care" },
+    { href: "/fees", label: "Fees" },
     { href: "/home-care-package-podiatry", label: "Funding" },
     { href: "/areas", label: "Areas visited" },
     { href: "/#contact", label: "Contact" },

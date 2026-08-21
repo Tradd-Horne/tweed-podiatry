@@ -37,14 +37,14 @@ export function PageShell({
         </h1>
         <p className="mt-5 text-lg leading-relaxed text-slate-700">{page.intro}</p>
 
+        {page.pricing && <PricingTable pricing={page.pricing} />}
+
         {page.sections.map((s) => (
           <section key={s.heading} className="mt-10">
             <h2 className="text-xl font-semibold text-slate-900">{s.heading}</h2>
             <p className="mt-3 leading-relaxed text-slate-700">{s.body}</p>
           </section>
         ))}
-
-        {page.pricing && <PricingTable pricing={page.pricing} />}
 
         {page.faqs.length > 0 && (
           <section className="mt-12">

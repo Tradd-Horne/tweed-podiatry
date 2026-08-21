@@ -15,19 +15,38 @@ import type { PricingBlock } from "@/lib/site";
  * The table scrolls inside its own container on a narrow screen. The page body must not
  * scroll sideways.
  */
-export function PricingTable({ pricing }: { pricing: PricingBlock }) {
+export function PricingTable({
+  pricing,
+  /** Unique per table. The Fees page stacks six of these on one document. */
+  id = "pricing",
+  /** Tighter rows and smaller type, for the all-in-one Fees page. */
+  compact = false,
+  /**
+   * Overrides the block's own heading. Stacked on the Fees page, headings like "What your
+   * plan pays" stop saying which plan — so that page titles each table by its funder.
+   */
+  heading,
+}: {
+  pricing: PricingBlock;
+  id?: string;
+  compact?: boolean;
+  heading?: string;
+}) {
   const showItem = pricing.rows.some((r) => r.item);
   const showFunder = Boolean(pricing.funderLabel);
+  const cell = compact ? "py-2" : "py-3";
 
   return (
-    <section className="mt-12" aria-labelledby="pricing-heading">
+    <section className={compact ? "mt-8" : "mt-10"} aria-labelledby={`${id}-heading`}>
       <h2
-        id="pricing-heading"
+        id={`${id}-heading`}
         className="text-xl font-semibold text-slate-900"
       >
-        {pricing.heading}
+        {heading ?? pricing.heading}
       </h2>
-      <p className="mt-3 leading-relaxed text-slate-700">{pricing.intro}</p>
+      <p className={`mt-2 leading-relaxed text-slate-700 ${compact ? "text-sm" : ""}`}>
+        {pricing.intro}
+      </p>
 
       <div className="mt-5 overflow-x-auto">
         <table className="w-full min-w-[34rem] border-collapse text-left text-sm">
@@ -71,24 +90,24 @@ export function PricingTable({ pricing }: { pricing: PricingBlock }) {
               <tr key={row.service}>
                 <th
                   scope="row"
-                  className="py-3 pr-4 font-normal text-slate-700 align-top"
+                  className={`${cell} pr-4 font-normal text-slate-700 align-top`}
                 >
                   {row.service}
                 </th>
                 {showItem && (
-                  <td className="py-3 pr-4 align-top tabular-nums text-slate-500 whitespace-nowrap">
+                  <td className={`${cell} pr-4 align-top tabular-nums text-slate-500 whitespace-nowrap`}>
                     {row.item ?? "—"}
                   </td>
                 )}
-                <td className="py-3 pr-4 align-top tabular-nums text-slate-700 whitespace-nowrap">
+                <td className={`${cell} pr-4 align-top tabular-nums text-slate-700 whitespace-nowrap`}>
                   {row.fee}
                 </td>
                 {showFunder && (
-                  <td className="py-3 pr-4 align-top tabular-nums text-slate-700 whitespace-nowrap">
+                  <td className={`${cell} pr-4 align-top tabular-nums text-slate-700 whitespace-nowrap`}>
                     {row.funder ?? "—"}
                   </td>
                 )}
-                <td className="py-3 align-top tabular-nums font-semibold text-slate-900 whitespace-nowrap">
+                <td className={`${cell} align-top tabular-nums font-semibold text-slate-900 whitespace-nowrap`}>
                   {row.youPay}
                 </td>
               </tr>
@@ -98,7 +117,7 @@ export function PricingTable({ pricing }: { pricing: PricingBlock }) {
       </div>
 
       {pricing.notes.length > 0 && (
-        <ul className="mt-5 space-y-2 text-sm leading-relaxed text-slate-600">
+        <ul className={`space-y-2 text-sm leading-relaxed text-slate-600 ${compact ? "mt-3" : "mt-5"}`}>
           {pricing.notes.map((n) => (
             <li key={n} className="flex gap-2">
               <span aria-hidden="true" className="text-slate-400">
