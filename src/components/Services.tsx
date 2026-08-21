@@ -1,10 +1,10 @@
 import Image from "next/image";
 const SERVICE_IMAGES: Record<string, { src: string; alt: string }> = {
-  'General Foot Care': { src: "/img/services/general-foot-care.jpg", alt: 'Podiatry nippers, file and dish laid out on a towel on a Queenslander verandah' },
-  'Ingrown Toenails': { src: "/img/services/ingrown-toenails.jpg", alt: 'Sterile podiatry instruments in an opened sterilisation pouch on a clinical tray' },
+  'General Foot Care': { src: "/img/services/general-foot-care.jpg", alt: 'An older couple standing together looking out over a coastal walking track' },
+  'Ingrown Toenails': { src: "/img/services/ingrown-toenails.jpg", alt: 'Bare feet on a rug beside a pair of red lace-up shoes' },
   'Diabetic Foot Care': { src: "/img/services/diabetic-foot-care.jpg", alt: 'A monofilament sensation tester and handheld doppler on a clinical cloth' },
-  'Sports Podiatry': { src: "/img/services/sports-podiatry.jpg", alt: 'Worn running shoes on a timber boardwalk above a Gold Coast beach at sunrise' },
-  'Custom Orthotics': { src: "/img/services/custom-orthotics.jpg", alt: 'Custom moulded orthotic insoles on a workbench beside a foam impression box' },
+  'Sports Podiatry': { src: "/img/services/sports-podiatry.jpg", alt: 'Running shoes mid-stride on a treadmill' },
+  'Custom Orthotics': { src: "/img/services/custom-orthotics.jpg", alt: 'White trainers worn on a concrete ramp' },
   'Paediatric Podiatry': { src: "/img/services/paediatric-podiatry.jpg", alt: "Children's school shoes and sandals on the front step of a coastal home" },
 };
 
