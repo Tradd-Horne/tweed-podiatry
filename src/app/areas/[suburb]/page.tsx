@@ -4,8 +4,9 @@ import { notFound } from "next/navigation";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { BreadcrumbSchema } from "@/components/Schema";
+import { SuburbDrive } from "@/components/SuburbDrive";
 import { SuburbPhoto } from "@/components/SuburbPhoto";
-import { PROBLEM_PAGES, SITE, SUBURBS } from "@/lib/site";
+import { FEES, PROBLEM_PAGES, SITE, SUBURBS } from "@/lib/site";
 
 export function generateStaticParams() {
   return SUBURBS.map((s) => ({ suburb: s.slug }));
@@ -81,6 +82,8 @@ export default function SuburbPage({
             Podiatry at home in {suburb.name} {suburb.postcode}. {suburb.note}
           </p>
 
+          <SuburbDrive suburb={suburb} />
+
           <section className="mt-10">
             <h2 className="text-xl font-semibold text-slate-900">
               What a visit in {suburb.name} covers
@@ -98,12 +101,18 @@ export default function SuburbPage({
               Paying for it
             </h2>
             <p className="mt-3 leading-relaxed text-slate-700">
-              Home Care Package and Support at Home funding both cover podiatry, and
-              I invoice your provider directly. DVA Gold Card holders pay nothing
-              with a GP referral. I am a registered NDIS provider, so agency-managed,
-              plan-managed and self-managed participants can all book. Everyone else
-              pays a single visit fee — $170 for a first visit, $150 after that — with
-              no separate call-out charge inside the areas I visit.
+              ${FEES.initial.price} for a first visit to {suburb.name} and $
+              {FEES.followUp.price} after that, with no call-out charge on top —{" "}
+              {suburb.name} is inside the area I cover. A Home Care Package, a DVA
+              card, an NDIS plan or private health extras all change what you
+              actually pay.{" "}
+              <Link
+                href="/fees"
+                className="underline underline-offset-4 hover:text-slate-900"
+              >
+                Every price is set out on the fees page
+              </Link>
+              .
             </p>
             <ul className="mt-4 flex flex-wrap gap-x-5 gap-y-2">
               <li>

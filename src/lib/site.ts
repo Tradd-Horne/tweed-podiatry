@@ -879,6 +879,14 @@ export interface SuburbDef {
   postcode: string;
   /** One true, checkable local detail. Never invented — a wrong local claim reads as fake. */
   note: string;
+  /** Road distance and time from the base in Tweed Heads, from OSRM — not estimated. */
+  drive: { km: number; minutes: number };
+  /** Slugs of the suburbs this one is grouped with on the same day, nearest first. */
+  run: string[];
+  /** Real named places in or beside the suburb, from OpenStreetMap. */
+  landmarks: string[];
+  /** Written for this suburb and no other. The thing that stops the page being a template. */
+  local: string;
   /**
    * A real photograph taken in this suburb. Chosen by matching the file's own title to the
    * suburb, not by proximity: ranking on distance alone put Surfers Paradise on the
@@ -912,8 +920,16 @@ export interface SuburbPhoto {
  * typed from memory.
  */
 export const SUBURBS: SuburbDef[] = [
-  { slug: "tweed-heads", name: "Tweed Heads", postcode: "2485",
+  {
+    slug: "tweed-heads",
+    name: "Tweed Heads",
+    postcode: "2485",
     note: "The base for this practice, so appointments here are the easiest to fit in — often within the same week.",
+    drive: { km: 0.0, minutes: 0 },
+    run: ["coolangatta", "tweed-heads-south", "tweed-heads-west"],
+    landmarks: ["Razorback Hill", "Tom Beatson Lookout", "Taranora Slipways Park"],
+    local:
+      "This is the base, so Tweed Heads is the one suburb with no drive in it at all. Point Danger sits at the top of the hill and Jack Evans Boat Harbour at the bottom, and most of the streets between the two are flat enough to park close to a front door.",
     photo: {
       src: "/img/areas/tweed-heads.webp",
       alt: "Point Danger and the headland, looking north from Tweed Heads",
@@ -921,9 +937,18 @@ export const SUBURBS: SuburbDef[] = [
       license: "CC BY 4.0",
       licenseUrl: "https://creativecommons.org/licenses/by/4.0",
       sourceUrl: "https://commons.wikimedia.org/wiki/File%3APoint_Danger%2C_Queensland_from_Tweed_Heads%2C_New_South_Wales%2C_Australia.jpg",
-    } },
-  { slug: "tweed-heads-south", name: "Tweed Heads South", postcode: "2486",
+    },
+  },
+  {
+    slug: "tweed-heads-south",
+    name: "Tweed Heads South",
+    postcode: "2486",
     note: "Between the Tweed River and the Terranora Broadwater, and part of the same daily run as Tweed Heads itself.",
+    drive: { km: 4.2, minutes: 7 },
+    run: ["banora-point", "tweed-heads", "fingal-head"],
+    landmarks: ["Razorback Hill", "Tom Beatson Lookout", "Taranora Slipways Park"],
+    local:
+      "Tweed Heads South sits between the Tweed River and Terranora Creek, with Razorback Hill behind it. The flat streets near the water are easy to visit; the ones climbing the hill are exactly where a clinic trip stops being worth the trouble.",
     photo: {
       src: "/img/areas/tweed-heads-south.webp",
       alt: "The M1 bridge crossing Terranora Creek at Tweed Heads South",
@@ -931,11 +956,29 @@ export const SUBURBS: SuburbDef[] = [
       license: "CC BY-SA 4.0",
       licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0",
       sourceUrl: "https://commons.wikimedia.org/wiki/File%3APacific_Motorway_bridge_over_Terranora_Creek%2C_Tweed_Heads_South%2C_NSW.jpeg",
-    } },
-  { slug: "tweed-heads-west", name: "Tweed Heads West", postcode: "2485",
-    note: "On the western side of the Terranora Inlet, and covered on the Tweed Heads run." },
-  { slug: "banora-point", name: "Banora Point", postcode: "2486",
+    },
+  },
+  {
+    slug: "tweed-heads-west",
+    name: "Tweed Heads West",
+    postcode: "2485",
+    note: "On the western side of the Terranora Inlet, and covered on the Tweed Heads run.",
+    drive: { km: 5.0, minutes: 8 },
+    run: ["bilambil-heights", "tweed-heads-south", "tweed-heads"],
+    landmarks: ["Taranora Slipways Park", "Pioneer Park", "Boyd Family Park"],
+    local:
+      "Tweed Heads West runs along Terranora Creek with the airport over the back fence. It is a short hop from the base, so a visit here can usually be fitted around whatever else is on that day.",
+  },
+  {
+    slug: "banora-point",
+    name: "Banora Point",
+    postcode: "2486",
     note: "A short drive from Tweed Heads, with a large retired population and several villages I visit regularly.",
+    drive: { km: 6.9, minutes: 11 },
+    run: ["chinderah", "tweed-heads-south", "fingal-head"],
+    landmarks: ["Chambers Lookout", "Oxley Park", "Jenner's Corner Park"],
+    local:
+      "Banora Point spreads back from the Tweed River behind Barneys Point bridge, with Chambers Lookout above it. It has one of the largest retired populations in the shire, and several of the villages here I visit on a regular round.",
     photo: {
       src: "/img/areas/banora-point.webp",
       alt: "Barneys Point bridge crossing the Tweed River at Banora Point",
@@ -943,13 +986,40 @@ export const SUBURBS: SuburbDef[] = [
       license: "CC BY-SA 4.0",
       licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0",
       sourceUrl: "https://commons.wikimedia.org/wiki/File%3ABarneys_Point_bridge_at_Banora_Point.jpg",
-    } },
-  { slug: "terranora", name: "Terranora", postcode: "2486",
-    note: "Hilly and spread out, which is exactly where getting to a clinic is hardest and a home visit earns its keep." },
-  { slug: "bilambil-heights", name: "Bilambil Heights", postcode: "2486",
-    note: "Up in the hills behind Tweed Heads, where steep driveways and internal stairs make a clinic trip the hardest part of the day." },
-  { slug: "chinderah", name: "Chinderah", postcode: "2487",
+    },
+  },
+  {
+    slug: "terranora",
+    name: "Terranora",
+    postcode: "2486",
+    note: "Hilly and spread out, which is exactly where getting to a clinic is hardest and a home visit earns its keep.",
+    drive: { km: 11.0, minutes: 16 },
+    run: ["banora-point", "bilambil-heights", "chinderah"],
+    landmarks: ["Chambers Lookout", "Duroby Creek", "Tweed River"],
+    local:
+      "Terranora sits on the ridge above the Terranora Broadwater, with Duroby Creek running below it. The blocks are large and the driveways are steep, which is the whole argument for a home visit rather than a drive to a clinic.",
+  },
+  {
+    slug: "bilambil-heights",
+    name: "Bilambil Heights",
+    postcode: "2486",
+    note: "Up in the hills behind Tweed Heads, where steep driveways and internal stairs make a clinic trip the hardest part of the day.",
+    drive: { km: 7.7, minutes: 12 },
+    run: ["tweed-heads-west", "terranora", "tweed-heads-south"],
+    landmarks: ["Bilambil Creek", "Duroby Creek", "Prindable Park"],
+    local:
+      "Bilambil Heights is up in the hills behind Tweed Heads, above Bilambil Creek and Duroby Creek. Steep driveways and a flight of internal stairs are common here, and both are far easier for me to walk up than for you to walk down.",
+  },
+  {
+    slug: "chinderah",
+    name: "Chinderah",
+    postcode: "2487",
     note: "On the river between the highway and the coast, and covered on the way south to Kingscliff.",
+    drive: { km: 8.2, minutes: 10 },
+    run: ["banora-point", "kingscliff", "fingal-head"],
+    landmarks: ["Oxley Park", "Jenner's Corner Park", "Dreamtime Beach"],
+    local:
+      "Chinderah sits on the southern bank of the Tweed beside the motorway bridge, with the old bridge kept alongside it. It is on the way to everything south of the river, so it is one of the easiest bookings to place.",
     photo: {
       src: "/img/areas/chinderah.webp",
       alt: "The southern bank of the Tweed River at Chinderah",
@@ -957,9 +1027,18 @@ export const SUBURBS: SuburbDef[] = [
       license: "CC BY-SA 4.0",
       licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0",
       sourceUrl: "https://commons.wikimedia.org/wiki/File%3ASouthern_bank_Tweed_River_at_Chinderah%2C_New_South_Wales.jpg",
-    } },
-  { slug: "fingal-head", name: "Fingal Head", postcode: "2487",
+    },
+  },
+  {
+    slug: "fingal-head",
+    name: "Fingal Head",
+    postcode: "2487",
     note: "Out on the headland past Chinderah, grouped with the Kingscliff run.",
+    drive: { km: 10.0, minutes: 13 },
+    run: ["tweed-heads-south", "chinderah", "banora-point"],
+    landmarks: ["Dreamtime Beach", "Tweed River", "Lake Kimberley"],
+    local:
+      "Fingal Head is the headland south of the river mouth, with the lighthouse on the point, Cook Island offshore and Dreamtime Beach below. It is a short run out from Chinderah and gets grouped with the Kingscliff day.",
     photo: {
       src: "/img/areas/fingal-head.webp",
       alt: "The white lighthouse on the headland at Fingal Head, framed by pandanus",
@@ -967,9 +1046,18 @@ export const SUBURBS: SuburbDef[] = [
       license: "CC BY-SA 4.0",
       licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0",
       sourceUrl: "https://commons.wikimedia.org/wiki/File%3AFingal_Head_Lighthouse%2C_Fingal_Head%2C_New_South_Wales_02.jpg",
-    } },
-  { slug: "cudgen", name: "Cudgen", postcode: "2487",
+    },
+  },
+  {
+    slug: "cudgen",
+    name: "Cudgen",
+    postcode: "2487",
     note: "On the red soil ridge behind Kingscliff, and covered on the same coastal run.",
+    drive: { km: 14.1, minutes: 16 },
+    run: ["casuarina", "kingscliff", "chinderah"],
+    landmarks: ["Cudgen Creek", "Michael Palmer Park", "Jack Julius Park"],
+    local:
+      "Cudgen is the red soil country on the ridge behind Kingscliff, with Cudgen Creek running down past it to the sea. It is farmland and acreage rather than streets, so a home visit saves a longer trip than the map suggests.",
     photo: {
       src: "/img/areas/cudgen.webp",
       alt: "The road bridge over Cudgen Creek at Cudgen",
@@ -977,9 +1065,18 @@ export const SUBURBS: SuburbDef[] = [
       license: "CC BY-SA 4.0",
       licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0",
       sourceUrl: "https://commons.wikimedia.org/wiki/File%3ACudgen_Creek_Bridge%2C_Cudgen%2C_New_South_Wales_02.jpg",
-    } },
-  { slug: "kingscliff", name: "Kingscliff", postcode: "2487",
+    },
+  },
+  {
+    slug: "kingscliff",
+    name: "Kingscliff",
+    postcode: "2487",
     note: "Visited on a set run down the coast road, so Kingscliff appointments usually sit together on the same day.",
+    drive: { km: 14.2, minutes: 16 },
+    run: ["cudgen", "chinderah", "casuarina"],
+    landmarks: ["Ed Parker Rotary Park", "Harry Hansen Park", "Dreamtime Beach"],
+    local:
+      "Kingscliff is built along Cudgen Creek and the beach, with the boardwalk running between the two and the surf club up on Cudgen Headland. It is the busiest stop on the coastal run and usually has several visits on the same day.",
     photo: {
       src: "/img/areas/kingscliff.webp",
       alt: "The timber boardwalk along Cudgen Creek at Kingscliff",
@@ -987,9 +1084,18 @@ export const SUBURBS: SuburbDef[] = [
       license: "CC BY-SA 4.0",
       licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0",
       sourceUrl: "https://commons.wikimedia.org/wiki/File%3ACudgen_Creek_Boardwalk%2C_Kingscliff%2C_New_South_Wales_01.jpg",
-    } },
-  { slug: "casuarina", name: "Casuarina", postcode: "2487",
+    },
+  },
+  {
+    slug: "casuarina",
+    name: "Casuarina",
+    postcode: "2487",
     note: "Between Kingscliff and Cabarita on the coast road, so it sits in the middle of the same run.",
+    drive: { km: 16.6, minutes: 19 },
+    run: ["cudgen", "kingscliff", "cabarita-beach"],
+    landmarks: ["Salt Central Park", "Cudgen Creek", "South Kingscliff Beach"],
+    local:
+      "Casuarina sits between Cudgen Creek and Cabarita, with a long open beach and very little between the houses and the sand. It falls in the middle of the coast road run, so it is easy to place either side of Kingscliff.",
     photo: {
       src: "/img/areas/casuarina.webp",
       alt: "The wide open beach at Casuarina under a cloudy sky",
@@ -997,9 +1103,18 @@ export const SUBURBS: SuburbDef[] = [
       license: "CC BY-SA 4.0",
       licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0",
       sourceUrl: "https://commons.wikimedia.org/wiki/File%3ABeach_in_Casuarina%2C_New_South_Wales_03.jpg",
-    } },
-  { slug: "cabarita-beach", name: "Cabarita Beach", postcode: "2488",
+    },
+  },
+  {
+    slug: "cabarita-beach",
+    name: "Cabarita Beach",
+    postcode: "2488",
     note: "Grouped with the Kingscliff and Pottsville coastal run. Bogangar is the same locality and is covered with it.",
+    drive: { km: 19.4, minutes: 21 },
+    run: ["hastings-point", "casuarina", "pottsville"],
+    landmarks: ["Round Mountain", "Norries Headland", "Norries Hill Park"],
+    local:
+      "Cabarita Beach sits under Norries Headland, with Maggies Beach on one side and Round Mountain behind. The headland walk is the best view on this stretch of coast, and it is also the reason so many people here are on their feet daily.",
     photo: {
       src: "/img/areas/cabarita-beach.webp",
       alt: "Cabarita Beach seen from the grass on Norries Head, looking south",
@@ -1007,9 +1122,18 @@ export const SUBURBS: SuburbDef[] = [
       license: "CC BY-SA 3.0",
       licenseUrl: "https://creativecommons.org/licenses/by-sa/3.0",
       sourceUrl: "https://commons.wikimedia.org/wiki/File%3ACabarita_Beach_-_panoramio.jpg",
-    } },
-  { slug: "hastings-point", name: "Hastings Point", postcode: "2489",
+    },
+  },
+  {
+    slug: "hastings-point",
+    name: "Hastings Point",
+    postcode: "2489",
     note: "Between Cabarita Beach and Pottsville on the coast road, and grouped with both.",
+    drive: { km: 23.5, minutes: 26 },
+    run: ["pottsville", "cabarita-beach", "casuarina"],
+    landmarks: ["Hastings Point Headland", "Melaluca Wetlands", "Cudgera Creek Park"],
+    local:
+      "Hastings Point is the headland where Cudgera Creek meets the sea, with the rock shelf below it. It is a small place, so visits here are almost always grouped with Pottsville or Cabarita on the same day.",
     photo: {
       src: "/img/areas/hastings-point.webp",
       alt: "The rock shelf and headland at Hastings Point",
@@ -1017,11 +1141,29 @@ export const SUBURBS: SuburbDef[] = [
       license: "CC BY-SA 4.0",
       licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0",
       sourceUrl: "https://commons.wikimedia.org/wiki/File%3AHastings_Headland.jpg",
-    } },
-  { slug: "pottsville", name: "Pottsville", postcode: "2489",
-    note: "At the southern end of the coastal run, so Pottsville visits are grouped onto particular days." },
-  { slug: "murwillumbah", name: "Murwillumbah", postcode: "2484",
+    },
+  },
+  {
+    slug: "pottsville",
+    name: "Pottsville",
+    postcode: "2489",
+    note: "At the southern end of the coastal run, so Pottsville visits are grouped onto particular days.",
+    drive: { km: 31.5, minutes: 27 },
+    run: ["hastings-point", "cabarita-beach", "burringbar"],
+    landmarks: ["Christies Creek", "Cudgera Creek", "Mooball Creek"],
+    local:
+      "Pottsville sits between Mooball Creek and Christies Creek at the southern end of the coast road. It is the last coastal stop before the run turns inland, so it is booked on set days rather than on demand.",
+  },
+  {
+    slug: "murwillumbah",
+    name: "Murwillumbah",
+    postcode: "2484",
     note: "Inland from the coast, and covered on the same day as the surrounding valley.",
+    drive: { km: 30.4, minutes: 28 },
+    run: ["uki", "burringbar", "terranora"],
+    landmarks: ["Lion's Lookout", "Murwillumbah Lookout", "Rous River"],
+    local:
+      "Murwillumbah sits where the Rous River meets the Tweed, under Wollumbin, with Knox Park in the middle of town. It is the biggest town in the valley and the natural anchor for a day spent inland rather than on the coast.",
     photo: {
       src: "/img/areas/murwillumbah.webp",
       alt: "Horses being ridden down the main street of Murwillumbah",
@@ -1029,9 +1171,18 @@ export const SUBURBS: SuburbDef[] = [
       license: "CC0",
       licenseUrl: "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
       sourceUrl: "https://commons.wikimedia.org/wiki/File%3AHorses_on_the_streets_of_Murwillumbah.jpg",
-    } },
-  { slug: "uki", name: "Uki", postcode: "2484",
+    },
+  },
+  {
+    slug: "uki",
+    name: "Uki",
+    postcode: "2484",
     note: "In the valley under Wollumbin, and covered on the same day as Murwillumbah.",
+    drive: { km: 44.9, minutes: 44 },
+    run: ["murwillumbah", "burringbar", "mullumbimby"],
+    landmarks: ["Tweed River", "Sweetnam Park", "Gerald Parker Park"],
+    local:
+      "Uki is a single row of shops under Wollumbin on the upper Tweed River. It is the furthest regular stop in the valley, so a visit here is planned rather than squeezed in.",
     photo: {
       src: "/img/areas/uki.webp",
       alt: "The shopfronts of Uki village with Wollumbin behind them",
@@ -1039,9 +1190,18 @@ export const SUBURBS: SuburbDef[] = [
       license: "CC BY 4.0",
       licenseUrl: "https://creativecommons.org/licenses/by/4.0",
       sourceUrl: "https://commons.wikimedia.org/wiki/File%3AUki-Nov_2025-8.jpg",
-    } },
-  { slug: "burringbar", name: "Burringbar", postcode: "2483",
+    },
+  },
+  {
+    slug: "burringbar",
+    name: "Burringbar",
+    postcode: "2483",
     note: "On the Tweed Valley Way between Mooball and Stokers Siding, and close to the centre of the area I cover.",
+    drive: { km: 41.8, minutes: 37 },
+    run: ["pottsville", "ocean-shores", "hastings-point"],
+    landmarks: ["Masterson Park", "Mooball Lagoon", "Quinn Family Park"],
+    local:
+      "Burringbar is a short strip of shops on the Tweed Valley Way, between Mooball and Stokers Siding, with the Burringbar Range behind it. It sits almost exactly in the middle of the area I cover, which makes it a useful place to break a long day.",
     photo: {
       src: "/img/areas/burringbar.webp",
       alt: "The Broadway shops in Burringbar village",
@@ -1049,9 +1209,18 @@ export const SUBURBS: SuburbDef[] = [
       license: "CC BY 4.0",
       licenseUrl: "https://creativecommons.org/licenses/by/4.0",
       sourceUrl: "https://commons.wikimedia.org/wiki/File%3ABurringbar_Broadway_Aug_2024.jpg",
-    } },
-  { slug: "ocean-shores", name: "Ocean Shores", postcode: "2483",
+    },
+  },
+  {
+    slug: "ocean-shores",
+    name: "Ocean Shores",
+    postcode: "2483",
     note: "At the southern end of the area, above Brunswick Heads, and grouped with it.",
+    drive: { km: 45.2, minutes: 37 },
+    run: ["brunswick-heads", "mullumbimby", "burringbar"],
+    landmarks: ["Richardson Lions Lookout", "Brunswick River", "Banner Park"],
+    local:
+      "Ocean Shores climbs the hill above the Brunswick River, with Richardson Lions Lookout at the top. The hilly blocks are the ones where getting to an appointment is hardest, which is most of them.",
     photo: {
       src: "/img/areas/ocean-shores.webp",
       alt: "The beach at Ocean Shores looking along the sand",
@@ -1059,9 +1228,18 @@ export const SUBURBS: SuburbDef[] = [
       license: "CC BY-SA 3.0",
       licenseUrl: "https://creativecommons.org/licenses/by-sa/3.0",
       sourceUrl: "https://commons.wikimedia.org/wiki/File%3ABeach%2C_Ocean_Shores%2C_NSW_2014.jpg",
-    } },
-  { slug: "brunswick-heads", name: "Brunswick Heads", postcode: "2483",
+    },
+  },
+  {
+    slug: "brunswick-heads",
+    name: "Brunswick Heads",
+    postcode: "2483",
     note: "The southern edge of the run, visited on the same day as Ocean Shores and Mullumbimby.",
+    drive: { km: 47.7, minutes: 39 },
+    run: ["ocean-shores", "mullumbimby", "burringbar"],
+    landmarks: ["Richardson Lions Lookout", "Brunswick River", "Banner Park"],
+    local:
+      "Brunswick Heads is built around the river mouth and the boat harbour, and it is the southern edge of the area. Visits here are grouped with Ocean Shores and Mullumbimby so the drive is worth making.",
     photo: {
       src: "/img/areas/brunswick-heads.webp",
       alt: "The Brunswick River at Brunswick Heads",
@@ -1069,9 +1247,18 @@ export const SUBURBS: SuburbDef[] = [
       license: "CC BY 4.0",
       licenseUrl: "https://creativecommons.org/licenses/by/4.0",
       sourceUrl: "https://commons.wikimedia.org/wiki/File%3ABrunswick_River%2C_Brunswick_Heads%2C_NSW.jpg",
-    } },
-  { slug: "mullumbimby", name: "Mullumbimby", postcode: "2482",
+    },
+  },
+  {
+    slug: "mullumbimby",
+    name: "Mullumbimby",
+    postcode: "2482",
     note: "Inland from Brunswick Heads, and covered on the same southern run.",
+    drive: { km: 56.0, minutes: 46 },
+    run: ["brunswick-heads", "ocean-shores", "burringbar"],
+    landmarks: ["Brunswick River", "Brunswick Valley Heritage Park"],
+    local:
+      "Mullumbimby sits inland from Brunswick Heads on the Brunswick River, with the shops along Burringbar Street. It is the furthest point south I visit regularly, and it is always booked on the same day as the other Brunswick Valley stops.",
     photo: {
       src: "/img/areas/mullumbimby.webp",
       alt: "Burringbar Street, the main street of Mullumbimby",
@@ -1079,9 +1266,18 @@ export const SUBURBS: SuburbDef[] = [
       license: "CC BY-SA 3.0",
       licenseUrl: "https://creativecommons.org/licenses/by-sa/3.0",
       sourceUrl: "https://commons.wikimedia.org/wiki/File%3ABurringbar_Street%2C_Mullumbimby%2C_NSW_2014.jpg",
-    } },
-  { slug: "coolangatta", name: "Coolangatta", postcode: "4225",
+    },
+  },
+  {
+    slug: "coolangatta",
+    name: "Coolangatta",
+    postcode: "4225",
     note: "Just over the border, and close enough to Tweed Heads that it is part of the standard run.",
+    drive: { km: 1.5, minutes: 4 },
+    run: ["tweed-heads", "tweed-heads-south", "tweed-heads-west"],
+    landmarks: ["Razorback Hill", "Tom Beatson Lookout", "Coolangatta Beach"],
+    local:
+      "Coolangatta is over the border but closer to my door than most of the New South Wales suburbs I visit. Greenmount, Kirra and Rainbow Bay are all within a couple of minutes of each other, which makes a morning here easy to fill.",
     photo: {
       src: "/img/areas/coolangatta.webp",
       alt: "Surfers on Coolangatta Beach with the Gold Coast towers in the distance",
@@ -1089,9 +1285,18 @@ export const SUBURBS: SuburbDef[] = [
       license: "CC0",
       licenseUrl: "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
       sourceUrl: "https://commons.wikimedia.org/wiki/File%3ACoolangatta_Beach_with_Goldcoast_skyline.jpg",
-    } },
-  { slug: "tugun", name: "Tugun", postcode: "4224",
+    },
+  },
+  {
+    slug: "tugun",
+    name: "Tugun",
+    postcode: "4224",
     note: "The northern edge of the area, a short run up the coast from Coolangatta.",
+    drive: { km: 6.9, minutes: 11 },
+    run: ["tweed-heads-west", "coolangatta", "tweed-heads"],
+    landmarks: ["Alf and Kathleen Neumann lookout", "Tugun Hill", "Woodgee Hill"],
+    local:
+      "Tugun is the northern edge of the area, tucked between the airport and Currumbin with Tugun Hill behind it. Being at the edge, it is best booked on a day I am already heading north.",
     photo: {
       src: "/img/areas/tugun.webp",
       alt: "Wet sand and shallow surf at sunrise on Tugun Beach",
@@ -1099,7 +1304,8 @@ export const SUBURBS: SuburbDef[] = [
       license: "CC BY-SA 2.0",
       licenseUrl: "https://creativecommons.org/licenses/by-sa/2.0",
       sourceUrl: "https://commons.wikimedia.org/wiki/File%3ATugun_Beach_Sunrise_Reflections-1and_%284587430211%29.jpg",
-    } },
+    },
+  },
 ];
 
 /**
