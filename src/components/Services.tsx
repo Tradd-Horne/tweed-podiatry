@@ -162,9 +162,6 @@ export function Services() {
                   />
                 </div>
               )}
-              <div className="w-12 h-12 flex items-center justify-center bg-gray-50 text-[#1e3a5f] mb-4">
-                {service.icon}
-              </div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">
                 {service.title}
               </h3>
