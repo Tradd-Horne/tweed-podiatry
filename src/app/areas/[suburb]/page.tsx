@@ -89,10 +89,12 @@ export default function SuburbPage({
               What a visit in {suburb.name} covers
             </h2>
             <p className="mt-3 leading-relaxed text-slate-700">
-              Nails cut and thinned, corns and hard skin removed, circulation and
-              sensation checked, and footwear looked at if it is causing trouble.
-              About forty-five minutes, at your kitchen table, with everything
-              needed brought along.
+              A full assessment comes first: pulses and circulation, sensation and
+              nerve function, skin and nail condition, and how the foot is loading
+              when you walk. Then the treatment — thickened nails reduced, corns and
+              hard skin removed, pressure points relieved — and a look at your
+              footwear if it is working against you. All of it in the comfort of your
+              own home, with everything needed brought along.
             </p>
           </section>
 

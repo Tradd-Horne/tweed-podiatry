@@ -12,7 +12,7 @@ const services = [
   {
     title: "General Foot Care",
     description:
-      "Routine nail care, callus and corn removal, and comprehensive foot health assessments.",
+      "A full foot health assessment — circulation, sensation, skin and nails — then the nail care, callus and corn treatment that follows from it.",
     icon: (
       <svg
         className="w-6 h-6"

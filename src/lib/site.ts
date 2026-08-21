@@ -40,8 +40,8 @@ export const SITE = {
  * above clinic rates and below the top of the home-visit range.
  */
 export const FEES = {
-  initial: { label: "First home visit (up to 45 minutes)", price: 170 },
-  followUp: { label: "Follow-up home visit (up to 30 minutes)", price: 150 },
+  initial: { label: "First home visit", price: 170 },
+  followUp: { label: "Follow-up home visit", price: 150 },
   nailSurgery: {
     label: "Nail surgery at home (includes two follow-up visits)",
     price: 500,
@@ -220,11 +220,11 @@ export const SERVICE_PAGES: PageDef[] = [
       "A registered podiatrist who comes to your home in Tweed Heads. Nail care, corns, callus, diabetic foot checks. Home Care Package, DVA and NDIS welcome.",
     h1: "Home visit podiatrist in Tweed Heads",
     intro:
-      "If getting to a clinic has become hard work, the podiatry can come to you. I treat people in their own homes across Tweed Heads and the surrounding suburbs — the same care you would get in a clinic, at your kitchen table, without the parking, the stairs or the wait.",
+      "If getting to a clinic has become hard work, the podiatry can come to you. I treat people in their own homes across Tweed Heads and the surrounding suburbs — the same assessment and the same treatment you would get in a clinic, in the comfort of your own home, without the parking, the stairs or the wait.",
     sections: [
       {
         heading: "What a home visit involves",
-        body: "A visit takes about 45 minutes. I bring everything: sterile instruments, a portable chair if you need one, and a drill for thickened nails. We talk about what is bothering you, I check circulation and sensation, treat the nails, corns and callus, and leave you with the feet comfortable and a plan for next time.",
+        body: "We start with the assessment, not the nail clippers. I check pulses and circulation, test sensation, look at the skin and nails, and watch how the foot is loading. The treatment follows from what that shows — nails reduced, corns and callus cleared, pressure relieved — and I leave you with the feet comfortable and a plan for next time. I bring everything: sterile instruments, a nail drill for thickened nails, and a portable chair if there is nowhere suitable to sit.",
       },
       {
         heading: "Who this suits",
@@ -372,8 +372,8 @@ export const FUNDING_PAGES: PageDef[] = [
         "Podiatry is a clinical support. Under Support at Home the government funds clinical supports in full, so there is no contribution from you for the visit itself.",
       funderLabel: "Your budget pays",
       rows: [
-        { service: "First home visit (up to 45 minutes)", fee: "Invoiced to your provider", funder: "In full", youPay: "$0" },
-        { service: "Follow-up home visit (up to 30 minutes)", fee: "Invoiced to your provider", funder: "In full", youPay: "$0" },
+        { service: FEES.initial.label, fee: "Invoiced to your provider", funder: "In full", youPay: "$0" },
+        { service: FEES.followUp.label, fee: "Invoiced to your provider", funder: "In full", youPay: "$0" },
         { service: "Travel inside the standard visiting area", fee: "Included", funder: "Included", youPay: "$0" },
       ],
       notes: [
@@ -633,8 +633,8 @@ export const FUNDING_PAGES: PageDef[] = [
         "These are my fees. What your fund pays depends on your policy, so ring them with the item number and ask.",
       funderLabel: "Your fund pays",
       rows: [
-        { service: "First home visit (up to 45 minutes)", item: "023 or 024", fee: `$${FEES.initial.price}`, funder: "Ask your fund", youPay: `$${FEES.initial.price} less your rebate` },
-        { service: "Follow-up home visit (up to 30 minutes)", item: "033 or 034", fee: `$${FEES.followUp.price}`, funder: "Ask your fund", youPay: `$${FEES.followUp.price} less your rebate` },
+        { service: FEES.initial.label, item: "023 or 024", fee: `$${FEES.initial.price}`, funder: "Ask your fund", youPay: `$${FEES.initial.price} less your rebate` },
+        { service: FEES.followUp.label, item: "033 or 034", fee: `$${FEES.followUp.price}`, funder: "Ask your fund", youPay: `$${FEES.followUp.price} less your rebate` },
         { service: "Nail surgery at home — includes two follow-ups", item: "546 / 547", fee: `$${FEES.nailSurgery.price}`, funder: "Ask your fund", youPay: `$${FEES.nailSurgery.price} less your rebate` },
         { service: "Custom orthotics, pair", item: "221", fee: `$${FEES.orthotics.price}`, funder: "Ask your fund", youPay: `$${FEES.orthotics.price} less your rebate` },
         { service: "Travel outside the standard area, per 15 minutes", item: "550", fee: "Quoted before you book", funder: "Not all funds pay this", youPay: "The balance" },
@@ -663,11 +663,11 @@ export const FUNDING_PAGES: PageDef[] = [
     sections: [
       {
         heading: "What a first visit includes",
-        body: "About 45 minutes. I bring sterile instruments, a nail drill for thickened nails, dressings and a portable chair if there is nowhere suitable to sit. We go through your history, I check circulation and sensation, treat the nails, corns and callus, and leave you with a plan for next time.",
+        body: "A full foot assessment: your history, pulses and circulation, sensation and nerve function, the condition of the skin and nails, and how you are walking. The treatment follows from that — nails reduced, corns and callus cleared, pressure points relieved — and you finish with a plan for next time. I bring sterile instruments, a nail drill for thickened nails, dressings and a portable chair if there is nowhere suitable to sit.",
       },
       {
         heading: "What a follow-up includes",
-        body: "About 30 minutes of the same treatment, without the full assessment. Most people on routine nail and skin care come back every six to eight weeks. I will tell you what suits your feet rather than sell you a schedule.",
+        body: "The same treatment, with a shorter check rather than the full assessment — unless something has changed, in which case we do the assessment again. Most people on routine nail and skin care come back every six to eight weeks. I will tell you what suits your feet rather than sell you a schedule.",
       },
       {
         heading: "Travel outside the standard area",
@@ -701,8 +701,8 @@ export const FUNDING_PAGES: PageDef[] = [
       intro:
         "Every price here is the whole price. There is no booking fee, no call-out fee inside the standard area, and no charge for the equipment I bring.",
       rows: [
-        { service: "First home visit (up to 45 minutes)", fee: `$${FEES.initial.price}`, youPay: `$${FEES.initial.price}` },
-        { service: "Follow-up home visit (up to 30 minutes)", fee: `$${FEES.followUp.price}`, youPay: `$${FEES.followUp.price}` },
+        { service: FEES.initial.label, fee: `$${FEES.initial.price}`, youPay: `$${FEES.initial.price}` },
+        { service: FEES.followUp.label, fee: `$${FEES.followUp.price}`, youPay: `$${FEES.followUp.price}` },
         { service: "Nail surgery at home — includes two follow-up visits", fee: `$${FEES.nailSurgery.price}`, youPay: `$${FEES.nailSurgery.price}` },
         { service: "Custom orthotics, pair", fee: `$${FEES.orthotics.price}`, youPay: `$${FEES.orthotics.price}` },
         { service: "Travel outside the standard visiting area", fee: "Per kilometre", youPay: "Quoted before you book" },
@@ -837,7 +837,7 @@ export const PROBLEM_PAGES: PageDef[] = [
     sections: [
       {
         heading: "What the check involves",
-        body: "Pulses and circulation, sensation tested with a monofilament, skin and nail condition, footwear, and any pressure areas that could become ulcers. It takes about twenty minutes and you get a clear answer on your risk level.",
+        body: "Pulses and circulation, sensation tested with a monofilament, skin and nail condition, footwear, and any pressure areas that could become ulcers. You finish with a clear answer on your risk level and what to watch for.",
       },
       {
         heading: "Why the nails matter",

@@ -53,9 +53,9 @@ export function Hero() {
               Professional podiatry at your doorstep
             </h1>
             <p className="text-lg sm:text-xl text-blue-50/90 leading-relaxed mb-8 max-w-xl">
-              Expert foot care delivered to your home across Tweed Heads, the Northern
-              Rivers and Northern NSW. The same care you would get in a clinic, at your
-              kitchen table, without the travel.
+              A full foot assessment and treatment delivered to your home across Tweed
+              Heads, the Northern Rivers and Northern NSW. The same care you would get
+              in a clinic, in the comfort of your own home, without the travel.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
