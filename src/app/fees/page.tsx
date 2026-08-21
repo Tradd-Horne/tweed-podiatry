@@ -90,8 +90,6 @@ export default function FeesPage() {
             </p>
           </div>
 
-          <FeesComparison />
-
           <h2 className="mt-12 text-xl font-semibold text-slate-900">
             The detail, one route at a time
           </h2>
@@ -149,6 +147,38 @@ export default function FeesPage() {
                 </div>
               </details>
             ))}
+
+            {/* The comparison sits last, under Home Care Package, because it only makes
+                sense once the reader knows which routes exist. Same <details> mechanics
+                as the six above it. */}
+            <details id="comparison" className="group scroll-mt-24 py-4">
+              <summary className="flex cursor-pointer list-none items-center gap-4">
+                <Image
+                  src="/logos/comparison.svg"
+                  alt=""
+                  width={72}
+                  height={34}
+                  className="h-8 w-[4.5rem] shrink-0 object-contain"
+                />
+                <h2 className="flex-1 text-lg font-semibold text-slate-900">
+                  Compare every option
+                </h2>
+                <svg
+                  className="h-5 w-5 shrink-0 text-slate-400 transition-transform group-open:rotate-180"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                  aria-hidden="true"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 8l5 5 5-5" />
+                </svg>
+              </summary>
+
+              <div className="mt-4">
+                <FeesComparison hideHeading />
+              </div>
+            </details>
           </div>
 
           <aside className="mt-12 rounded-xl bg-slate-50 p-6 ring-1 ring-slate-200">

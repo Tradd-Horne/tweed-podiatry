@@ -12,15 +12,20 @@ import { ELIGIBILITY_NOTICE, FEE_COMPARISON } from "@/lib/site";
  * Six funder columns will not fit a phone, so the table scrolls inside its own container.
  * The page body must not scroll sideways, and the service column stays put while it does.
  */
-export function FeesComparison() {
+export function FeesComparison({ hideHeading = false }: { hideHeading?: boolean }) {
   return (
-    <section className="mt-8" aria-labelledby="compare-heading">
-      <h2 id="compare-heading" className="text-xl font-semibold text-slate-900">
-        Every option, side by side
-      </h2>
-      <p className="mt-2 text-sm leading-relaxed text-slate-700">
-        What you pay under each route. Open the matching section below for the item
-        numbers and the conditions.
+    <section
+      className={hideHeading ? "" : "mt-8"}
+      aria-labelledby={hideHeading ? undefined : "compare-heading"}
+    >
+      {!hideHeading && (
+        <h2 id="compare-heading" className="text-xl font-semibold text-slate-900">
+          Every option, side by side
+        </h2>
+      )}
+      <p className={`text-sm leading-relaxed text-slate-700 ${hideHeading ? "" : "mt-2"}`}>
+        What you pay under each route. The sections above carry the item numbers and
+        the conditions behind each figure.
       </p>
 
       {/* Seven columns do not fit the 3xl prose measure, so on a wide screen the table
