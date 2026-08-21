@@ -4,7 +4,7 @@ const fundingOptions = [
   {
     name: "Medicare",
     description: "Eligible services covered under Medicare CDM plans",
-    logo: "/logos/medicare.png",
+    logo: "/logos/medicare.webp",
   },
   {
     name: "NDIS",
@@ -14,17 +14,17 @@ const fundingOptions = [
   {
     name: "DVA",
     description: "Department of Veterans' Affairs accepted",
-    logo: "/logos/dva.png",
+    logo: "/logos/dva.webp",
   },
   {
     name: "HICAPS",
     description: "Claim on the spot with your health fund",
-    logo: "/logos/hicaps.png",
+    logo: "/logos/hicaps.webp",
   },
   {
     name: "Medipass",
     description: "Digital health claims processing",
-    logo: "/logos/medipass.png",
+    logo: "/logos/medipass.webp",
   },
 ];
 
