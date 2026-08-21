@@ -881,24 +881,88 @@ export interface SuburbDef {
   note: string;
 }
 
+/**
+ * Suburbs with a page of their own — the places people actually type into a search.
+ *
+ * Deliberately about twenty and not the 175 named localities inside the radius. Dozens of
+ * near-identical suburb pages is the doorway-page pattern, and Google demotes the whole
+ * site for it. The rest are named in EXTRA_LOCALITIES on the areas page instead, which
+ * answers "do you come to my street?" without manufacturing thin pages.
+ *
+ * Coordinates and postcodes were geocoded against OpenStreetMap on 21 August 2026, not
+ * typed from memory.
+ */
 export const SUBURBS: SuburbDef[] = [
   { slug: "tweed-heads", name: "Tweed Heads", postcode: "2485",
     note: "The base for this practice, so appointments here are the easiest to fit in — often within the same week." },
+  { slug: "tweed-heads-south", name: "Tweed Heads South", postcode: "2486",
+    note: "Between the Tweed River and the Terranora Broadwater, and part of the same daily run as Tweed Heads itself." },
+  { slug: "tweed-heads-west", name: "Tweed Heads West", postcode: "2485",
+    note: "On the western side of the Terranora Inlet, and covered on the Tweed Heads run." },
   { slug: "banora-point", name: "Banora Point", postcode: "2486",
     note: "A short drive from Tweed Heads, with a large retired population and several villages I visit regularly." },
-  { slug: "kingscliff", name: "Kingscliff", postcode: "2487",
-    note: "Visited on a set run down the coast road, so Kingscliff appointments usually sit together on the same day." },
-  { slug: "coolangatta", name: "Coolangatta", postcode: "4225",
-    note: "Just over the border, and close enough to Tweed Heads that it is part of the standard run." },
   { slug: "terranora", name: "Terranora", postcode: "2486",
     note: "Hilly and spread out, which is exactly where getting to a clinic is hardest and a home visit earns its keep." },
-  { slug: "pottsville", name: "Pottsville", postcode: "2489",
-    note: "At the southern end of the run, so Pottsville visits are grouped onto particular days." },
+  { slug: "bilambil-heights", name: "Bilambil Heights", postcode: "2486",
+    note: "Up in the hills behind Tweed Heads, where steep driveways and internal stairs make a clinic trip the hardest part of the day." },
+  { slug: "chinderah", name: "Chinderah", postcode: "2487",
+    note: "On the river between the highway and the coast, and covered on the way south to Kingscliff." },
+  { slug: "fingal-head", name: "Fingal Head", postcode: "2487",
+    note: "Out on the headland past Chinderah, grouped with the Kingscliff run." },
+  { slug: "cudgen", name: "Cudgen", postcode: "2487",
+    note: "On the red soil ridge behind Kingscliff, and covered on the same coastal run." },
+  { slug: "kingscliff", name: "Kingscliff", postcode: "2487",
+    note: "Visited on a set run down the coast road, so Kingscliff appointments usually sit together on the same day." },
+  { slug: "casuarina", name: "Casuarina", postcode: "2487",
+    note: "Between Kingscliff and Cabarita on the coast road, so it sits in the middle of the same run." },
   { slug: "cabarita-beach", name: "Cabarita Beach", postcode: "2488",
-    note: "Grouped with the Kingscliff and Pottsville coastal run." },
+    note: "Grouped with the Kingscliff and Pottsville coastal run. Bogangar is the same locality and is covered with it." },
+  { slug: "hastings-point", name: "Hastings Point", postcode: "2489",
+    note: "Between Cabarita Beach and Pottsville on the coast road, and grouped with both." },
+  { slug: "pottsville", name: "Pottsville", postcode: "2489",
+    note: "At the southern end of the coastal run, so Pottsville visits are grouped onto particular days." },
   { slug: "murwillumbah", name: "Murwillumbah", postcode: "2484",
     note: "Inland from the coast, and covered on the same day as the surrounding valley." },
+  { slug: "uki", name: "Uki", postcode: "2484",
+    note: "In the valley under Wollumbin, and covered on the same day as Murwillumbah." },
+  { slug: "burringbar", name: "Burringbar", postcode: "2483",
+    note: "On the Tweed Valley Way between Mooball and Stokers Siding, and close to the centre of the area I cover." },
+  { slug: "ocean-shores", name: "Ocean Shores", postcode: "2483",
+    note: "At the southern end of the area, above Brunswick Heads, and grouped with it." },
+  { slug: "brunswick-heads", name: "Brunswick Heads", postcode: "2483",
+    note: "The southern edge of the run, visited on the same day as Ocean Shores and Mullumbimby." },
+  { slug: "mullumbimby", name: "Mullumbimby", postcode: "2482",
+    note: "Inland from Brunswick Heads, and covered on the same southern run." },
+  { slug: "coolangatta", name: "Coolangatta", postcode: "4225",
+    note: "Just over the border, and close enough to Tweed Heads that it is part of the standard run." },
+  { slug: "tugun", name: "Tugun", postcode: "4224",
+    note: "The northern edge of the area, a short run up the coast from Coolangatta." },
 ];
+
+/**
+ * Every other named locality within 26 km of Burringbar, from OpenStreetMap. Listed as
+ * plain text on the areas page: no page, no link, no thin content — just an answer.
+ */
+export const EXTRA_LOCALITIES: string[] = [
+  "Bilambil", "Billinudgel", "Bray Park", "Bungalora", "Byangum",
+  "Byrrill Creek", "Carool", "Cedar Creek", "Chillingham", "Chowan Creek",
+  "Clothiers Creek", "Cobaki", "Commissioners Creek", "Condong", "Coorabell",
+  "Crabbes Creek", "Crystal Creek", "Cudgera Creek", "Doon Doon", "Dulguigan",
+  "Dum Dum", "Dunbible", "Dungay", "Duranbah", "Duroby",
+  "Durrumbul", "Eungella", "Eviron", "Farrants Hill", "Fernvale",
+  "Glen Warning", "Glengarrie", "Goonengerry", "Huonbrook", "Kielvale",
+  "Kings Forest", "Kunghur", "Kunghur Creek", "Kynnumboon", "Main Arm",
+  "Middle Pocket", "Midginbil", "Montecollum", "Mooball", "Mullumbimby Creek",
+  "Myocum", "New Brighton", "Nobbys Creek", "North Arm", "North Tumbulgum",
+  "Nunderi", "Palmvale", "Palmwoods", "Piggabeen", "Repentance Creek",
+  "Reserve Creek", "Round Mountain", "Rowlands Creek", "Salt", "Sleepy Hollow",
+  "Smiths Creek", "South Golden Beach", "South Murwillumbah", "Stokers Siding", "Stotts Creek",
+  "Tanglewood", "Terragon", "The Pocket", "Tomewin", "Tumbulgum",
+  "Tyagarah", "Tygalgah", "Upper Bilambil", "Upper Coopers Creek", "Upper Crystal Creek",
+  "Upper Dungay", "Upper Duroby", "Upper Main Arm", "Upper Wilsons Creek", "Urliup",
+  "Wanganui", "Wilsons Creek", "Wooyung", "Yelgun", "Zara",
+];
+
 
 export const ALL_PAGES: PageDef[] = [
   ...SERVICE_PAGES,
