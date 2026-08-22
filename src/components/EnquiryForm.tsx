@@ -1,15 +1,24 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { SITE } from "@/lib/site";
 
 /**
- * Hero enquiry form.
+ * Hero enquiry form. The same shape as the fleet's trade sites, on purpose.
  *
- * The site is a static export, so there is no server of its own. The form posts JSON to
- * SITE.leadEndpoint, which the fleet lead-relay answers — the same path and the same field
- * names the trade sites use, so one relay serves this site too. `source` is what the relay
- * matches on, so it must stay equal to the site's domain.
+ * The site ships as a static export, so it has no server of its own. The form posts JSON to
+ * SITE.leadEndpoint on its OWN origin, which Traefik routes to the lead relay. Same-origin
+ * is not a preference: a browser will not let a page post JSON to another domain unless
+ * that domain answers with CORS headers, and the relay deliberately returns none.
+ *
+ * Three spam defences, in increasing order of cost to the visitor:
+ *
+ *   1. `website` — a honeypot. Invisible, and real people never fill it in.
+ *   2. `t` — the second the form was drawn. The relay rejects anything submitted in under
+ *      three seconds, which no human manages and every bot does.
+ *   3. Cloudflare Turnstile — rendered only when a site key is configured. Until then the
+ *      form runs without it and the relay treats "no secret" as a pass, so nothing is
+ *      broken while the widget is being created.
  *
  * A failed post must never look like a success. People who fill in a form and see "thank
  * you" do not ring, so a silent failure costs the enquiry twice.
@@ -17,20 +26,38 @@ import { SITE } from "@/lib/site";
 
 type State = "idle" | "sending" | "sent" | "error";
 
+const TURNSTILE_SRC = "https://challenges.cloudflare.com/turnstile/v0/api.js";
+
 export function EnquiryForm() {
   const [state, setState] = useState<State>("idle");
+  // Stamped on mount, not at build time. A static page can sit in a cache for days, and a
+  // build-time value would make every visitor look like they took a week to type.
+  const drawnAt = useRef<string>("");
+
+  useEffect(() => {
+    drawnAt.current = String(Math.floor(Date.now() / 1000));
+    if (!SITE.turnstileSiteKey) return;
+    if (document.querySelector(`script[src^="${TURNSTILE_SRC}"]`)) return;
+    const s = document.createElement("script");
+    s.src = TURNSTILE_SRC;
+    s.async = true;
+    s.defer = true;
+    document.head.appendChild(s);
+  }, []);
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (state === "sending") return;
     const form = event.currentTarget;
+    // Turnstile injects its own hidden `cf-turnstile-response` input into the form, so
+    // FormData picks the token up without it being declared here.
     const data = Object.fromEntries(new FormData(form)) as Record<string, string>;
     setState("sending");
     try {
       const res = await fetch(SITE.leadEndpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...data, source: SITE.domain }),
+        body: JSON.stringify({ ...data, source: SITE.domain, t: drawnAt.current }),
       });
       if (!res.ok) throw new Error(String(res.status));
       setState("sent");
@@ -129,6 +156,15 @@ export function EnquiryForm() {
         aria-hidden="true"
         className="hidden"
       />
+
+      {SITE.turnstileSiteKey && (
+        <div
+          className="cf-turnstile mt-4"
+          data-sitekey={SITE.turnstileSiteKey}
+          data-theme="light"
+          data-size="flexible"
+        />
+      )}
 
       <button
         type="submit"

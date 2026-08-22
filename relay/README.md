@@ -48,7 +48,16 @@ the two match. Without that, every enquiry would arrive twice.
 ```
 TWILIO_ACCOUNT_SID=AC...
 TWILIO_AUTH_TOKEN=...
+TURNSTILE_SECRET=0x...        # optional; omit and the challenge is skipped
 ```
+
+`TURNSTILE_SECRET` is read from the environment rather than from `sites.json`, because
+`sites.json` is committed in this repo and a secret does not belong in git. The fleet keeps
+its equivalent in `sites.json` only because that file lives on the droplet and nowhere
+else.
+
+If the variable is absent the relay treats every submission as passing the challenge, which
+is the right default while the widget is being set up: no key means no gate, not a wall.
 
 Create it on the droplet before the first `docker compose up -d`. Without it the
 container starts and answers, but every SMS fails — the lead is still written to
