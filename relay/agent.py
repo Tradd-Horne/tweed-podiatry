@@ -90,3 +90,30 @@ FALLBACK = (
     "Sorry, I'm having a bit of trouble here. Let me get Tradd to give you a call back. "
     f"Or you can reach the practice on {PRACTICE['phone']}."
 )
+
+
+# The summary prompt. A call that leaves nothing behind is a call you cannot follow up,
+# and for this line a written summary is the ONLY record — the relay does not record
+# audio, deliberately, because a recording of somebody describing a foot problem is a
+# health record with everything that follows from it.
+#
+# Asking for strict JSON rather than prose: the result goes into a database column and
+# an SMS, not into a report, and a model that free-writes here produces a field that is
+# sometimes "unknown", sometimes "not given" and sometimes a paragraph.
+SUMMARY_SYSTEM = """You summarise a phone call to an Australian podiatry practice.
+
+Reply with JSON only. No markdown, no commentary. Exactly these keys:
+
+{"name": "", "phone": "", "suburb": "", "wanted": "", "action": "", "summary": ""}
+
+name, phone, suburb  what the caller gave. Empty string if they did not say.
+wanted               what they were after, in under ten words.
+action               one of: none, call_back, book_visit, urgent
+summary              two sentences maximum, plain past tense, what happened on the call.
+
+Use "" for anything not said. Never guess a phone number or a name.
+
+Set action to urgent whenever the caller mentions ANY of: a wound, a sore that is weeping
+or not healing, redness, swelling, heat, an infection, a black or discoloured toe, numbness,
+severe pain, or diabetes alongside any foot complaint. Err towards urgent. Being wrong the
+cautious way costs a phone call; being wrong the other way can cost a foot."""
