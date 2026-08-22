@@ -92,7 +92,7 @@ export function Footer() {
             {SITE.ahpra} · ABN {SITE.abn}
           </p>
           <p className="mt-1">
-            <a href={SITE.phoneHref} className="hover:underline">
+            <a href={SITE.phoneHref} data-umami-event="phone-tap" className="hover:underline">
               {SITE.phone}
             </a>{" "}
             ·{" "}

@@ -24,7 +24,7 @@ import { SITE } from "@/lib/site";
  * you" do not ring, so a silent failure costs the enquiry twice.
  */
 
-type State = "idle" | "sending" | "sent" | "error";
+type State = "idle" | "sending" | "sent" | "error" | "unverified";
 
 const TURNSTILE_SRC = "https://challenges.cloudflare.com/turnstile/v0/api.js";
 
@@ -52,6 +52,17 @@ export function EnquiryForm() {
     // Turnstile injects its own hidden `cf-turnstile-response` input into the form, so
     // FormData picks the token up without it being declared here.
     const data = Object.fromEntries(new FormData(form)) as Record<string, string>;
+
+    // The relay answers 200 with no SMS id when Turnstile does not verify, because a bot
+    // that sees an error retries and one that sees success gives up. That is right for
+    // bots and dangerous for people: a visitor whose challenge failed to load would read
+    // "thank you" while their enquiry went in the bin. So the token is checked HERE, and
+    // the form refuses to submit without it rather than pretending to succeed.
+    if (SITE.turnstileSiteKey && !data["cf-turnstile-response"]) {
+      setState("unverified");
+      return;
+    }
+
     setState("sending");
     try {
       const res = await fetch(SITE.leadEndpoint, {
@@ -60,6 +71,16 @@ export function EnquiryForm() {
         body: JSON.stringify({ ...data, source: SITE.domain, t: drawnAt.current }),
       });
       if (!res.ok) throw new Error(String(res.status));
+      // ⚠️ form-submit fires on SUCCESS only. A failed post is not an enquiry and must not
+      // be counted as one — tradd.net's Rank & Rent graph draws its enquiry figure from
+      // this event and from phone-tap. Rising Damp Brisbane's first real lead never
+      // appeared on that graph because both were missing.
+      if (typeof window !== "undefined" && (window as unknown as {
+        umami?: { track: (e: string) => void };
+      }).umami) {
+        (window as unknown as { umami: { track: (e: string) => void } })
+          .umami.track("form-submit");
+      }
       setState("sent");
     } catch {
       setState("error");
@@ -73,7 +94,7 @@ export function EnquiryForm() {
         <p className="text-gray-600 text-sm leading-relaxed">
           we have your details and will call you back the same working day. If it is
           urgent, ring us on{" "}
-          <a href={SITE.phoneHref} className="text-[#1e3a5f] font-medium underline">
+          <a href={SITE.phoneHref} data-umami-event="phone-tap" className="text-[#1e3a5f] font-medium underline">
             {SITE.phone}
           </a>
           .
@@ -174,10 +195,21 @@ export function EnquiryForm() {
         {state === "sending" ? "Sending…" : "Request a call back"}
       </button>
 
+      {state === "unverified" && (
+        <p className="mt-3 text-sm text-red-700">
+          Please complete the "I am human" check above, then send again. If it will not
+          load, ring us on{" "}
+          <a href={SITE.phoneHref} className="font-medium underline">
+            {SITE.phone}
+          </a>
+          .
+        </p>
+      )}
+
       {state === "error" && (
         <p className="mt-3 text-sm text-red-700">
           That did not send. Please ring us on{" "}
-          <a href={SITE.phoneHref} className="font-medium underline">
+          <a href={SITE.phoneHref} data-umami-event="phone-tap" className="font-medium underline">
             {SITE.phone}
           </a>
           .

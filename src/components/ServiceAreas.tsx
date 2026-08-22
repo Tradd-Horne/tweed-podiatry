@@ -99,7 +99,7 @@ export function ServiceAreas() {
           <p className="text-gray-600 text-center">
             Don't see your area listed?{" "}
             <a
-              href={SITE.phoneHref}
+              href={SITE.phoneHref} data-umami-event="phone-tap"
               className="text-[#1e3a5f] font-medium hover:underline"
             >
               Give us a call

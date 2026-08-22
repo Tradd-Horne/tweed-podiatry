@@ -72,7 +72,7 @@ export function PageShell({
           </p>
           <div className="mt-4 flex flex-wrap gap-3">
             <a
-              href={SITE.phoneHref}
+              href={SITE.phoneHref} data-umami-event="phone-tap"
               className="rounded-lg bg-slate-900 px-5 py-2.5 font-semibold text-white hover:bg-slate-700"
             >
               Call {SITE.phone}
