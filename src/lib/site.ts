@@ -31,8 +31,15 @@ export const SITE = {
   longitude: 153.5426,
   /** The relay matches an enquiry to this site on `source`, so it must equal the domain. */
   domain: "tweedheadspodiatry.com.au",
-  /** Same-origin path; Traefik routes it to the shared fleet lead-relay. */
+  /** Same-origin path; Traefik routes it to the lead relay. */
   leadEndpoint: "/api/lead",
+  /**
+   * Cloudflare Turnstile. The site key is public and belongs in the page; the secret lives
+   * only in the relay's environment on the droplet. Empty until the widget is created —
+   * the form renders without it rather than showing a broken challenge, and the relay
+   * treats "no secret configured" as pass, so nothing breaks in the meantime.
+   */
+  turnstileSiteKey: "",
 } as const;
 
 /**

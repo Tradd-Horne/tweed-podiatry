@@ -249,7 +249,10 @@ async def lead(request: Request):
 
     client_ip = (request.headers.get("cf-connecting-ip")
                  or (request.client.host if request.client else ""))
-    if not _turnstile_ok(cfg.get("turnstile_secret"), data.get("cf-turnstile-response"), client_ip):
+    # The fleet keeps this in sites.json, which lives only on its droplet. This repo commits
+    # sites.json, so the secret comes from the environment instead and stays out of git.
+    secret = cfg.get("turnstile_secret") or os.environ.get("TURNSTILE_SECRET", "")
+    if not _turnstile_ok(secret, data.get("cf-turnstile-response"), client_ip):
         print("TURNSTILE FAILED", cfg.get("domain"), data.get("phone"), flush=True)
         leads.record("web", leads.TURNSTILE, cfg, data)
         return JSONResponse({"ok": True})
