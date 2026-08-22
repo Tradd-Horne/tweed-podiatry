@@ -10,10 +10,10 @@
       <!-- Five toes. Descending, splayed along the ball, because that is what tells the
            eye in a tenth of a second what it is looking at. -->
       <ellipse cx="22.4" cy="13.6" rx="4.1" ry="4.6"/>
-      <ellipse cx="30.2" cy="10.4" rx="3.1" ry="3.4"/>
-      <ellipse cx="36.4" cy="10.6" rx="2.8" ry="3.1"/>
-      <ellipse cx="41.6" cy="12.2" rx="2.5" ry="2.8"/>
-      <ellipse cx="45.8" cy="15" rx="2.2" ry="2.4"/>
+      <ellipse cx="30.2" cy="12.1" rx="3.1" ry="3.4"/>
+      <ellipse cx="36.4" cy="12.4" rx="2.8" ry="3.1"/>
+      <ellipse cx="41.6" cy="14" rx="2.5" ry="2.8"/>
+      <ellipse cx="45.8" cy="16.6" rx="2.2" ry="2.4"/>
     </g>
   </g>
   <!-- The Tweed, once. A single line reads as water; two competed with the toes. -->
