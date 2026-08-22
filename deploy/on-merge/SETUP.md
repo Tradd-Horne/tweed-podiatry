@@ -84,16 +84,13 @@ GitHub → the repo → Settings → Secrets and variables → Actions → New r
 | `DROPLET_HOST` | `170.64.202.90` |
 | `DEPLOY_USER` | `root` |
 
-## Part 3 — add the workflow
+## Part 3 — the workflow ✅ done
 
-Copy `deploy/on-merge/deploy.yml` in this repo to `.github/workflows/deploy.yml`.
+`.github/workflows/deploy.yml` is in place. Tradd ran `gh auth refresh -s workflow` on
+22 August 2026, which is what let it be pushed; before that the boss-bot token carried
+`repo` but not `workflow` and GitHub refused the push.
 
-⚠️ **Claude cannot do this step.** The boss-bot `gh` token carries `repo` but not
-`workflow`, so it is refused when pushing anything under `.github/workflows/`. Either:
-
-- add the file through the GitHub web UI (Add file → Create new file → paste), or
-- run `gh auth refresh -s workflow -h github.com` in Tradd's terminal, after which
-  Claude can open it as a PR like any other change.
+All three secrets are set. Merging into `prebuilt` now deploys.
 
 ## Checking it
 
