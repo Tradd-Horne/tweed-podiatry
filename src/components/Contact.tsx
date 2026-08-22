@@ -14,7 +14,7 @@ export function Contact() {
           </p>
 
           <a
-            href={SITE.phoneHref}
+            href={SITE.phoneHref} data-umami-event="phone-tap"
             className="inline-flex items-center justify-center bg-white text-[#1e3a5f] px-8 py-4 text-lg font-semibold hover:bg-gray-100 transition-colors mb-8"
           >
             <svg
@@ -37,7 +37,7 @@ export function Contact() {
             <div className="bg-white/10 p-6">
               <h3 className="text-white font-semibold mb-2">Phone</h3>
               <a
-                href={SITE.phoneHref}
+                href={SITE.phoneHref} data-umami-event="phone-tap"
                 className="text-blue-100 hover:text-white transition-colors"
               >
                 {SITE.phone}

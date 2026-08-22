@@ -37,6 +37,19 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        {/* Umami. Tradd wants this site measured alongside the rank-and-rent fleet on
+            tradd.net — visits, phone taps and form submits, so its call volume can be
+            compared against sites that have no real reviews or address.
+            ⚠️ Served from the SHARED analytics host on purpose. Every fleet site serves its
+            own from stats.<domain> so the sites cannot be linked to one another; this is
+            openly Tradd's business, so that separation buys nothing and costs a subdomain. */}
+        <script
+          defer
+          src="https://analytics.tradd.net/script.js"
+          data-website-id="1141084f-6b6b-49cf-a6ac-eb9820542f5e"
+        />
+      </head>
       <body className={inter.className}>
         <BusinessSchema />{children}</body>
     </html>

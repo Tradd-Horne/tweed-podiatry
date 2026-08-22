@@ -39,7 +39,7 @@ export function Header() {
               </a>
             ))}
             <a
-              href={SITE.phoneHref}
+              href={SITE.phoneHref} data-umami-event="phone-tap"
               className="bg-[#1e3a5f] text-white px-5 py-2.5 text-sm font-medium hover:bg-[#152a45] transition-colors"
             >
               Call Now
@@ -90,7 +90,7 @@ export function Header() {
                 </a>
               ))}
               <a
-                href={SITE.phoneHref}
+                href={SITE.phoneHref} data-umami-event="phone-tap"
                 className="bg-[#1e3a5f] text-white px-5 py-2.5 text-sm font-medium hover:bg-[#152a45] transition-colors text-center"
               >
                 Call Now

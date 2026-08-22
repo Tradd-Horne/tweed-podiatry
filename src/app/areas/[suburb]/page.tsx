@@ -171,7 +171,7 @@ export default function SuburbPage({
               ({SITE.ahpra}).
             </p>
             <a
-              href={SITE.phoneHref}
+              href={SITE.phoneHref} data-umami-event="phone-tap"
               className="mt-4 inline-block rounded-lg bg-slate-900 px-5 py-2.5 font-semibold text-white hover:bg-slate-700"
             >
               Call {SITE.phone}

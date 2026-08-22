@@ -60,7 +60,7 @@ export function Hero() {
 
             <div className="flex flex-col sm:flex-row gap-4">
               <a
-                href={SITE.phoneHref}
+                href={SITE.phoneHref} data-umami-event="phone-tap"
                 className="inline-flex items-center justify-center bg-white text-[#1e3a5f] px-8 py-4 text-base font-medium hover:bg-gray-100 transition-colors"
               >
                 <svg

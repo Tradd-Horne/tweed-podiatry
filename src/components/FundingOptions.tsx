@@ -104,7 +104,7 @@ export function FundingOptions() {
           <p className="text-gray-600 text-sm">
             Not sure which one applies to you?{" "}
             <a
-              href={SITE.phoneHref}
+              href={SITE.phoneHref} data-umami-event="phone-tap"
               className="text-[#1e3a5f] font-medium hover:underline"
             >
               Ring {SITE.phone}

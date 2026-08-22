@@ -60,6 +60,16 @@ export function EnquiryForm() {
         body: JSON.stringify({ ...data, source: SITE.domain, t: drawnAt.current }),
       });
       if (!res.ok) throw new Error(String(res.status));
+      // ⚠️ form-submit fires on SUCCESS only. A failed post is not an enquiry and must not
+      // be counted as one — tradd.net's Rank & Rent graph draws its enquiry figure from
+      // this event and from phone-tap. Rising Damp Brisbane's first real lead never
+      // appeared on that graph because both were missing.
+      if (typeof window !== "undefined" && (window as unknown as {
+        umami?: { track: (e: string) => void };
+      }).umami) {
+        (window as unknown as { umami: { track: (e: string) => void } })
+          .umami.track("form-submit");
+      }
       setState("sent");
     } catch {
       setState("error");
@@ -73,7 +83,7 @@ export function EnquiryForm() {
         <p className="text-gray-600 text-sm leading-relaxed">
           we have your details and will call you back the same working day. If it is
           urgent, ring us on{" "}
-          <a href={SITE.phoneHref} className="text-[#1e3a5f] font-medium underline">
+          <a href={SITE.phoneHref} data-umami-event="phone-tap" className="text-[#1e3a5f] font-medium underline">
             {SITE.phone}
           </a>
           .
@@ -177,7 +187,7 @@ export function EnquiryForm() {
       {state === "error" && (
         <p className="mt-3 text-sm text-red-700">
           That did not send. Please ring us on{" "}
-          <a href={SITE.phoneHref} className="font-medium underline">
+          <a href={SITE.phoneHref} data-umami-event="phone-tap" className="font-medium underline">
             {SITE.phone}
           </a>
           .
