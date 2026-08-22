@@ -390,10 +390,68 @@ async def agent_ws(ws: WebSocket):
         if task and not task.done():
             task.cancel()
         # A transcript is a better record than an audio file and carries none of the
-        # health-record baggage a recording would.
+        # health-record baggage a recording would. Summarising it is what turns a call
+        # into something Tradd can act on tomorrow without listening to anything.
         if history:
-            lines = " | ".join(f"{m['role'][0]}: {m['content'][:90]}" for m in history[:8])
-            print("AGENT TRANSCRIPT", caller, lines, flush=True)
+            asyncio.create_task(_summarise(caller, history))
+
+
+async def _summarise(caller: str, history: list) -> None:
+    """Turn a finished call into a stored row and one SMS.
+
+    Runs after the caller has hung up, so a slow model costs nobody anything. Failures
+    are swallowed: a missing summary is a shame, a crash that loses the whole call is not
+    acceptable, and the raw transcript is stored either way.
+    """
+    transcript = "\n".join(
+        f"{'Caller' if m['role'] == 'user' else 'Agent'}: {m['content']}" for m in history
+    )
+    cfg = load_sites().get("tweedheadspodiatry", {})
+    fields = {}
+    try:
+        raw = ""
+        async for chunk in _llm.stream(
+            agent_brief.SUMMARY_SYSTEM,
+            [{"role": "user", "content": transcript[:6000]}],
+        ):
+            raw += chunk
+        # Models wrap JSON in fences more often than they should.
+        raw = raw.strip().removeprefix("```json").removeprefix("```").removesuffix("```")
+        fields = json.loads(raw)
+    except Exception as exc:                                    # noqa: BLE001
+        print("AGENT SUMMARY FAILED", repr(exc), flush=True)
+
+    summary = (fields.get("summary") or "").strip()
+    action = (fields.get("action") or "").strip()
+    leads.record(
+        "voice-agent",
+        leads.LEAD,
+        cfg,
+        {
+            "name": fields.get("name") or "",
+            "phone": fields.get("phone") or caller,
+            "suburb": fields.get("suburb") or "",
+            "service": fields.get("wanted") or "",
+            "detail": transcript[:2000],
+        },
+        note=f"action={action or 'unknown'}",
+    )
+    print("AGENT SUMMARY", caller, action, repr(summary[:120]), flush=True)
+
+    if not summary:
+        return
+    flag = "URGENT - " if action == "urgent" else ""
+    body = (
+        f"{flag}AI call - {caller or 'unknown number'}\n"
+        f"{summary}\n"
+        f"Wanted: {fields.get('wanted') or '-'}\n"
+        f"Suburb: {fields.get('suburb') or '-'}\n"
+        f"Next: {action or 'unknown'}"
+    )
+    try:
+        send_sms(cfg.get("lead_to") or DEMO_TO, cfg.get("twilio_from") or "+61495090752", body)
+    except Exception as exc:                                    # noqa: BLE001
+        print("AGENT SUMMARY SMS FAILED", repr(exc), flush=True)
 
 
 # --------------------------------------------------------------------- demo
