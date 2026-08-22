@@ -29,6 +29,7 @@ console.twilio.com. Editing two short lines beats editing inside a heredoc.
 ```bash
 SID='AC_paste_your_account_sid'
 TOK='paste_your_auth_token'
+TS='0x4AAAAAAEYBL2q-Idom2jfKLULutEAbWHg'   # Turnstile secret, already created
 ```
 
 **Step 2.** Paste the rest as one block.
@@ -36,8 +37,8 @@ TOK='paste_your_auth_token'
 ```bash
 # --- Twilio credentials for the relay -------------------------------------
 install -d -m 700 /app-tweed-podiatry/relay
-printf 'TWILIO_ACCOUNT_SID=%s\nTWILIO_AUTH_TOKEN=%s\n' "$SID" "$TOK" \
-  > /app-tweed-podiatry/relay/.env
+printf 'TWILIO_ACCOUNT_SID=%s\nTWILIO_AUTH_TOKEN=%s\nTURNSTILE_SECRET=%s\n' \
+  "$SID" "$TOK" "$TS" > /app-tweed-podiatry/relay/.env
 chmod 600 /app-tweed-podiatry/relay/.env
 
 # --- the one thing the deploy key is allowed to run ------------------------

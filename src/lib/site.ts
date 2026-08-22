@@ -39,7 +39,7 @@ export const SITE = {
    * the form renders without it rather than showing a broken challenge, and the relay
    * treats "no secret configured" as pass, so nothing breaks in the meantime.
    */
-  turnstileSiteKey: "",
+  turnstileSiteKey: "0x4AAAAAAEYBL9MxZnENPKaV",
 } as const;
 
 /**
