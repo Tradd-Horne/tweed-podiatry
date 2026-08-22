@@ -24,7 +24,7 @@ import { SITE } from "@/lib/site";
  * you" do not ring, so a silent failure costs the enquiry twice.
  */
 
-type State = "idle" | "sending" | "sent" | "error";
+type State = "idle" | "sending" | "sent" | "error" | "unverified";
 
 const TURNSTILE_SRC = "https://challenges.cloudflare.com/turnstile/v0/api.js";
 
@@ -52,6 +52,17 @@ export function EnquiryForm() {
     // Turnstile injects its own hidden `cf-turnstile-response` input into the form, so
     // FormData picks the token up without it being declared here.
     const data = Object.fromEntries(new FormData(form)) as Record<string, string>;
+
+    // The relay answers 200 with no SMS id when Turnstile does not verify, because a bot
+    // that sees an error retries and one that sees success gives up. That is right for
+    // bots and dangerous for people: a visitor whose challenge failed to load would read
+    // "thank you" while their enquiry went in the bin. So the token is checked HERE, and
+    // the form refuses to submit without it rather than pretending to succeed.
+    if (SITE.turnstileSiteKey && !data["cf-turnstile-response"]) {
+      setState("unverified");
+      return;
+    }
+
     setState("sending");
     try {
       const res = await fetch(SITE.leadEndpoint, {
@@ -183,6 +194,17 @@ export function EnquiryForm() {
       >
         {state === "sending" ? "Sending…" : "Request a call back"}
       </button>
+
+      {state === "unverified" && (
+        <p className="mt-3 text-sm text-red-700">
+          Please complete the "I am human" check above, then send again. If it will not
+          load, ring us on{" "}
+          <a href={SITE.phoneHref} className="font-medium underline">
+            {SITE.phone}
+          </a>
+          .
+        </p>
+      )}
 
       {state === "error" && (
         <p className="mt-3 text-sm text-red-700">
