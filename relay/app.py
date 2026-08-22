@@ -24,6 +24,7 @@ one line.
 Env: TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN
      PUBLIC_BASE (optional) — https origin used for absolute Twilio callback URLs
 """
+import asyncio
 import html
 import json
 import os
@@ -32,11 +33,13 @@ import urllib.parse
 import urllib.request
 from pathlib import Path
 
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException, Request, WebSocket, WebSocketDisconnect
 from fastapi.responses import JSONResponse, Response
 from twilio.rest import Client
 
 import leads
+import agent as agent_brief
+from llm import LLM
 
 SITES_PATH = Path(os.getenv("SITES_PATH", "/app/sites.json"))
 PUBLIC_BASE = os.getenv("PUBLIC_BASE", "").rstrip("/")
@@ -281,6 +284,107 @@ async def lead(request: Request):
     print("WEB LEAD", cfg.get("domain"), data.get("phone"), flush=True)
     leads.record("web", leads.LEAD, cfg, data)
     return JSONResponse({"ok": True, "sid": sid})
+
+
+# ------------------------------------------------------------ talking agent
+# A real conversation: Twilio ConversationRelay does speech-to-text, text-to-speech,
+# turn-taking and barge-in; this end supplies the words.
+#
+# Everything the caller says arrives as a `prompt` message and everything we say goes
+# back as `text` tokens, streamed. Streaming is the whole trick — the caller hears the
+# first word while the rest is still being generated, which is the difference between a
+# conversation and a walkie-talkie.
+
+_llm = LLM()
+
+
+@app.api_route("/api/agent", methods=["GET", "POST"])
+async def agent_twiml(request: Request):
+    """Hand the call to ConversationRelay and point it at our socket."""
+    host = request.headers.get("host") or "tweedheadspodiatry.com.au"
+    ws = f"wss://{host}/api/agent/ws"
+    return xml(
+        "<Response>"
+        f'<Connect><ConversationRelay url="{sx(ws)}" '
+        # en-AU on both halves: the caller is Australian and so should the voice be.
+        'language="en-AU" ttsLanguage="en-AU" transcriptionLanguage="en-AU" '
+        f'voice="{VOICE}" '
+        # Let the caller talk over it. Being unable to interrupt is the single thing
+        # that makes an automated line feel like a machine.
+        'interruptible="any" interruptSensitivity="medium" '
+        f'welcomeGreeting="{sx(agent_brief.GREETING)}" />'
+        "</Connect>"
+        "</Response>"
+    )
+
+
+async def _speak(ws: WebSocket, history: list, said: str) -> None:
+    """Stream one reply, token by token, and remember what was said."""
+    reply = ""
+    try:
+        async for chunk in _llm.stream(agent_brief.SYSTEM, history):
+            reply += chunk
+            await ws.send_json({"type": "text", "token": chunk, "last": False})
+    except Exception as exc:                                    # noqa: BLE001
+        print("AGENT LLM FAILED", repr(exc), flush=True)
+    if not reply.strip():
+        # Never let the line go quiet. Silence is the one failure a caller cannot read.
+        reply = agent_brief.FALLBACK
+        await ws.send_json({"type": "text", "token": reply, "last": False})
+    await ws.send_json({"type": "text", "token": "", "last": True})
+    history.append({"role": "assistant", "content": reply})
+    print("AGENT SAID", repr(reply[:120]), flush=True)
+
+
+@app.websocket("/api/agent/ws")
+async def agent_ws(ws: WebSocket):
+    await ws.accept()
+    history: list = []
+    caller = ""
+    task: asyncio.Task | None = None
+    try:
+        while True:
+            msg = await ws.receive_json()
+            kind = msg.get("type")
+
+            if kind == "setup":
+                caller = msg.get("from") or ""
+                print("AGENT CALL", caller, msg.get("callSid"), flush=True)
+
+            elif kind == "prompt":
+                said = (msg.get("voicePrompt") or "").strip()
+                if not said:
+                    continue
+                print("AGENT HEARD", repr(said), flush=True)
+                history.append({"role": "user", "content": said})
+                task = asyncio.create_task(_speak(ws, history, said))
+
+            elif kind == "interrupt":
+                # The caller talked over us. Stop generating immediately — continuing to
+                # stream into a caller who is mid-sentence is exactly the rudeness this
+                # whole product is meant to avoid.
+                if task and not task.done():
+                    task.cancel()
+                cut = msg.get("utteranceUntilInterrupt") or ""
+                if history and history[-1]["role"] == "assistant":
+                    history[-1]["content"] = cut
+                print("AGENT INTERRUPTED after", repr(cut[:60]), flush=True)
+
+            elif kind == "error":
+                print("AGENT RELAY ERROR", msg.get("description"), flush=True)
+
+    except WebSocketDisconnect:
+        print("AGENT CALL ENDED", caller, flush=True)
+    except Exception as exc:                                    # noqa: BLE001
+        print("AGENT WS ERROR", repr(exc), flush=True)
+    finally:
+        if task and not task.done():
+            task.cancel()
+        # A transcript is a better record than an audio file and carries none of the
+        # health-record baggage a recording would.
+        if history:
+            lines = " | ".join(f"{m['role'][0]}: {m['content'][:90]}" for m in history[:8])
+            print("AGENT TRANSCRIPT", caller, lines, flush=True)
 
 
 # --------------------------------------------------------------------- demo
