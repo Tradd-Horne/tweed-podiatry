@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Tweed Heads Podiatry">
+  <!-- Two abstractions failed before this one, and both failed the same way: without
+       toes, a footprint reads as a person. An arch plus a dot is a swimmer; two pads is
+       a head and shoulders. The toes are the whole signal, so they stay. -->
+  <g fill="#1e3a5f">
+    <g transform="rotate(-8 32 34)">
+      <!-- Sole. Wide at the ball, pinched at the waist where the arch lifts clear of the
+           ground, rounded at the heel. -->
+      <path d="M32 18.5c6.8 0 10.9 4.8 10.4 11-.4 5-3.9 7.4-5.1 11.3-.7 2.4-.2 4.4-.7 6.9-.8 4.4-3.2 6.8-6.9 6.8-3.9 0-6.4-2.5-7.1-6.9-.4-2.5.1-4.5-.6-6.9-1.2-3.9-4.6-6.3-5-11.2C16.5 23.3 25 18.5 32 18.5Z"/>
+      <!-- Five toes. Descending, splayed along the ball, because that is what tells the
+           eye in a tenth of a second what it is looking at. -->
+      <ellipse cx="22.4" cy="13.6" rx="4.1" ry="4.6"/>
+      <ellipse cx="30.2" cy="10.4" rx="3.1" ry="3.4"/>
+      <ellipse cx="36.4" cy="10.6" rx="2.8" ry="3.1"/>
+      <ellipse cx="41.6" cy="12.2" rx="2.5" ry="2.8"/>
+      <ellipse cx="45.8" cy="15" rx="2.2" ry="2.4"/>
+    </g>
+  </g>
+  <!-- The Tweed, once. A single line reads as water; two competed with the toes. -->
+  <path d="M7 55.5c7 0 7.5-4.5 17-4.5s8.5 4.5 16 4.5 7.5-4.5 15-4.5"
+        fill="none" stroke="#1e3a5f" stroke-width="4.4" stroke-linecap="round" opacity="0.45"/>
+</svg>

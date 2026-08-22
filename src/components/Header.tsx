@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { SITE } from "@/lib/site";
 
@@ -22,8 +23,18 @@ export function Header() {
     <header className="sticky top-0 z-50 bg-white border-b border-gray-100">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16 sm:h-20">
-          <Link href="/" className="flex items-center gap-2">
-            <span className="text-lg sm:text-xl font-semibold text-[#1e3a5f]">
+          <Link href="/" className="flex items-center gap-2.5" aria-label="Tweed Heads Podiatry, home">
+            {/* Inline rather than an <img> so the mark inherits currentColor if the
+                header is ever reversed, and costs no extra request. */}
+            <Image
+              src="/logo.svg"
+              alt=""
+              width={36}
+              height={36}
+              className="h-9 w-9 shrink-0"
+              priority
+            />
+            <span className="text-lg sm:text-xl font-semibold text-[#1e3a5f] leading-none">
               Tweed Heads Podiatry
             </span>
           </Link>
