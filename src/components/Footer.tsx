@@ -102,8 +102,14 @@ export function Footer() {
           </p>
           <p className="mt-4 max-w-3xl text-xs leading-relaxed text-slate-500">
             Information on this site is general in nature and is not a substitute for
-            an assessment of your own feet. If you have diabetes, poor circulation or
-            a wound that is not healing, seek care promptly.
+            an assessment of your own feet.{" "}
+            <strong className="font-semibold text-slate-700">
+              If you have an open wound, an ulcer or a sore that is not healing, see your
+              doctor, or go to your local emergency department if it looks infected.
+            </strong>{" "}
+            A wound is best managed by the high risk foot clinic, a hospital outpatient
+            service your doctor can refer you to. We are happy to take over your ongoing
+            foot care once the wound has healed.
           </p>
           {/* The hero clip is built from three Creative Commons photographs of this coast.
               BY-SA obliges us to name the photographers and to pass the same licence on,

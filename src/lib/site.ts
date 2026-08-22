@@ -855,6 +855,10 @@ export const PROBLEM_PAGES: PageDef[] = [
       "If you have diabetes, your feet need checking whether or not anything hurts. Nerve damage removes the warning system, so problems are often found by looking rather than by feeling them.",
     sections: [
       {
+        heading: "If you already have a wound, start somewhere else",
+        body: "An open wound, an ulcer or a sore that is not healing needs more than a home visit. See your own doctor, or go to your local emergency department if it looks infected or you feel unwell. A wound like that is best managed by the high risk foot clinic — an outpatient service run out of the hospital, with dressings, imaging and antibiotics behind it — and your doctor can refer you there. Once it has healed, we are glad to take over your ongoing foot care at home. This is not us passing you on; it is the setting the problem actually needs.",
+      },
+      {
         heading: "What the check involves",
         body: "Pulses and circulation, sensation tested with a monofilament, skin and nail condition, footwear, and any pressure areas that could become ulcers. You finish with a clear answer on your risk level and what to watch for.",
       },
