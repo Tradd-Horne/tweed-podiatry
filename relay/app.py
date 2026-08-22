@@ -283,6 +283,82 @@ async def lead(request: Request):
     return JSONResponse({"ok": True, "sid": sid})
 
 
+# --------------------------------------------------------------------- demo
+# A live demonstration that this thing can LISTEN, not just talk.
+#
+# Tradd asked what the voice capability is actually capable of. Describing it is
+# weaker than showing it, and the hearing half needs no ConversationRelay and no
+# model: Twilio's <Gather input="speech"> transcribes the caller and posts the
+# text back. That is enough to prove turn-taking, an en-AU accent model, and a
+# real confidence score, today, for about two cents.
+#
+# It is deliberately not wired to any site config: no leads, no forwarding, no
+# writes. Nothing here can affect a real enquiry.
+
+DEMO_TO = "+61403643158"
+
+
+def _demo_say(text: str) -> str:
+    return f'<Say voice="{VOICE}">{sx(text)}</Say>'
+
+
+@app.api_route("/api/demo", methods=["GET", "POST"])
+async def demo_start(request: Request):
+    return xml(
+        "<Response>"
+        + _demo_say(
+            "G'day Tradd. You asked what this can actually do, so here it is doing it. "
+            "You have already heard it talk. Now it is going to listen. "
+            "After the tone, say anything at all. Tell it what you want it to do for the business."
+        )
+        + f'<Gather input="speech" language="en-AU" speechTimeout="auto" '
+          f'speechModel="phone_call" action="{sx(cb("/api/demo/heard"))}" method="POST">'
+        + '<Pause length="1"/>'
+        + "</Gather>"
+        + _demo_say("I did not catch anything. No harm done.")
+        + "</Response>"
+    )
+
+
+@app.post("/api/demo/heard")
+async def demo_heard(request: Request):
+    form = await form_of(request)
+    heard = (form.get("SpeechResult") or "").strip()
+    try:
+        conf = round(float(form.get("Confidence") or 0) * 100)
+    except (TypeError, ValueError):
+        conf = 0
+
+    if not heard:
+        return xml("<Response>" + _demo_say(
+            "I could not make that out. That is the honest limit of it: a quiet room "
+            "and a clear line, or the accuracy drops away.") + "</Response>")
+
+    print("DEMO HEARD", repr(heard), conf, flush=True)
+    # Send the transcript on, so there is a written record of what it understood
+    # and not just a claim about it.
+    try:
+        send_sms(DEMO_TO, "+61495090752",
+                 f"Voice demo transcript ({conf}% confidence):\n{heard[:400]}")
+    except Exception as exc:                                    # noqa: BLE001
+        print("DEMO SMS FAILED", repr(exc), flush=True)
+
+    return xml(
+        "<Response>"
+        + _demo_say(f"Right. What I heard was: {heard}.")
+        + '<Pause length="1"/>'
+        + _demo_say(
+            f"I am {conf} per cent confident that is what you said, and I have just texted "
+            "you the transcript so you can check it against what you actually said. "
+            "That is the listening half. What is missing is speed and judgement: this took "
+            "a beat because it waited for you to stop talking, and it cannot interrupt or be "
+            "interrupted. The full version fixes both, and can look things up while you are "
+            "still speaking. Righto, that is the demonstration."
+        )
+        + "</Response>"
+    )
+
+
 # -------------------------------------------------------------- inbound call
 @app.post("/api/voice")
 async def voice(request: Request):
