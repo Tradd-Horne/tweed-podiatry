@@ -295,6 +295,9 @@ async def lead(request: Request):
 # first word while the rest is still being generated, which is the difference between a
 # conversation and a walkie-talkie.
 
+# en-AU, ElevenLabs (ConversationRelay's default provider).
+CR_VOICE = "9Ft9sm9dzvprPILZmLJl"
+
 _llm = LLM()
 
 
@@ -308,7 +311,13 @@ async def agent_twiml(request: Request):
         f'<Connect><ConversationRelay url="{sx(ws)}" '
         # en-AU on both halves: the caller is Australian and so should the voice be.
         'language="en-AU" ttsLanguage="en-AU" transcriptionLanguage="en-AU" '
-        f'voice="{VOICE}" '
+        # ⚠️ NOT the <Say> voice name. ConversationRelay's default TTS provider is
+        # ElevenLabs, whose voices are opaque ids like this one — the en-AU voice from
+        # Twilio's own defaults table. Passing a Say-style name such as
+        # "Polly.Olivia-Neural" is accepted by the parser, logs no error, raises no
+        # alert, and simply produces NO AUDIO. The call connects and sits there in
+        # silence, which is the hardest possible failure to diagnose from the outside.
+        f'voice="{CR_VOICE}" '
         # Let the caller talk over it. Being unable to interrupt is the single thing
         # that makes an automated line feel like a machine.
         'interruptible="any" interruptSensitivity="medium" '
