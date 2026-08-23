@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { AreaMap } from "@/components/AreaMap";
 import { SITE } from "@/lib/site";
 const areas = [
   {
@@ -56,7 +58,24 @@ export function ServiceAreas() {
           </p>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {/*
+          The map and the list say the same thing twice, and both are needed. The map
+          answers "roughly where does he go" at a glance; the list answers "does he come to
+          MY street", which is the only question the visitor actually has. It is the same
+          <AreaMap /> the areas page draws, not a copy, so the two can never disagree.
+        */}
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,24rem)_1fr] lg:gap-12 items-start">
+          <div>
+            <AreaMap />
+            <Link
+              href="/areas"
+              className="mt-4 inline-block text-sm font-medium text-[#1e3a5f] hover:underline"
+            >
+              See every locality we visit &rarr;
+            </Link>
+          </div>
+
+          <div className="grid gap-8 sm:grid-cols-2 xl:grid-cols-3">
           {areas.map((area) => (
             <div key={area.region}>
               <h3 className="text-lg font-semibold text-gray-900 mb-4 pb-2 border-b border-gray-100">
@@ -93,6 +112,7 @@ export function ServiceAreas() {
               </ul>
             </div>
           ))}
+          </div>
         </div>
 
         <div className="mt-12 p-6 bg-gray-50 border border-gray-100">
