@@ -1,6 +1,14 @@
 import { SITE } from "@/lib/site";
 
 export function Contact() {
+  /*
+    Split at the @ so the address breaks where a person reads a break. Left to itself the
+    browser either overflows the box or chops mid-domain — "contact@tweedheadsp /
+    odiatry.com.au" — which reads as a typo. Derived from SITE.email rather than typed out,
+    so the address cannot drift from the one the rest of the site uses.
+  */
+  const [emailLocal, emailDomain] = SITE.email.split("@");
+
   return (
     <section id="contact" className="py-16 sm:py-24 bg-[#1e3a5f]">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
@@ -33,7 +41,7 @@ export function Contact() {
             {SITE.phone}
           </a>
 
-          <div className="grid sm:grid-cols-3 gap-6 text-left">
+          <div className="grid sm:grid-cols-2 gap-6 text-left">
             <div className="bg-white/10 p-6">
               <h3 className="text-white font-semibold mb-2">Phone</h3>
               <a
@@ -47,9 +55,10 @@ export function Contact() {
               <h3 className="text-white font-semibold mb-2">Email</h3>
               <a
                 href={`mailto:${SITE.email}`}
-                className="text-blue-100 hover:text-white transition-colors text-sm break-all"
+                className="text-blue-100 hover:text-white transition-colors text-sm break-words"
               >
-                {SITE.email}
+                {emailLocal}@<wbr />
+                {emailDomain}
               </a>
             </div>
             <div className="bg-white/10 p-6">
@@ -60,21 +69,27 @@ export function Contact() {
                 Appointments available
               </p>
             </div>
+            {/*
+              Podiatry is a regulated profession, and this is the point on the page where
+              somebody decides to let a stranger into their house. AHPRA's register is public
+              and searchable by this number, so the box is not a badge — it is the means to
+              check him before he arrives.
+            */}
+            <div className="bg-white/10 p-6">
+              <h3 className="text-white font-semibold mb-2">Provider details</h3>
+              <p className="text-blue-100 text-sm">
+                {SITE.practitioner} {SITE.qualification}
+                <br />
+                AHPRA {SITE.ahpra}
+                {SITE.providerNumber && (
+                  <>
+                    <br />
+                    Provider number {SITE.providerNumber}
+                  </>
+                )}
+              </p>
+            </div>
           </div>
-
-          {/*
-            Registration details, stated plainly. Podiatry is a regulated profession and the
-            people booking a stranger into their home are entitled to check him before he
-            arrives — AHPRA's register is public and searchable by this number. It sits quiet
-            and small on purpose: it is there to be verified, not to be sold.
-          */}
-          <p className="mt-8 text-sm leading-relaxed text-blue-100/80">
-            {SITE.practitioner} {SITE.qualification} &middot; AHPRA registration{" "}
-            {SITE.ahpra}
-            {SITE.providerNumber && (
-              <> &middot; Provider number {SITE.providerNumber}</>
-            )}
-          </p>
         </div>
       </div>
     </section>
