@@ -23,6 +23,12 @@ export const SITE = {
   practitioner: "Tradd Horne",
   qualification: "B.HSc (Pod)",
   ahpra: "POD0001880268",
+  /**
+   * Medicare / DVA provider number. Empty until Tradd supplies it, and the credentials
+   * line simply omits it while it is empty — a site that prints "Provider number:" with
+   * nothing after it looks worse than one that does not mention it at all.
+   */
+  providerNumber: "",
   abn: "19 615 606 347",
   baseSuburb: "Tweed Heads",
   state: "NSW",
