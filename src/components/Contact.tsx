@@ -61,6 +61,20 @@ export function Contact() {
               </p>
             </div>
           </div>
+
+          {/*
+            Registration details, stated plainly. Podiatry is a regulated profession and the
+            people booking a stranger into their home are entitled to check him before he
+            arrives — AHPRA's register is public and searchable by this number. It sits quiet
+            and small on purpose: it is there to be verified, not to be sold.
+          */}
+          <p className="mt-8 text-sm leading-relaxed text-blue-100/80">
+            {SITE.practitioner} {SITE.qualification} &middot; AHPRA registration{" "}
+            {SITE.ahpra}
+            {SITE.providerNumber && (
+              <> &middot; Provider number {SITE.providerNumber}</>
+            )}
+          </p>
         </div>
       </div>
     </section>
