@@ -11,10 +11,11 @@ export function Header() {
   const navItems = [
     // Real pages, not anchors. Anchor-only navigation left every page on this site
     // with nothing linking to it but the sitemap.
-    { href: "/home-visit-podiatrist-tweed-heads", label: "Home visits" },
-    { href: "/aged-care-podiatry", label: "Aged care" },
+    // Aged care, Funding and Home visits came out on 23 August: all three are articles
+    // people read once, not places they navigate to, and a six-item nav on a
+    // four-page-deep site buries the two that matter. They are still linked from the
+    // pages that lead to them, from /fees, and from the sitemap.
     { href: "/fees", label: "Fees" },
-    { href: "/home-care-package-podiatry", label: "Funding" },
     { href: "/areas", label: "Areas visited" },
     { href: "/#contact", label: "Contact" },
   ];
