@@ -56,3 +56,51 @@ The line is quiet, so read this as behaviour, not as volume.
 Read: how many missed calls reached the agent, how many summaries carry a real street
 address, and whether any caller was wrongly told they were booked in. Do not conclude
 before 6 October — three calls a month will not settle anything sooner.
+
+---
+
+## Applied — 8 September 2026, 16:45 AEST
+
+⚠️ **This line does NOT run on the rank-and-rent factory droplet.** `tweedheadspodiatry.com.au`
+resolves to `170.64.202.90`, `main-production-droplet-syd1`, alongside tradd.net,
+truebluereview, therapyonlineaustralia and principalpodiatry. The container is
+`tweedpodiatry-relay` and the code lives in `/app-tweed-podiatry/relay`. It runs an OLDER
+fork of the relay: no `agent_enabled` flag, no press-1 screen, no `is_test_sid`, no
+`MAX_CALL_SECONDS`. Setting `"agent": true` in the factory's `sites.json` would have done
+nothing at all here. Backups: `agent.py.bak-2026-09-08-rankrent2`, `app.py.bak-…`.
+
+Three more faults were found by testing and fixed in the same cycle, because each one made
+the change unusable rather than merely imperfect:
+
+1. **It asked for the phone number three times in five turns.** The brief never said the
+   caller's number is already recorded. Added.
+2. **It closed the call as soon as it had an address**, and said "Tradd will ring you back"
+   three turns running without ever asking about the care plan the caller had mentioned.
+   The closing rule now names what it must have first.
+3. **A test could text Tradd.** `is_test_sid` did not exist on this relay, so probing
+   `/api/voice/after` sent him a real MISSED CALL text at 06:39 — reported to him. Porting
+   the guard was not enough on its own: `_summarise` called `send_sms` DIRECTLY and walked
+   past it. That path now goes through `notify()`. A guard with a way around it is not a guard.
+
+Also: the summary's new fields were being computed and then dropped. There is no `address`
+column, so `address`, `availability`, `funding` and `urgency` now go into `note` and into
+the SMS. Without that the street address existed only inside the transcript.
+
+### Verified live, not assumed
+Test call through the production websocket with a non-Twilio CallSid. Stored row:
+
+    name    = Rebecca
+    suburb  = Kingscliff
+    service = toenail care for mum at home
+    note    = action=call_back | Address: 14 Marine Parade, Kingscliff
+              | Suits: Mondays, mornings | Funding: care_plan | Urgency: routine
+
+The agent asked for the street address first, stated Mondays without being asked, reflected
+the care plan back to confirm it, and closed by saying Tradd would ring back. It never
+offered to book. Log line `TEST CALL - SMS suppressed: AI call - +61400000000` confirms the
+guard holds. All four test rows deleted afterwards.
+
+### Known and NOT fixed, deliberately
+This relay has no `MAX_CALL_SECONDS`. The fleet relay caps a call at five minutes; here a
+time-waster or a television near a phone could hold the line open indefinitely, and every
+minute costs Twilio money. It is a separate change and it is logged here so it is not lost.
