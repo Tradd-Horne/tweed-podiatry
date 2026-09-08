@@ -63,6 +63,13 @@ app = FastAPI(title="rank-rent lead-relay", docs_url=None, redoc_url=None, opena
 _handled: set = set()
 
 
+# Inbound CallSids where a HUMAN pressed 1 at the whisper screen. Anything not in here that
+# Twilio still reports as "completed" was a voicemail, and belongs to the agent instead.
+# Bounded the same way: losing it on restart sends one call to the agent that a person had
+# taken, which is the safe direction to be wrong in.
+_accepted: set = set()
+
+
 _recording: set = set()
 
 
@@ -110,7 +117,21 @@ def send_sms(to: str, frm: str, body: str) -> str:
     return twilio_client().messages.create(to=to, from_=frm, body=body[:1500]).sid
 
 
-def notify(cfg: dict, body: str) -> None:
+# ⚠️ A REAL TWILIO CALL SID IS "CA" + 32 HEX CHARACTERS. Anything else came from a test.
+#
+# On 7 Sep 2026 building the fleet voice agent sent Tradd 42 text messages in four hours,
+# every one from a synthetic call and every one indistinguishable on his phone from a real
+# patient. This relay had no such guard, and testing this very change texted him once on
+# 8 Sep 2026 before it was added. The honest way to stop it is not "remember to be careful".
+#
+# Kept deliberately narrow: it suppresses the SMS ONLY. The lead is still stored and the
+# summary still written, so a test call can be inspected afterwards like a real one.
+def is_test_sid(call_sid: str) -> bool:
+    sid = (call_sid or "").strip()
+    return not (len(sid) == 34 and sid.startswith("CA"))
+
+
+def notify(cfg: dict, body: str, call_sid: str = "") -> None:
     """Send an operational SMS.
 
     ⚠️ KEEP BODIES GSM-7 ONLY — no emoji, no em-dashes, no smart quotes. A single
@@ -121,6 +142,9 @@ def notify(cfg: dict, body: str) -> None:
     """
     """Tell the owner something happened. Never let an SMS failure break a call."""
     try:
+        if call_sid and is_test_sid(call_sid):
+            print("TEST CALL - SMS suppressed:", body.splitlines()[0], flush=True)
+            return
         if cfg.get("lead_to") and cfg.get("twilio_from"):
             send_sms(cfg["lead_to"], cfg["twilio_from"], body)
     except Exception as exc:                                    # noqa: BLE001
@@ -358,7 +382,8 @@ async def agent_ws(ws: WebSocket):
 
             if kind == "setup":
                 caller = msg.get("from") or ""
-                print("AGENT CALL", caller, msg.get("callSid"), flush=True)
+                call_sid = msg.get("callSid") or ""
+                print("AGENT CALL", caller, call_sid, flush=True)
 
             elif kind == "prompt":
                 said = (msg.get("voicePrompt") or "").strip()
@@ -393,10 +418,10 @@ async def agent_ws(ws: WebSocket):
         # health-record baggage a recording would. Summarising it is what turns a call
         # into something Tradd can act on tomorrow without listening to anything.
         if history:
-            asyncio.create_task(_summarise(caller, history))
+            asyncio.create_task(_summarise(caller, history, call_sid))
 
 
-async def _summarise(caller: str, history: list) -> None:
+async def _summarise(caller: str, history: list, call_sid: str = "") -> None:
     """Turn a finished call into a stored row and one SMS.
 
     Runs after the caller has hung up, so a slow model costs nobody anything. Failures
@@ -423,6 +448,16 @@ async def _summarise(caller: str, history: list) -> None:
 
     summary = (fields.get("summary") or "").strip()
     action = (fields.get("action") or "").strip()
+    # ⚠️ THE ADDRESS IS THE POINT OF THIS LINE. Tradd drives to the patient, so an enquiry
+    # without a street address cannot be turned into a visit. There is no address column, and
+    # burying it in the transcript means reading a whole call to find out where to go. These
+    # four go in `note`, which is what the alert and the lead list actually show.
+    bits = [f"action={action or 'unknown'}"]
+    for key, label in (("address", "Address"), ("availability", "Suits"),
+                       ("funding", "Funding"), ("urgency", "Urgency")):
+        value = (fields.get(key) or "").strip()
+        if value:
+            bits.append(f"{label}: {value}")
     leads.record(
         "voice-agent",
         leads.LEAD,
@@ -434,7 +469,7 @@ async def _summarise(caller: str, history: list) -> None:
             "service": fields.get("wanted") or "",
             "detail": transcript[:2000],
         },
-        note=f"action={action or 'unknown'}",
+        note=" | ".join(bits),
     )
     print("AGENT SUMMARY", caller, action, repr(summary[:120]), flush=True)
 
@@ -445,13 +480,15 @@ async def _summarise(caller: str, history: list) -> None:
         f"{flag}AI call - {caller or 'unknown number'}\n"
         f"{summary}\n"
         f"Wanted: {fields.get('wanted') or '-'}\n"
-        f"Suburb: {fields.get('suburb') or '-'}\n"
+        f"Address: {fields.get('address') or '-'}\n"
+        f"Suits: {fields.get('availability') or '-'}\n"
+        f"Funding: {fields.get('funding') or '-'}\n"
         f"Next: {action or 'unknown'}"
     )
-    try:
-        send_sms(cfg.get("lead_to") or DEMO_TO, cfg.get("twilio_from") or "+61495090752", body)
-    except Exception as exc:                                    # noqa: BLE001
-        print("AGENT SUMMARY SMS FAILED", repr(exc), flush=True)
+    # ⚠️ VIA notify(), NOT send_sms(). This path called send_sms directly and so walked
+    # straight past is_test_sid — testing this change on 8 Sep 2026 texted Tradd from here
+    # even after the guard was added to notify(). A guard with a way around it is not a guard.
+    notify(cfg, body, call_sid)
 
 
 # --------------------------------------------------------------------- demo
@@ -600,11 +637,49 @@ async def voice(request: Request):
 
 @app.api_route("/api/whisper", methods=["GET", "POST"])
 async def whisper(request: Request):
-    """TwiML here is heard by the ANSWERING party only — the renter. The caller
-    hears ringing throughout, then the two are connected."""
-    cfg = load_sites().get((request.query_params.get("site") or "").strip()) or {}
+    """TwiML here is heard by the ANSWERING party only. The caller hears ringing throughout.
+
+    ⚠️ THIS IS A SCREEN, NOT AN ANNOUNCEMENT. Press 1 to take the call.
+
+    Twilio cannot tell us whether a person or a voicemail answered — both are "completed",
+    and a voicemail answers FAST. Measured on the fleet relay on 8 Sep 2026: a real enquiry
+    to Central Coast Tree Services was answered by Tradd's own voicemail about 5 seconds in,
+    Twilio reported a successful connection, and the caller was left talking to a recording
+    nobody played back. This line had the identical fault.
+
+    A voicemail cannot press a key. If nothing is pressed we end THIS leg, the caller is
+    untouched, and the <Dial> action sends them to the agent instead.
+    """
+    site_id = (request.query_params.get("site") or "").strip()
+    cfg = load_sites().get(site_id) or {}
     msg = cfg.get("whisper") or DEFAULT_WHISPER
-    return xml(f'<Response><Say voice="{VOICE}">{sx(msg)}</Say></Response>')
+    q = urllib.parse.urlencode({"site": site_id})
+    return xml(
+        "<Response>"
+        # Every second here is silence for the caller, so one short prompt and a 3s window.
+        f'<Gather numDigits="1" timeout="3" action="{sx(cb("/api/whisper/accept?" + q))}" '
+        f'method="POST">'
+        f'<Say voice="{VOICE}">{sx(msg.rstrip(". "))}. Press 1 to take it.</Say>'
+        "</Gather>"
+        "<Hangup/>"
+        "</Response>"
+    )
+
+
+@app.api_route("/api/whisper/accept", methods=["GET", "POST"])
+async def whisper_accept(request: Request):
+    """A human pressed a key. Record it and let the two legs bridge."""
+    form = await form_of(request)
+    digits = (form.get("Digits") or "").strip()
+    # ParentCallSid is the INBOUND caller's leg — the one /api/voice/after reports on.
+    parent = (form.get("ParentCallSid") or "").strip()
+    if digits and parent:
+        _accepted.add(parent)
+        if len(_accepted) > 5000:
+            _accepted.clear()
+        print("CALL ACCEPTED BY HUMAN", parent, flush=True)
+        return xml("<Response/>")
+    return xml("<Response><Hangup/></Response>")
 
 
 @app.post("/api/voice/after")
@@ -618,16 +693,28 @@ async def voice_after(request: Request):
     secs = (form.get("DialCallDuration") or "0").strip()
     name = cfg.get("display_name") or site_id or "site"
 
-    mark_handled((form.get("CallSid") or "").strip())
+    call_sid = (form.get("CallSid") or "").strip()
+    mark_handled(call_sid)
+    # ⚠️ "completed" only means SOMETHING answered. It counts only if a human pressed 1 —
+    # see whisper_accept. A voicemail that answers in 5 seconds is "completed" too, and
+    # treating that as a connection is what put a caller through to a recording.
+    if status == "completed" and call_sid not in _accepted:
+        print("CALL ANSWERED BUT NOT ACCEPTED - to the agent", site_id, caller, flush=True)
+        status = "no-answer"
     if status == "completed":
-        notify(cfg, f"CALL CONNECTED - {name}\nFrom: {caller}\nTalk time: {secs}s")
+        notify(cfg, f"CALL CONNECTED - {name}\nFrom: {caller}\nTalk time: {secs}s", call_sid)
         print("CALL CONNECTED", site_id, caller, secs, flush=True)
         return xml("<Response><Hangup/></Response>")
 
     notify(cfg, f"MISSED CALL - {name}\nFrom: {caller}\nStatus: {status or 'unknown'}\n"
-                "Caller sent to the qualifier, details to follow.")
+                "Caller sent to the qualifier, details to follow.", call_sid)
     print("CALL MISSED", site_id, caller, status, flush=True)
     q = urllib.parse.urlencode({"site": site_id})
+    # ⚠️ THE POINT OF THIS FILE. Tradd did not answer, so the agent takes the call and has a
+    # real back-and-forth: address, what days suit, referral or private, how urgent. The old
+    # three-question IVR below stays only as the fallback for a call with no site config.
+    if cfg:
+        return await agent_twiml(request)
     # Hand them to the SAME qualifier an unrented site uses (name -> suburb -> what they need),
     # which texts the answers through. A structured lead beats a voicemail nobody plays back.
     # No recording notice here: they already heard it before the dial attempt.
