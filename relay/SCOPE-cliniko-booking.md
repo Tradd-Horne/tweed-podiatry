@@ -13,6 +13,42 @@ This document covers what comes after it.
 
 ---
 
+## 0. ⚠️ CORRECTION — 8 Sep 2026, and it invalidates part of this document
+
+**Tradd books a DATE, not a time.** From him, same day:
+
+> *"the way we book it is we just book a date, we don't actually have specific times till we
+> get the full list of patients for that day. Then once we get the list of patients for that
+> day we can create a route that will optimise the travel time for the day, so we can group
+> and cluster the patients that I will see on that day."*
+
+This is a mobile round, not a clinic diary. It changes three things below, and anyone building
+from this document must read this section first.
+
+1. **Section 4 step 4 is wrong.** The agent must NOT offer "two or three real Monday slots".
+   There are no slots. It should confirm a DATE and say the time comes later.
+2. **Section 3's premise weakens, in our favour.** `/available_times` and `appointment_type_id`
+   were the awkward part. If we are booking a date, what matters is whether that date still has
+   capacity — a much cheaper question, and one a cache answers trivially. The one-second latency
+   constraint stands; the thing being cached gets simpler.
+3. **Section 10's travel-time question is ANSWERED.** Travel is not solved by blocking the
+   diary. It is solved after the fact, by routing the day's list once it is known. So the
+   diary should NOT try to model travel, and we should not make it.
+
+**What this promotes: the street address.** It is no longer just how Tradd finds the house. It
+is the input to the clustering that decides whether the day works at all. The agent already
+asks for it first and refuses to settle for a suburb — that instinct was right, and this is why.
+
+**What it opens up later:** once a date's patient list exists, the addresses are already in the
+lead store. Route optimisation is a real, separate piece of work with an obvious owner. Out of
+scope here. Noted so it is not lost.
+
+**Status: PAUSED by Tradd, 8 Sep 2026** — *"we'll just pause here on this now, cause currently
+I don't have any jobs booked in."* Nothing below is being built. Resume when there is a round
+to book into.
+
+---
+
 ## 1. The thing worth knowing first: most of this is already built
 
 `~/projects/au-cliniko-mcp` is Tradd's own Cliniko MCP. 39 tools, 14 modules, pre-alpha but
