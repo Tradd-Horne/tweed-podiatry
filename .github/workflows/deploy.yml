@@ -5,6 +5,8 @@ name: Deploy Tweed Heads Podiatry
 # NOTE the branch: this repo deploys from `prebuilt`, not `main`. `main` stopped at
 # the initial static-export commit; every change since lands on `prebuilt`, and that is
 # the branch the droplet has checked out.
+# NETWORK: the runner joins Tailscale first (tag:ci, OAuth secrets TS_OAUTH_*), so
+# DROPLET_HOST is prod's Tailscale address and public SSH can stay closed.
 # SECURITY MODEL: this never gets a shell on the box. It SSHes with a deploy
 # key that the droplet has locked to a single forced-command (see
 # /opt/deploy/tweed-podiatry.sh). The key can ONLY trigger that one deploy script —
@@ -25,6 +27,13 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Join Tailscale (prod SSH is not open to the internet)
+        uses: tailscale/github-action@v4
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:ci
+
       - name: Trigger droplet deploy over SSH
         env:
           DEPLOY_KEY:  ${{ secrets.DROPLET_DEPLOY_KEY }}
