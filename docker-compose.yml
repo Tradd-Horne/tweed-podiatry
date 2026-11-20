@@ -18,7 +18,7 @@ services:
     # Stock nginx with the built site mounted in — exactly how Rising Damp Brisbane runs on
     # this droplet. No image build, so there is no build context, no cache key, and nothing
     # for the droplet to compile.
-    image: nginx:1.27-alpine
+    image: nginx:1.30.7-alpine
     container_name: tweedpodiatry-web
     restart: unless-stopped
     volumes:
