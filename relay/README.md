@@ -21,10 +21,16 @@ CORS to get wrong, and a health business does not share a service with a rental 
 | `tracking_number` / `twilio_from` | The Twilio number. Calls arrive on it and texts are sent from it. |
 | `forward_to` | Where inbound calls ring. |
 | `lead_to` | Where lead alerts are texted. |
-| `record` | **`false` here.** See below. |
+| `record` | **`true` here** (since 24 Nov 2026). See below. |
 | `whisper` | Played to the answerer only, before the caller is connected. |
 
-### Recording is off, deliberately
+### Recording — ON since 24 Nov 2026 (Tradd, msg 3798)
+
+Tradd turned recording on. Callers hear "this call may be recorded" before they are connected,
+and tweedheadspodiatry.com.au/privacy says calls are recorded. If you turn it off again, change
+the privacy page in the same PR. The earlier reasoning is kept below.
+
+#### Earlier reasoning (recording off, until 24 Nov 2026)
 
 The fleet records calls. This site does not. A recorded call in which somebody describes
 a foot problem is a health record, and it carries the obligations that follow — storage,
