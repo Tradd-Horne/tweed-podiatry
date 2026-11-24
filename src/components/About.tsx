@@ -11,7 +11,7 @@ export function About() {
             </h2>
             <div className="space-y-4 text-gray-600 leading-relaxed">
               <p>
-                <strong className="text-gray-900">Tradd, B.HSc Pod</strong> is a
+                <strong className="text-gray-900">Tradd, B.HSc (Pod)</strong> is a
                 qualified podiatrist bringing professional foot care directly to
                 your home across Tweed Heads, the Northern Rivers and Northern
                 NSW.
@@ -31,7 +31,7 @@ export function About() {
 
             <div className="mt-8 flex flex-wrap gap-6">
               <div>
-                <p className="text-2xl font-semibold text-[#1e3a5f]">B.HSc Pod</p>
+                <p className="text-2xl font-semibold text-[#1e3a5f]">B.HSc (Pod)</p>
                 <p className="text-sm text-gray-500">Qualified Podiatrist</p>
               </div>
               <div>

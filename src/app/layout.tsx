@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     "Professional mobile podiatry services in Tweed Heads, Northern Rivers and Northern NSW. Home visit podiatrist providing comprehensive foot care at your doorstep. Book your appointment today.",
   keywords:
     "podiatrist, mobile podiatry, home visit podiatrist, Tweed Heads, Northern Rivers, Northern NSW, foot care, podiatry home visits, Tweed Heads podiatry",
-  authors: [{ name: "Tradd - B.HSc Pod" }],
+  authors: [{ name: "Tradd - B.HSc (Pod)" }],
   openGraph: {
     title: "Tweed Heads Podiatry | Mobile Home Visit Podiatrist",
     description:
