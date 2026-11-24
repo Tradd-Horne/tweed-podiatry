@@ -195,6 +195,14 @@ export function EnquiryForm() {
         {state === "sending" ? "Sending…" : "Request a call back"}
       </button>
 
+      <p className="mt-2 text-xs text-gray-500">
+        We use your details only to reply to you. See our{" "}
+        <a href="/privacy" className="underline">
+          privacy policy
+        </a>
+        .
+      </p>
+
       {state === "unverified" && (
         <p className="mt-3 text-sm text-red-700">
           Please complete the "I am human" check above, then send again. If it will not
