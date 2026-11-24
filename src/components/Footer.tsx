@@ -102,6 +102,11 @@ export function Footer() {
                   Photo credits
                 </Link>
               </li>
+              <li>
+                <Link href="/privacy" className="text-slate-700 hover:underline">
+                  Privacy policy
+                </Link>
+              </li>
             </ul>
           </div>
         </div>
