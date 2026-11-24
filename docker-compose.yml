@@ -48,9 +48,9 @@ services:
   # form stays same-origin so there is no CORS to get wrong, and a health business and a
   # rental fleet do not share one service.
   #
-  # Recording is OFF for this site (relay/sites.json). A recorded call in which somebody
-  # describes a foot problem is a health record, with the obligations that follow, and
-  # there is no lead-quality reason to keep one.
+  # Recording is ON for this site (relay/sites.json), Tradd's call 24 Nov 2026 (msg 3798).
+  # Callers hear "this call may be recorded" first, and /privacy says calls are recorded.
+  # A recording is a health record: keep it with the clinical records obligations.
   tweedpodiatry-relay:
     build: ./relay
     image: tweedpodiatry-relay:latest
