@@ -12,7 +12,8 @@ import { SITE } from "@/lib/site";
  *
  * ⚠️ Keep it TRUE. Every processor named here is one the site actually uses. If calls start
  * being recorded (relay/sites.json "record": true) or an AI agent answers missed calls on
- * this line, this page must change in the same PR.
+ * this line, this page must change in the same PR. Tradd confirmed 24 Nov 2026 (msg 3796)
+ * that calls ARE recorded, so the page says so.
  */
 export const metadata: Metadata = {
   title: "Privacy policy | Tweed Heads Podiatry",
@@ -52,7 +53,10 @@ export default function PrivacyPage() {
           </li>
           <li>
             <strong>When you call or text us:</strong> your phone number, the time of the call,
-            and the content of any text message. Calls are not recorded.
+            the content of any text message, and a recording of the call. We record calls so we
+            have an accurate note of your request and for quality and training. Recordings are
+            kept securely and only {SITE.practitioner} listens to them. If you would rather not
+            be recorded, tell us at the start of the call or use the call-back form instead.
           </li>
           <li>
             <strong>When you become a patient:</strong> the details needed to treat you safely —
